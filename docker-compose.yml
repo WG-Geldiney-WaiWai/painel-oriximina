@@ -2,6 +2,8 @@
 #   Subir (e atualizar depois de mudar o código):  docker compose up -d --build
 #   Abrir no navegador:                             http://localhost:8501
 #   Parar:                                          docker compose down
+#   Endereço https para o celular (GPS):            docker compose --profile celular up -d
+#                                                   e depois rode .\link-celular.ps1 para ver o endereço
 # Nome do grupo no Docker Desktop (separado do taipei-dashboard)
 name: painel-oriximina
 
@@ -26,3 +28,17 @@ services:
       - ./imagens:/app/imagens
       - ./static:/app/static
       - ./backups:/app/backups
+
+  # Endereço https:// para abrir no celular (o GPS do navegador só funciona em https).
+  # Túnel gratuito da Cloudflare: o endereço (https://....trycloudflare.com) é sorteado e MUDA
+  # sempre que este container reinicia; veja o atual com .\link-celular.ps1.
+  # Opcional (perfil "celular"): só liga com  docker compose --profile celular up -d
+  # Quem tiver o endereço abre o painel pela internet, como pelo endereço da rede de casa.
+  tunel:
+    image: cloudflare/cloudflared:latest
+    container_name: painel-oriximina-tunel
+    command: tunnel --no-autoupdate --url http://painel:8501
+    depends_on:
+      - painel
+    restart: unless-stopped
+    profiles: ["celular"]
