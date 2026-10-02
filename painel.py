@@ -4717,6 +4717,20 @@ def janela_ocorrencia():
             st.rerun()
 
 
+@st.cache_data(ttl=60, show_spinner=False)
+def endereco_https():
+    """Endereço https:// do túnel da Cloudflare (serviço "tunel" do docker-compose.yml), ou None.
+    O túnel diz o endereço atual em http://tunel:20241/quicktunnel; fora do Docker, ou com o túnel
+    desligado, a pergunta falha e não há link."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen("http://tunel:20241/quicktunnel", timeout=1.5) as resposta:
+            nome = json.loads(resposta.read()).get("hostname")
+        return f"https://{nome}" if nome else None
+    except Exception:
+        return None
+
+
 def barra_ferramentas_mapa():
     """Botões em cima do mapa: pontos de vista, ponto mais próximo, relatar ocorrência e ocorrências."""
     with st.container(horizontal=True, vertical_alignment="center", gap="small", key="barra_mapa"):
@@ -4730,7 +4744,15 @@ def barra_ferramentas_mapa():
         if local and local.get("t") != st.session_state.get("localizacao_tratada"):
             st.session_state.localizacao_tratada = local.get("t")
             if "erro" in local:
-                st.toast(local["erro"], icon=":material/location_off:")
+                aviso = local["erro"]
+                # Aberto por http (ex.: o endereço da rede de casa no celular): se o túnel estiver ligado,
+                # o aviso já traz o link https, mantendo a conta de quem entrou
+                link = endereco_https() if "https://" in aviso else None
+                if link:
+                    sessao = st.query_params.get("sessao")
+                    link += f"/?sessao={sessao}" if sessao else ""
+                    aviso += f" [Abrir pelo endereço seguro]({link})"
+                st.toast(aviso, icon=":material/location_off:")
             else:   # posição nova: leva o mapa até ela
                 ir_para(local["lat"], local["lon"], 15.5)
         # Quem pede a localização é o script do mapa (no navegador); o clique não recarrega a página

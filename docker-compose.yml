@@ -37,7 +37,9 @@ services:
   tunel:
     image: cloudflare/cloudflared:latest
     container_name: painel-oriximina-tunel
-    command: tunnel --no-autoupdate --url http://painel:8501
+    # --metrics: o painel pergunta aqui (http://tunel:20241/quicktunnel) o endereço https atual,
+    # para mostrar o link certo no aviso de localização do celular
+    command: tunnel --no-autoupdate --metrics 0.0.0.0:20241 --url http://painel:8501
     depends_on:
       - painel
     restart: unless-stopped
