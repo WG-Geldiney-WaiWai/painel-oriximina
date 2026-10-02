@@ -4429,10 +4429,21 @@ def figura_mapa(ligadas):
     local = minha_localizacao()
     if local and "lat" in local:
         precisao = f"± {local.get('precisao', 0):.0f} m"
+        # Círculo do tamanho real da precisão (como no Google Maps): você está em algum lugar dentro dele.
+        # Raio em metros convertido para graus (1° de latitude ≈ 111.320 m; a longitude encolhe com o cosseno)
+        raio = max(float(local.get("precisao") or 0), 5.0)
+        passos = [2 * math.pi * i / 48 for i in range(49)]
+        dlat = raio / 111320
+        dlon = raio / (111320 * math.cos(math.radians(local["lat"])))
         fig.add_trace(go.Scattermap(
-            lat=[local["lat"]] * 2, lon=[local["lon"]] * 2, mode="markers", name="Minha localização",
-            marker=dict(size=[34, 13], color=["rgba(90,156,248,0.25)", COR_MARCO]),
-            customdata=[["Minha localização", precisao]] * 2, meta=["Nome", "Precisão"],
+            lat=[local["lat"] + dlat * math.sin(t) for t in passos],
+            lon=[local["lon"] + dlon * math.cos(t) for t in passos],
+            mode="lines", fill="toself", fillcolor="rgba(90,156,248,0.15)",
+            line=dict(color="rgba(90,156,248,0.6)", width=1.5), name="Precisão", hoverinfo="skip"))
+        fig.add_trace(go.Scattermap(
+            lat=[local["lat"]], lon=[local["lon"]], mode="markers", name="Minha localização",
+            marker=dict(size=13, color=COR_MARCO),
+            customdata=[["Minha localização", precisao]], meta=["Nome", "Precisão"],
             hovertemplate="Minha localização<br>Precisão: %{customdata[1]}<extra></extra>"))
     # Resultado do "Ponto mais próximo": linha tracejada da partida até o ponto encontrado
     proximo = st.session_state.get("resultado_proximo")
@@ -4754,7 +4765,8 @@ def barra_ferramentas_mapa():
                     aviso += f" [Abrir pelo endereço seguro]({link})"
                 st.toast(aviso, icon=":material/location_off:")
             else:   # posição nova: leva o mapa até ela
-                ir_para(local["lat"], local["lon"], 15.5)
+                # Zoom 17,5: perto o bastante para ver os prédios, o círculo da precisão e o pino em 3D
+                ir_para(local["lat"], local["lon"], 17.5)
         # Quem pede a localização é o script do mapa (no navegador); o clique não recarrega a página
         st.button("Minha localização", icon=":material/my_location:", key="botao_minha_localizacao",
                   help="Mostrar no mapa onde você está (o navegador pede permissão)")
@@ -5091,6 +5103,40 @@ SCRIPT_PREDIOS_3D = """
                 mapa.easeTo(Object.assign({pitch: 55, duration: 1200},
                     perto ? {} : {center: [-55.8655, -1.7605], zoom: 15.3}));
             }
+        }
+    }, 700);
+    // "Minha localização" com os prédios em 3D: um pino azul (coluna fina de 18 m, acima do prédio mais
+    // alto, de 9,8 m) sai do chão no ponto da pessoa e atravessa o telhado, mostrando em que prédio ela está
+    function circuloEmGraus(lat, lon, metros) {
+        const pontos = [];
+        for (let i = 0; i <= 24; i++) {
+            const t = 2 * Math.PI * i / 24;
+            pontos.push([lon + metros * Math.cos(t) / (111320 * Math.cos(lat * Math.PI / 180)),
+                         lat + metros * Math.sin(t) / 111320]);
+        }
+        return pontos;
+    }
+    setInterval(() => {
+        const mapa = mapaDoPainel();
+        if (!mapa || !mapa.isStyleLoaded()) return;
+        const marca = document.getElementById("minha-posicao-3d");
+        const chave = marca ? marca.dataset.lat + "," + marca.dataset.lon : null;
+        const tirar = () => {
+            if (mapa.getLayer("pino-posicao")) mapa.removeLayer("pino-posicao");
+            if (mapa.getSource("pino-posicao")) mapa.removeSource("pino-posicao");
+        };
+        if (!marca || !mapa.getLayer("predios-3d")) { tirar(); return; }
+        if (mapa._chavePino !== chave) tirar();
+        if (!mapa.getSource("pino-posicao")) {
+            const lat = parseFloat(marca.dataset.lat), lon = parseFloat(marca.dataset.lon);
+            mapa.addSource("pino-posicao", {type: "geojson", data: {type: "Feature", properties: {},
+                geometry: {type: "Polygon", coordinates: [circuloEmGraus(lat, lon, 1.8)]}}});
+            mapa._chavePino = chave;
+        }
+        if (!mapa.getLayer("pino-posicao")) {
+            mapa.addLayer({id: "pino-posicao", type: "fill-extrusion", source: "pino-posicao", paint: {
+                "fill-extrusion-color": "#5a9cf8", "fill-extrusion-height": 18,
+                "fill-extrusion-base": 0, "fill-extrusion-opacity": 0.95}});
         }
     }, 700);
 """
@@ -5440,6 +5486,12 @@ def pagina_mapa():
                 # O script do mapa vê esta marca e levanta os prédios (sem ela, tira a camada)
                 st.markdown(f'<div id="predios-3d" data-url="app/static/{NOME_ARQ_PREDIOS}?v={versao}"></div>',
                             unsafe_allow_html=True)
+                # Com os prédios em pé, o ponto azul fica no chão e parece cair fora do prédio (o telhado
+                # aparece deslocado na tela inclinada): o script levanta um pino azul acima dos telhados
+                local = minha_localizacao()
+                if local and "lat" in local:
+                    st.markdown(f'<div id="minha-posicao-3d" data-lat="{local["lat"]}" '
+                                f'data-lon="{local["lon"]}"></div>', unsafe_allow_html=True)
         with st.container(key="caixa_mapa"):
             fig = figura_mapa(ligadas)
             # Clicar num ponto ou numa área faz a página rodar de novo com o item escolhido
