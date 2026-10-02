@@ -4864,12 +4864,20 @@ def script_mapa():
                 }
                 const achou = (p) => escreverLocalizacao({lat: p.coords.latitude, lon: p.coords.longitude,
                                                           precisao: p.coords.accuracy});
+                // Avisos curtos (o Streamlit corta os longos com "view more"), com o caminho certo
+                // para liberar a localização em cada aparelho
+                const agente = navigator.userAgent;
+                const iphone = /iPhone|iPad|iPod/.test(agente) ||
+                               (agente.includes("Mac") && navigator.maxTouchPoints > 1);
+                const android = /Android/.test(agente);
+                const bloqueada = iphone
+                    ? "Localização bloqueada. Libere em Ajustes > Privacidade > Serviços de Localização."
+                    : android ? "Localização bloqueada. Libere em Configurações do site, no menu ⋮ do navegador."
+                    : "Localização bloqueada. Clique no cadeado ao lado do endereço e permita.";
                 const falhou = (e) => escreverLocalizacao({erro:
-                    e.code === 1 ? "A localização foi bloqueada. Clique no cadeado ao lado do endereço do " +
-                                   "navegador e permita a localização."
-                    : e.code === 3 ? "O navegador demorou demais para achar a sua localização. Tente de novo."
-                    : "O computador não conseguiu descobrir onde você está. Ligue o Wi-Fi (o Windows usa as " +
-                      "redes próximas para isso) e confira em Configurações > Privacidade > Localização."});
+                    e.code === 1 ? bloqueada
+                    : e.code === 3 ? "Demorou demais para achar a sua localização. Tente de novo."
+                    : "Não foi possível achar a sua posição. Ligue o Wi-Fi ou o GPS e tente de novo."});
                 // Primeiro com alta precisão (GPS do celular); se falhar, tenta de novo do jeito comum
                 // (Wi-Fi/rede), que é o que funciona num computador sem GPS
                 navigator.geolocation.getCurrentPosition(achou, (e) => {
