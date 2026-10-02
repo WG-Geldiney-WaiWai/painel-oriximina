@@ -224,6 +224,12 @@ st.markdown(f"""
     }}
     [data-testid="stToast"] {{ background-color: #3a3b3d !important; border-radius: 6px; width: auto !important; }}
     [data-testid="stToast"] p {{ color: #b4f33e !important; font-size: 1rem; }}
+    /* O Streamlit corta o aviso em 3 linhas medindo com a letra menor dele: com a letra maior do painel,
+       aparecia "view more" mesmo com o texto inteiro. Os avisos são curtos: mostra tudo, sem o botão */
+    [data-testid="stToastText"] {{
+        display: block !important; -webkit-line-clamp: unset !important; overflow: visible !important;
+    }}
+    [data-testid="stToastViewButton"] {{ display: none !important; }}
     [data-testid="stToast"] [data-testid="stIconMaterial"] {{ color: #b4f33e !important; }}
     .cartao-atualizacao {{
         display: inline-block; font-size: 0.8rem; color: {COR_TEXTO_CINZA};
