@@ -1,0 +1,12 @@
+# Tema do Painel Oriximiná: sempre escuro e com o azul do painel de Taipei,
+# independente do tema do computador de quem abre
+[theme]
+base = "dark"
+primaryColor = "#5a9cf8"
+backgroundColor = "#090909"
+secondaryBackgroundColor = "#282a2c"
+textColor = "#ffffff"
+
+# Serve a pasta "static" (os prédios em 3D do mapa ficam em app/static/)
+[server]
+enableStaticServing = true

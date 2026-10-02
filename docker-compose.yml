@@ -1,0 +1,28 @@
+# Painel Oriximiná no Docker Desktop
+#   Subir (e atualizar depois de mudar o código):  docker compose up -d --build
+#   Abrir no navegador:                             http://localhost:8501
+#   Parar:                                          docker compose down
+# Nome do grupo no Docker Desktop (separado do taipei-dashboard)
+name: painel-oriximina
+
+services:
+  painel:
+    build: .
+    image: painel-oriximina
+    container_name: painel-oriximina
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    environment:
+      - TZ=America/Santarem
+      # Chave do "Resumo com IA" (opcional): defina ANTHROPIC_API_KEY no Windows antes de subir
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    # Pastas que o painel altera (contas, favoritos, problemas reportados, componentes novos,
+    # fotos de colaboradores, dados atualizados pela administração): ficam na pasta do
+    # computador, então nada se perde ao recriar o container e o painel fora do Docker vê o mesmo
+    volumes:
+      - ./usuarios:/app/usuarios
+      - ./dados:/app/dados
+      - ./imagens:/app/imagens
+      - ./static:/app/static
+      - ./backups:/app/backups

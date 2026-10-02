@@ -1,0 +1,11 @@
+# Bibliotecas do painel (instale com:  python -m pip install -r requirements.txt)
+streamlit>=1.64
+plotly>=7.1
+pandas>=3.0
+shapely>=2.1
+openpyxl>=3.1
+anthropic>=1.10   # "Resumo com IA" do mapa (precisa de uma chave da API da Anthropic)
+
+# Só para os scripts da pasta "scripts" (preparar os dados)
+geopandas>=1.1
+py7zr>=1.1

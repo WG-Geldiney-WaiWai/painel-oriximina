@@ -1,0 +1,3 @@
+# Scripts do Linux e arquivos do Docker sempre com fim de linha do Linux (LF)
+*.sh text eol=lf
+Dockerfile text eol=lf

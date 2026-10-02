@@ -1,0 +1,21 @@
+# Fica fora do GitHub
+
+# Contas, senhas, sessões de login, problemas reportados e ocorrências de quem usa o painel.
+# Só a configuração dos painéis e dos componentes criados na administração vai junto.
+usuarios/*
+!usuarios/admin_painel.json
+
+# Senhas e chaves (e-mail, API da Anthropic)
+.streamlit/secrets.toml
+.env
+
+# Arquivos brutos do IBGE (70 MB): baixe de novo e coloque em dados/fontes (ver README)
+dados/fontes/
+
+# Cópias automáticas feitas antes de atualizar os dados
+backups/
+
+# Arquivos do Python e do editor
+__pycache__/
+*.pyc
+.vscode/

@@ -1,0 +1,17 @@
+# Fica fora da imagem do Docker
+__pycache__/
+**/__pycache__/
+*.pyc
+.vscode/
+.git/
+backups/
+iniciar.ps1
+iniciar.sh
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Senhas e chaves (e-mail, API da Anthropic) nunca vão para dentro da imagem:
+# passe pelo docker-compose.yml (variáveis de ambiente ou o arquivo ligado ao container)
+.streamlit/secrets.toml
+.env

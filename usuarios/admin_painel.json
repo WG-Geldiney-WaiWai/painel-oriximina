@@ -1,0 +1,90 @@
+{
+  "componentes_novos": {
+    "comp_300": {
+      "id": 300,
+      "titulo": "Moradores por bairro da sede",
+      "fonte": "IBGE | Censo 2022 e CNEFE 2022",
+      "atualizacao": "Censo 2022",
+      "icone": "bar_chart",
+      "area": "Sede urbana de Oriximiná",
+      "resumo": "Moradores e idosos (60 anos ou mais) em cada bairro da sede de Oriximiná.",
+      "descricao": "Mostra quantas pessoas moram em cada bairro da sede urbana de Oriximiná e quantas delas têm 60 anos ou mais, segundo o Censo 2022 (47.358 moradores, dos quais 4.620 idosos, nas áreas da tabela). Os moradores de cada setor censitário foram repartidos entre os bairros conforme onde ficam os seus domicílios no CNEFE; por isso os números por bairro são estimativas. Porto Trombetas e Sede: áreas fora dos bairros mapeados aparecem no gráfico, mas não no mapa, porque ficam fora dos bairros do Plano Diretor.",
+      "exemplo": "Ajuda a planejar onde colocar serviços de bairro, como postos de saúde, escolas e atividades para idosos, comparando o número de moradores e de idosos de cada bairro. No mapa, os bairros mais escuros têm menos moradores e os mais claros, mais.",
+      "tipos": [
+        "barras",
+        "mapa_arvore"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#F8CF58"
+      ],
+      "unidade": "pessoas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE – Censo Demográfico 2022",
+          "url": "https://censo2022.ibge.gov.br"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "bairros",
+        "nome": "Moradores por bairro da sede",
+        "cor": "#28a6d6"
+      },
+      "historico": null
+    }
+  },
+  "paineis_publicos": {
+    "cuidados": {
+      "titulo": "Cuidados de longo prazo",
+      "icone": "elderly",
+      "cartoes": [
+        "dependencia",
+        "emprego",
+        "divisoes",
+        "indicadores",
+        "comp_300"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "cartografia": {
+      "titulo": "Informações cartográficas",
+      "icone": "public",
+      "cartoes": [
+        "vias"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "cuidados_cn": {
+      "titulo": "Cuidados de longo prazo",
+      "icone": "elderly",
+      "cartoes": [
+        "dependencia_cn",
+        "emprego_cn",
+        "divisoes_cn",
+        "indicadores_cn"
+      ],
+      "grupo": "Painel da Calha Norte"
+    },
+    "transporte_cn": {
+      "titulo": "Transporte prático",
+      "icone": "directions_car",
+      "cartoes": [
+        "tempo_cn",
+        "meio_cn",
+        "frota_cn"
+      ],
+      "grupo": "Painel da Calha Norte"
+    },
+    "cartografia_cn": {
+      "titulo": "Informações cartográficas",
+      "icone": "public",
+      "cartoes": [
+        "vias_cn"
+      ],
+      "grupo": "Painel da Calha Norte"
+    }
+  }
+}
