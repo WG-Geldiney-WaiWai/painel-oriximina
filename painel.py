@@ -210,6 +210,17 @@ st.markdown(f"""
     [data-testid="stToastContainer"] {{
         top: 28px !important; bottom: auto !important; left: 50% !important; right: auto !important;
         transform: translateX(-50%); z-index: 1000000 !important;
+        /* Partindo do meio da tela, a caixa só tinha metade da largura: no celular o texto quebrava
+           uma palavra por linha. Agora ela usa a largura do texto, até a tela menos as margens */
+        width: max-content !important; max-width: min(560px, calc(100vw - 32px)) !important;
+    }}
+    /* No celular: a caixa ocupa a largura da tela, com 16px de margem dos dois lados */
+    @media (max-width: 640px) {{
+        [data-testid="stToastContainer"] {{
+            left: 16px !important; right: 16px !important; transform: none !important;
+            width: auto !important; max-width: none !important;
+        }}
+        [data-testid="stToast"] {{ width: 100% !important; max-width: none !important; }}
     }}
     [data-testid="stToast"] {{ background-color: #3a3b3d !important; border-radius: 6px; width: auto !important; }}
     [data-testid="stToast"] p {{ color: #b4f33e !important; font-size: 1rem; }}
@@ -4847,8 +4858,8 @@ def script_mapa():
                 ev.preventDefault();
                 ev.stopPropagation();   // o clique fica só com o navegador: a página não recarrega à toa
                 if (!navigator.geolocation || !window.isSecureContext) {
-                    escreverLocalizacao({erro: "Este endereço não permite pegar a localização. Abra o painel " +
-                        "por http://localhost:8501 ou por um endereço https."});
+                    // (curta: o Streamlit corta avisos longos com "view more")
+                    escreverLocalizacao({erro: "Localização bloqueada: ela só funciona em endereços https://."});
                     return;
                 }
                 const achou = (p) => escreverLocalizacao({lat: p.coords.latitude, lon: p.coords.longitude,
