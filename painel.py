@@ -6496,7 +6496,13 @@ def janela_admin_problema(id_problema):
                             key=f"adm_pr_situacao_{id_problema}")
     resposta = st.text_area("Resposta / decisão", value=problema.get("resposta", ""), height=100,
                             key=f"adm_pr_resposta_{id_problema}").strip()
+    # Apagar de vez (ex.: relato de teste): só aparece depois de marcar a caixa, como nas outras janelas
+    excluir = st.checkbox("Excluir este problema", key=f"adm_pr_excluir_{id_problema}")
     with st.container(horizontal=True, horizontal_alignment="right"):
+        if excluir and st.button("Excluir problema", key=f"adm_pr_apagar_{id_problema}"):
+            salvar_json(ARQ_PROBLEMAS, [p for p in problemas if p["id"] != id_problema])
+            st.session_state.aviso = "Problema excluído"
+            st.rerun()
         if st.button("Salvar", type="primary", key=f"adm_pr_salvar_{id_problema}"):
             problema.update(status=situacao, resposta=resposta, editado_em=agora_texto(),
                             editado_por=st.session_state.usuario["email"])
