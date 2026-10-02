@@ -3914,6 +3914,23 @@ def script_tela_cheia():
         `;
         d.head.appendChild(s);
     }
+    // Menu ☰ do celular: ao tocar numa página ou painel, o menu fecha na hora (antes ficava aberto
+    // por cima da página nova). Escuta depois do Streamlit (sem "capture"), então o toque já foi
+    // registrado; o "Esc" é o que fecha o menu
+    if (!d.getElementById("script-fechar-menu-celular")) {
+        const s = d.createElement("script");
+        s.id = "script-fechar-menu-celular";
+        s.textContent = `
+            document.addEventListener("click", (ev) => {
+                const opcao = ev.target.closest && ev.target.closest(
+                    '[class*="st-key-celular_pagina_"] button, [class*="st-key-celular_menu_"] button');
+                if (!opcao) return;
+                setTimeout(() => document.dispatchEvent(new KeyboardEvent("keydown",
+                    {key: "Escape", code: "Escape", keyCode: 27, bubbles: true})), 0);
+            });
+        `;
+        d.head.appendChild(s);
+    }
     </script>""", height=1)   # o Streamlit não aceita altura 0; o quadro fica escondido pelo CSS
 
 
