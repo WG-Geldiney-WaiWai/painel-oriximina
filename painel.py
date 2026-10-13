@@ -31,6 +31,18 @@ os.makedirs(PASTA_USUARIOS, exist_ok=True)
 def arquivo_dados(nome):
     return os.path.join(PASTA_DADOS, nome)
 
+
+@st.cache_resource(show_spinner=False)
+def _geojson_guardado(nome, modificado):
+    with open(arquivo_dados(nome), encoding="utf-8") as arquivo:
+        return json.load(arquivo)
+
+
+def ler_geojson(nome):
+    """Lê o mapa uma vez só e guarda na memória (não ler de novo a cada clique deixa as páginas mais rápidas).
+    Se o arquivo mudar, a data dele muda e o mapa é lido de novo. O mapa guardado é só para leitura."""
+    return _geojson_guardado(nome, os.path.getmtime(arquivo_dados(nome)))
+
 def e_celular():
     """Celular ou tablet, pelo navegador (User-Agent), como o isMobileDevice do Taipei. No celular o menu
     lateral vira o botão ☰ da barra de cima e as camadas do mapa ficam num botão "Camadas"."""
@@ -835,14 +847,12 @@ def montar_balao(linha, extra=""):
 
 # Bairros da sede urbana, extraídos do Mapa de Macrozoneamento Urbano
 # (Revisão do Plano Diretor 2017, mapa 01/19)
-with open(arquivo_dados("oriximina_bairros.geojson"), "r", encoding="utf-8") as f:
-    geojson_bairros = json.load(f)
+geojson_bairros = ler_geojson("oriximina_bairros.geojson")
 
 df_bairros = pd.DataFrame([feature["properties"] for feature in geojson_bairros["features"]])
 
 # Setores censitários do IBGE (.geojson)
-with open(arquivo_dados("oriximina_setores.geojson"), "r", encoding="utf-8") as f:
-    geojson_oriximina = json.load(f)
+geojson_oriximina = ler_geojson("oriximina_setores.geojson")
 
 lista_setores = []
 for index, feature in enumerate(geojson_oriximina["features"]):
@@ -955,6 +965,96 @@ JS_DESTACAR_LEGENDA = """
 """
 
 
+def geojson_so_com(geojson, chave, valores):
+    """Só as áreas pedidas e só a propriedade que liga a área aos dados: o mapa vai bem menor para o navegador."""
+    campo = chave.split(".", 1)[1]
+    valores = set(valores)
+    return {"type": "FeatureCollection", "features": [
+        {"type": "Feature", "properties": {campo: f["properties"][campo]}, "geometry": f["geometry"]}
+        for f in geojson["features"] if f["properties"][campo] in valores
+    ]}
+
+
+@st.cache_data(show_spinner=False, max_entries=8)
+def html_mapa_divisoes(df_mapa, _geojson_mapa, chave_mapa, coluna_local):
+    """Monta o mapa de divisões etárias uma vez e guarda pronto: montar o mapa dos setores do IBGE levava
+    uns 2 segundos, e era refeito a cada clique em qualquer lugar do painel. O "_" deixa o geojson fora da
+    chave do cache (conferir 2 MB a cada clique também demora); a chave_mapa já diz se é de bairros ou setores."""
+    geojson_mapa = _geojson_mapa
+    df_com_dados = df_mapa[df_mapa["Habitantes"].notna()]
+    df_sem_dados = df_mapa[df_mapa["Habitantes"].isna()]
+
+    # Mapa só com as formas (sem fundo de ruas), pintado pela quantidade de habitantes
+    fig_mapa = go.Figure(go.Choropleth(
+        geojson=geojson_so_com(geojson_mapa, chave_mapa, df_com_dados[coluna_local]),
+        featureidkey=chave_mapa,
+        locations=df_com_dados[coluna_local],
+        z=df_com_dados["Habitantes"],
+        colorscale=ESCALA_AZUL,
+        showscale=False,
+        marker_line_color=COR_CARTAO,
+        marker_line_width=1,
+        customdata=df_com_dados[["Título", "balao"]],
+        hovertemplate=(f"<span style='color:{COR_TEXTO_CINZA}'>%{{customdata[0]}}</span><br>"
+                       "%{customdata[1]}<extra></extra>")
+    ))
+    if not df_sem_dados.empty:
+        # Áreas sem dados de população ficam em cinza
+        fig_mapa.add_trace(go.Choropleth(
+            geojson=geojson_so_com(geojson_mapa, chave_mapa, df_sem_dados[coluna_local]),
+            featureidkey=chave_mapa,
+            locations=df_sem_dados[coluna_local],
+            z=[0] * len(df_sem_dados),
+            colorscale=[[0, "#4a4d50"], [1, "#4a4d50"]],
+            showscale=False,
+            marker_line_color=COR_CARTAO,
+            marker_line_width=1,
+            customdata=df_sem_dados[["Título", "balao"]],
+            hovertemplate=(f"<span style='color:{COR_TEXTO_CINZA}'>%{{customdata[0]}}</span><br>"
+                           "%{customdata[1]}<extra></extra>")
+        ))
+    fig_mapa.update_geos(fitbounds="locations", visible=False, bgcolor="rgba(0,0,0,0)",
+                         projection_type="mercator")
+    fig_mapa.update_layout(
+        margin=dict(l=0, r=0, t=0, b=0),
+        height=340,
+        paper_bgcolor="rgba(0,0,0,0)",
+        dragmode=False,
+        hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555",
+                        font=dict(color="white", size=15))
+    )
+    fig_mapa.update_layout(font=dict(family="Source Sans Pro, sans-serif"))
+
+    # Efeito do Taipei: a área embaixo do mouse cresce um pouco, fica mais clara
+    # e passa para a frente das vizinhas. O Plotly não faz isso sozinho.
+    aumentar_area = """
+        const gd = document.getElementById('{plot_id}');
+        let areaAtiva = null;
+        function soltarArea() {
+            if (areaAtiva) { areaAtiva.classList.remove('area-ativa'); areaAtiva = null; }
+        }
+        gd.on('plotly_hover', function (ev) {
+            const ponto = ev.points[0];
+            const caminhos = gd.querySelectorAll('.choroplethlocation');
+            const area = Array.from(caminhos).find(
+                p => p.__data__ && p.__data__.loc === ponto.location
+            );
+            if (!area || area === areaAtiva) return;
+            soltarArea();
+            area.parentNode.appendChild(area);   // traz para a frente
+            area.classList.add('area-ativa');
+            areaAtiva = area;
+        });
+        gd.on('plotly_unhover', soltarArea);
+    """
+    html_mapa = fig_mapa.to_html(
+        full_html=False, include_plotlyjs="cdn", post_script=aumentar_area,
+        config={"displayModeBar": False, "responsive": True},
+        default_height="460px", default_width="100%"
+    )
+    return html_mapa
+
+
 def corpo_divisoes(area_escolhida):
     """Mapa ou colunas do cartão de divisões etárias. Devolve os dados mostrados."""
     visao = OPCOES_AREA[area_escolhida]
@@ -1000,77 +1100,7 @@ def corpo_divisoes(area_escolhida):
             unsafe_allow_html=True
         )
 
-        df_com_dados = df_mapa[df_mapa["Habitantes"].notna()]
-        df_sem_dados = df_mapa[df_mapa["Habitantes"].isna()]
-
-        # Mapa só com as formas (sem fundo de ruas), pintado pela quantidade de habitantes
-        fig_mapa = go.Figure(go.Choropleth(
-            geojson=geojson_mapa,
-            featureidkey=chave_mapa,
-            locations=df_com_dados[coluna_local],
-            z=df_com_dados["Habitantes"],
-            colorscale=ESCALA_AZUL,
-            showscale=False,
-            marker_line_color=COR_CARTAO,
-            marker_line_width=1,
-            customdata=df_com_dados[["Título", "balao"]],
-            hovertemplate=(f"<span style='color:{COR_TEXTO_CINZA}'>%{{customdata[0]}}</span><br>"
-                           "%{customdata[1]}<extra></extra>")
-        ))
-        if not df_sem_dados.empty:
-            # Áreas sem dados de população ficam em cinza
-            fig_mapa.add_trace(go.Choropleth(
-                geojson=geojson_mapa,
-                featureidkey=chave_mapa,
-                locations=df_sem_dados[coluna_local],
-                z=[0] * len(df_sem_dados),
-                colorscale=[[0, "#4a4d50"], [1, "#4a4d50"]],
-                showscale=False,
-                marker_line_color=COR_CARTAO,
-                marker_line_width=1,
-                customdata=df_sem_dados[["Título", "balao"]],
-                hovertemplate=(f"<span style='color:{COR_TEXTO_CINZA}'>%{{customdata[0]}}</span><br>"
-                               "%{customdata[1]}<extra></extra>")
-            ))
-        fig_mapa.update_geos(fitbounds="locations", visible=False, bgcolor="rgba(0,0,0,0)",
-                             projection_type="mercator")
-        fig_mapa.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            height=340,
-            paper_bgcolor="rgba(0,0,0,0)",
-            dragmode=False,
-            hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555",
-                            font=dict(color="white", size=15))
-        )
-        fig_mapa.update_layout(font=dict(family="Source Sans Pro, sans-serif"))
-
-        # Efeito do Taipei: a área embaixo do mouse cresce um pouco, fica mais clara
-        # e passa para a frente das vizinhas. O Plotly não faz isso sozinho.
-        aumentar_area = """
-            const gd = document.getElementById('{plot_id}');
-            let areaAtiva = null;
-            function soltarArea() {
-                if (areaAtiva) { areaAtiva.classList.remove('area-ativa'); areaAtiva = null; }
-            }
-            gd.on('plotly_hover', function (ev) {
-                const ponto = ev.points[0];
-                const caminhos = gd.querySelectorAll('.choroplethlocation');
-                const area = Array.from(caminhos).find(
-                    p => p.__data__ && p.__data__.loc === ponto.location
-                );
-                if (!area || area === areaAtiva) return;
-                soltarArea();
-                area.parentNode.appendChild(area);   // traz para a frente
-                area.classList.add('area-ativa');
-                areaAtiva = area;
-            });
-            gd.on('plotly_unhover', soltarArea);
-        """
-        html_mapa = fig_mapa.to_html(
-            full_html=False, include_plotlyjs="cdn", post_script=aumentar_area,
-            config={"displayModeBar": False, "responsive": True},
-            default_height="460px", default_width="100%"
-        )
+        html_mapa = html_mapa_divisoes(df_mapa, geojson_mapa, chave_mapa, coluna_local)
         estilo_mapa = """
             <style>
             .choroplethlocation { transition: transform 0.15s ease, filter 0.15s ease; }
@@ -1961,8 +1991,7 @@ def descricao_dependencia(resultado, chave="dependencia", descricao=DESCRICAO_DE
 # --- CARTÃO 5: INFORMAÇÕES CARTOGRÁFICAS (bike_map no Taipei) ---
 # No OpenStreetMap não há ciclovias mapeadas em Oriximiná; o cartão mostra a rede viária
 # da sede, gerada pelo preparar_vias.py
-with open(arquivo_dados("vias_oriximina.geojson"), encoding="utf-8") as arquivo:
-    geojson_vias = json.load(arquivo)
+geojson_vias = ler_geojson("vias_oriximina.geojson")
 df_vias = pd.DataFrame([f["properties"] for f in geojson_vias["features"]])
 CORES_VIAS = {                      # as duas primeiras são as cores do bike_map no Taipei
     "Vias principais": "#a0b8e8",
@@ -2054,8 +2083,7 @@ def descricao_vias(area_escolhida):
 # Os 9 municípios da Calha Norte paraense, com as mesmas fontes dos cartões de Oriximiná.
 # Arquivos gerados pelo preparar_regiao.py
 REGIAO = "Calha Norte (9 municípios)"
-with open(arquivo_dados("regiao_municipios.geojson"), encoding="utf-8") as arquivo:
-    geojson_regiao = json.load(arquivo)
+geojson_regiao = ler_geojson("regiao_municipios.geojson")
 df_regiao_idades = pd.read_csv(arquivo_dados("regiao_idades.csv"), sep=";", dtype={"codigo": str})
 df_regiao_dependencia = pd.read_csv(arquivo_dados("regiao_dependencia.csv"), sep=";", dtype={"codigo": str})
 df_regiao_emprego = pd.read_csv(arquivo_dados("regiao_emprego.csv"), sep=";", dtype={"codigo": str})
@@ -2579,14 +2607,15 @@ def descricao_frota(resultado):
 
 # --- CARTÃO: INFORMAÇÕES CARTOGRÁFICAS DA CALHA NORTE (bike_map da Grande Taipei) ---
 # Estradas principais e sedes municipais do OpenStreetMap, geradas pelo preparar_cartografia_regiao.py
-with open(arquivo_dados("regiao_estradas.geojson"), encoding="utf-8") as arquivo:
-    geojson_estradas = json.load(arquivo)
+geojson_estradas = ler_geojson("regiao_estradas.geojson")
 df_sedes = pd.read_csv(arquivo_dados("regiao_sedes.csv"), sep=";", dtype={"codigo": str})
 CORES_ESTRADAS = {"Rodovias principais": "#a0b8e8", "Estradas vicinais": "#b7ff98"}
 
 
-def municipio_de_cada_estrada():
-    """Município onde fica o meio de cada trecho de estrada (para a caixa de área do cartão)."""
+@st.cache_data(show_spinner=False)
+def municipio_de_cada_estrada(modificado):
+    """Município onde fica o meio de cada trecho de estrada (para a caixa de área do cartão).
+    Guardado: a conta leva uns 0,3 s; só refaz quando os arquivos de estradas ou municípios mudam."""
     poligonos = [(f["properties"]["nome"], shapely.geometry.shape(f["geometry"])) for f in geojson_regiao["features"]]
     linhas = []
     for estrada in geojson_estradas["features"]:
@@ -2596,7 +2625,8 @@ def municipio_de_cada_estrada():
     return pd.DataFrame(linhas)
 
 
-df_estradas = municipio_de_cada_estrada()
+df_estradas = municipio_de_cada_estrada((os.path.getmtime(arquivo_dados("regiao_estradas.geojson")),
+                                          os.path.getmtime(arquivo_dados("regiao_municipios.geojson"))))
 
 DESCRICAO_VIAS_CN = f"""
 **Descrição do componente ( ID: 217 | Index: road_map | City: calhanorte )**
@@ -3935,12 +3965,16 @@ def script_tela_cheia():
 
 
 # --- MENU LATERAL (SideBar do Taipei) ---
+def abrir_painel(painel):
+    st.session_state.painel = painel
+    st.session_state.info_aberto = None
+
+
 def aba_menu(painel, titulo, icone, prefixo="aba_menu"):
-    if st.button(titulo, key=f"{prefixo}_{painel}", icon=f":material/{icone}:", type="tertiary",
-                 width="stretch"):
-        st.session_state.painel = painel
-        st.session_state.info_aberto = None
-        st.rerun()
+    # on_click troca o painel antes de desenhar a página: abre numa passada só, sem o st.rerun() de antes,
+    # que fazia o painel rodar duas vezes a cada clique no menu
+    st.button(titulo, key=f"{prefixo}_{painel}", icon=f":material/{icone}:", type="tertiary",
+              width="stretch", on_click=abrir_painel, args=(painel,))
 
 
 def menu_lateral():
