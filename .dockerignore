@@ -5,6 +5,13 @@ __pycache__/
 .vscode/
 .git/
 backups/
+# Contas, senhas, sessões de login, problemas e ocorrências: ficam só na pasta do computador, ligada
+# ao container no docker-compose.yml (igual ao .gitignore; só a configuração dos painéis vai junto)
+usuarios/*
+!usuarios/admin_painel.json
+# Arquivos brutos do IBGE (69 MB): não precisam ir na imagem; com o container rodando eles chegam
+# pela pasta dados/ ligada no docker-compose.yml (o filtrar_mapa.py lê dali)
+dados/fontes/
 iniciar.ps1
 iniciar.sh
 Dockerfile
