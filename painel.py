@@ -4300,6 +4300,21 @@ def linhas_no_mapa(fig, geojson, cores, chave_filtro):
         ))
 
 
+# Vista de satélite: fotos da Esri (World Imagery, sem chave) com nomes de ruas e lugares por cima
+_ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/"
+# Até onde aproximar na vista de satélite: a Esri só tem foto de Oriximiná até o nível 17. As fotos têm
+# 256 px, então o mapa pede um nível acima do seu zoom e arredonda: 16,4 → fotos do 17 (16,5 já pediria o 18)
+ZOOM_MAXIMO_SATELITE = 16.4
+CAMADAS_SATELITE = [
+    dict(below="traces", sourcetype="raster", source=[_ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}"],
+         sourceattribution="Imagens: Esri, Maxar, Earthstar Geographics"),
+    dict(below="traces", sourcetype="raster",
+         source=[_ESRI + "Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"]),
+    dict(below="traces", sourcetype="raster",
+         source=[_ESRI + "Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}"]),
+]
+
+
 def centro_do_mapa(ligadas):
     # Só a camada da região: mostra os 9 municípios; nas outras, a sede de Oriximiná
     regionais = {"municipios_cn", "frota_cn", "estradas_cn", "limites_cn", "sedes_cn"}
@@ -4467,6 +4482,12 @@ def figura_mapa(ligadas):
     regiao = mapa["zoom"] < 8
     if vista:
         mapa.update(center=dict(lat=vista["lat"], lon=vista["lon"]), zoom=vista["zoom"])
+    if st.session_state.get("mapa_satelite"):
+        mapa.update(style="white-bg", layers=CAMADAS_SATELITE)
+        # Áreas coloridas mais transparentes, para a foto aparecer por baixo
+        for trace in fig.data:
+            if trace.type == "choroplethmap" and trace.marker.opacity:   # os contornos (bairros, limites) ficam
+                trace.marker.opacity *= 0.55
     fig.update_layout(
         map=mapa, uirevision=f"{'regiao' if regiao else 'sede'}-{vista['n'] if vista else 0}",
         height=780, margin=dict(l=0, r=0, t=0, b=0), paper_bgcolor=COR_CARTAO, separators=",.",
@@ -4806,6 +4827,7 @@ def barra_ferramentas_mapa():
         if st.button("Relatar ocorrência", icon=":material/campaign:", key="abrir_ocorrencia"):
             janela_ocorrencia()
         st.toggle("Mostrar ocorrências", key="mostrar_ocorrencias")
+        st.toggle("Satélite", key="mapa_satelite", help="Mostra a cidade em fotos de satélite (Esri)")
         # Prédios em 3D (o botão de prédios 3D do mapa do Taipei)
         st.toggle("Prédios em 3D", key="predios_3d", disabled=publicar_predios() is None,
                   help="Levanta os prédios da sede de Oriximiná e inclina o mapa (aproxime o mapa da sede)"
@@ -5105,6 +5127,15 @@ SCRIPT_PREDIOS_3D = """
             }
         }
     }, 700);
+    // Satélite: a Esri só tem foto de Oriximiná até o nível 17 (depois vem "Map data not yet available");
+    // com a marca #mapa-satelite o mapa não aproxima além disso, e sem ela volta ao limite normal
+    setInterval(() => {
+        const mapa = mapaDoPainel();
+        if (!mapa) return;
+        const marca = document.getElementById("mapa-satelite");
+        const limite = marca ? parseFloat(marca.dataset.zoom) : 22;
+        if (mapa.getMaxZoom() !== limite) mapa.setMaxZoom(limite);
+    }, 500);
     // "Minha localização" com os prédios em 3D: um pino azul (coluna fina de 18 m, acima do prédio mais
     // alto, de 9,8 m) sai do chão no ponto da pessoa e atravessa o telhado, mostrando em que prédio ela está
     function circuloEmGraus(lat, lon, metros) {
@@ -5481,6 +5512,10 @@ def pagina_mapa():
         barra_ferramentas_mapa()
         with st.container(key="scripts_mapa"):
             script_mapa()
+            if st.session_state.get("mapa_satelite"):
+                # O script do mapa vê esta marca e não deixa aproximar além do zoom que tem foto
+                st.markdown(f'<div id="mapa-satelite" data-zoom="{ZOOM_MAXIMO_SATELITE}"></div>',
+                            unsafe_allow_html=True)
             versao = publicar_predios()
             if st.session_state.get("predios_3d") and versao:
                 # O script do mapa vê esta marca e levanta os prédios (sem ela, tira a camada)
@@ -5541,21 +5576,27 @@ INTERVALO_RECARGA = 10 * 60   # segundos
 
 
 def perguntar_robo(pergunta):
-    st.session_state.robo_pergunta = pergunta
+    # Clicar de novo na mesma pergunta fecha a resposta (volta à saudação)
+    if st.session_state.get("robo_pergunta") == pergunta:
+        st.session_state.robo_pergunta = None
+    else:
+        st.session_state.robo_pergunta = pergunta
 
 
+@st.fragment
 def robo_ajuda():
-    """Botão redondo com o robozinho no canto de baixo; o "–" o recolhe para uma abinha na borda."""
+    """Botão redondo com o robozinho no canto de baixo; o "–" o recolhe para uma abinha na borda.
+    É um fragmento: clicar nas perguntas atualiza só o assistente, sem recarregar os gráficos atrás."""
     if st.session_state.get("robo_minimizado"):
         with st.container(key="robo_recolhido"):
             if st.button("", icon=":material/smart_toy:", key="robo_mostrar", help="Mostrar o assistente"):
                 st.session_state.robo_minimizado = False
-                st.rerun()
+                st.rerun(scope="fragment")
         return
     with st.container(horizontal_alignment="right", gap=None, key="robo"):
         if st.button("–", type="tertiary", key="robo_minimizar", help="Esconder o assistente"):
             st.session_state.robo_minimizado = True
-            st.rerun()
+            st.rerun(scope="fragment")
         # Sem dica (help): ela aparecia por cima do "–" e atrapalhava o clique
         with st.popover("", icon=":material/smart_toy:"):
             with st.container(key="robo_conversa"):
