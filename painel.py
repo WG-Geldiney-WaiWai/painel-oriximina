@@ -3870,9 +3870,9 @@ AVISO_INICIAL = """<div class="aviso-inicial">
     Oriximiná e os municípios da Calha Norte paraense, para apoiar o planejamento da Prefeitura e
     facilitar o acesso da população a essas informações.</p>
     <p>Os dados vêm de fontes oficiais (IBGE, DATASUS, Ministério do Trabalho, SENATRAN e OpenStreetMap) e
-    foram organizados para este painel. Muitos não são em tempo real (por exemplo, o Censo é de 2022) e
-    podem ser um pouco diferentes dos dados originais; a fonte e a data de cada um aparecem no próprio
-    cartão.</p>
+    foram organizados para este painel. Eles não mudam a todo momento: cada fonte publica números novos
+    de tempos em tempos (por exemplo, o Censo mais recente do IBGE é de 2022). Por isso alguns podem ser
+    um pouco diferentes dos números de hoje; a fonte e o ano de cada dado aparecem no próprio cartão.</p>
     <p>Para salvar favoritos e montar os seus próprios painéis, clique em <b>Entrar</b>, no canto de cima
     à direita.</p>
     <p class="aviso-inicial-destaque">Para ver as informações no mapa, abra a página <b>Comparação de
