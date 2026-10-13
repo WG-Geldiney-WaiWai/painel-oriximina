@@ -113,10 +113,11 @@ st.markdown(f"""
     }}
     /* Círculo azul com seta depois do texto, como no Taipei (também no "Página de informações" do catálogo) */
     [class*="st-key-info_componente"] button p::after, [class*="st-key-catalogo_info_"] button p::after {{
-        /* A seta é desenhada como imagem (SVG) para ficar exatamente no meio do círculo */
+        /* Círculo e seta na mesma imagem (SVG): desenhados separados (cor de fundo + imagem), o navegador
+           arredondava a posição de cada um de um jeito e a seta saía 1 px do meio */
         content: ""; display: inline-block; width: 18px; height: 18px; margin-left: 8px;
-        border-radius: 50%; vertical-align: middle; position: relative; top: -1px;
-        background: #4a9eff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8h8M8 4.5 11.5 8 8 11.5' fill='none' stroke='%23282a2c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 12px 12px no-repeat;
+        vertical-align: middle; position: relative; top: -1px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='9' fill='%234a9eff'/%3E%3Cpath d='M6 9h6M9.375 6.375 12 9 9.375 11.625' fill='none' stroke='%23282a2c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     }}
     /* Descrição do componente: texto cinza justificado, título em branco */
     [class*="st-key-texto_descricao"] p, [class*="st-key-texto_descricao"] li {{
