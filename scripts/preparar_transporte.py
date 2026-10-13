@@ -25,7 +25,7 @@ from preparar_regiao import MUNICIPIOS
 # a pasta de onde o script for rodado
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dados"))
 
-PASTA_SENATRAN = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná\SENATRAN"
+PASTA_SENATRAN = os.path.join(os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"), "SENATRAN")
 URL_FROTA = ("https://www.gov.br/transportes/pt-br/assuntos/transito/conteudo-Senatran/"
              "frota-de-veiculos-2026-2/Frota_por_municipio_e_tipo_Julho_2026.xlsx")
 MES_FROTA = "Julho de 2026"

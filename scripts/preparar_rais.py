@@ -20,7 +20,7 @@ import py7zr
 # a pasta de onde o script for rodado
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dados"))
 
-PASTA_RAIS = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná\RAIS"
+PASTA_RAIS = os.path.join(os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"), "RAIS")
 CODIGO_ORIXIMINA = "150530"   # a RAIS usa o código do IBGE sem o último dígito
 
 # Mesmas faixas do painel de Taipei (aging_workforce_trend)

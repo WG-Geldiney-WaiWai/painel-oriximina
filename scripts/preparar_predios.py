@@ -35,7 +35,7 @@ from PIL import Image
 # a pasta de onde o script for rodado
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dados"))
 
-PASTA_IBGE = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"
+PASTA_IBGE = os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná")
 SERVIDORES = ["https://overpass-api.de/api/interpreter", "https://overpass.private.coffee/api/interpreter",
               "https://overpass.kumi.systems/api/interpreter"]
 CAIXA = (-1.82, -55.92, -1.70, -55.80)   # sede urbana de Oriximiná (sul, oeste, norte, leste)

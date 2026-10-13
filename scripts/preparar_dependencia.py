@@ -25,7 +25,7 @@ os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dados")
 ENDERECO_TABNET = "http://tabnet.datasus.gov.br/cgi/tabcgi.exe?ibge/cnv/popsvs2024br.def"
 CODIGO_ORIXIMINA_TABNET = "240"   # posição de "150530 ORIXIMINA" na lista de municípios do TabNet
 ANOS = range(2013, 2026)
-ARQ_ORIGINAL = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná\datasus_pop_oriximina_idade.csv"
+ARQ_ORIGINAL = os.path.join(os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"), "datasus_pop_oriximina_idade.csv")
 
 
 def baixar_tabela():

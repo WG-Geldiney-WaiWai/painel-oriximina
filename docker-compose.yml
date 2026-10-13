@@ -19,6 +19,10 @@ services:
       - TZ=America/Santarem
       # Chave do "Resumo com IA" (opcional): defina ANTHROPIC_API_KEY no Windows antes de subir
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      # Pasta dos arquivos baixados das fontes (Censo, CNEFE, RAIS, SENATRAN), usada pelo botão
+      # "Atualizar" da administração: dentro do container ela fica em /fontes (ver volumes abaixo)
+      - PASTA_FONTES=/fontes
+      - PASTA_FONTES_PC=${PASTA_FONTES_PC:-C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná}
     # Pastas que o painel altera (contas, favoritos, problemas reportados, componentes novos,
     # fotos de colaboradores, dados atualizados pela administração): ficam na pasta do
     # computador, então nada se perde ao recriar o container e o painel fora do Docker vê o mesmo
@@ -28,6 +32,13 @@ services:
       - ./imagens:/app/imagens
       - ./static:/app/static
       - ./backups:/app/backups
+      # A pasta de Downloads das fontes, fora do projeto. Com escrita: alguns scripts baixam arquivos
+      # novos para ela (DATASUS, SENATRAN, GHSL). Em outro computador, defina PASTA_FONTES_PC antes de subir
+      - type: bind
+        source: ${PASTA_FONTES_PC:-C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná}
+        target: /fontes
+        bind:
+          create_host_path: true
 
   # Endereço https:// para abrir no celular (o GPS do navegador só funciona em https).
   # Túnel gratuito da Cloudflare: o endereço (https://....trycloudflare.com) é sorteado e MUDA

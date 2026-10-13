@@ -17,7 +17,7 @@ import pandas as pd
 # a pasta de onde o script for rodado
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dados"))
 
-PASTA_IBGE = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"
+PASTA_IBGE = os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná")
 ARQ_BASICO = os.path.join(PASTA_IBGE, "Agregados_por_setores_basico_BR_20260520",
                           "Agregados_por_setores_basico_BR.csv")
 ARQ_DEMOGRAFIA = os.path.join(PASTA_IBGE, "Agregados_por_setores_demografia_BR",

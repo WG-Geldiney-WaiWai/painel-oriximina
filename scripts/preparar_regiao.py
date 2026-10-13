@@ -36,7 +36,7 @@ MUNICIPIOS = {   # código do IBGE: nome
     "1500404": "Alenquer", "1502855": "Curuá", "1504802": "Monte Alegre", "1506005": "Prainha",
     "1500503": "Almeirim",
 }
-PASTA_RAIS = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná\RAIS"
+PASTA_RAIS = os.path.join(os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"), "RAIS")
 TABNET = "http://tabnet.datasus.gov.br/cgi/tabcgi.exe?ibge/cnv/popsvs2024br.def"
 FORM_TABNET = "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?ibge/cnv/popsvs2024br.def"
 ANOS_DATASUS = range(2013, 2026)

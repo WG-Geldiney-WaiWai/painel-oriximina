@@ -15,7 +15,7 @@ import os
 # a pasta de onde o script for rodado
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dados"))
 
-ARQ_CNEFE = r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná\CNEFE\1505304_ORIXIMINA.csv"
+ARQ_CNEFE = os.path.join(os.environ.get("PASTA_FONTES", r"C:\Users\Usuário\Downloads\Pasta Mapa de Painel Oriximiná"), "CNEFE", "1505304_ORIXIMINA.csv")
 ESPECIES = {"4": "Estabelecimento de ensino", "5": "Estabelecimento de saúde"}
 
 

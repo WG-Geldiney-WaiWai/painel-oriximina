@@ -6860,10 +6860,13 @@ FONTES_DADOS = {
 
 
 def pasta_das_fontes():
-    """Pasta dos arquivos grandes baixados das fontes (a mesma que os scripts usam)."""
+    """Pasta dos arquivos grandes baixados das fontes (a mesma que os scripts usam). No Docker ela vem
+    em PASTA_FONTES (a pasta de Downloads do computador ligada ao container no docker-compose.yml)."""
+    if os.environ.get("PASTA_FONTES"):
+        return os.environ["PASTA_FONTES"]
     try:
         with open(os.path.join(PASTA_SCRIPTS, "preparar_dados.py"), encoding="utf-8") as arquivo:
-            achado = re.search(r'PASTA_IBGE = r"(.+?)"', arquivo.read())
+            achado = re.search(r'PASTA_IBGE = .*?r"(.+?)"', arquivo.read())
         return achado.group(1) if achado else None
     except OSError:
         return None
@@ -6938,7 +6941,7 @@ def admin_atualizacao():
                 'da pasta <code>scripts/</code> roda e gera de novo os arquivos da pasta <code>dados/</code>. Antes, uma '
                 'cópia dos arquivos atuais vai para <code>backups/</code>; se o script der erro, eles voltam. As fontes '
                 '"Arquivos baixados" precisam dos arquivos novos na pasta de downloads das fontes '
-                f'(<code>{html.escape(pasta_das_fontes() or "não encontrada")}</code>).</div>', unsafe_allow_html=True)
+                f'(<code>{html.escape(os.environ.get("PASTA_FONTES_PC") or pasta_das_fontes() or "não encontrada")}</code>).</div>', unsafe_allow_html=True)
     ultimo = st.session_state.pop("ultima_atualizacao", None)
     if ultimo:
         with st.container(key="resultado_atualizacao"):
