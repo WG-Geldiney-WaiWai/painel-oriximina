@@ -119,6 +119,13 @@ st.markdown(f"""
         vertical-align: middle; position: relative; top: -1px;
         background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='9' fill='%234a9eff'/%3E%3Cpath d='M6 9h6M9.375 6.375 12 9 9.375 11.625' fill='none' stroke='%23282a2c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
     }}
+    /* "Voltar ao painel" / "Voltar ao catálogo": o mesmo círculo azul de "Informações do componente",
+       com a seta para a esquerda, antes do texto */
+    .st-key-voltar_documentacao button p::before, .st-key-voltar_catalogo button p::before {{
+        content: ""; display: inline-block; width: 18px; height: 18px; margin-right: 8px;
+        vertical-align: middle; position: relative; top: -1px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='9' cy='9' r='9' fill='%234a9eff'/%3E%3Cpath d='M12 9H6M8.625 6.375 6 9 8.625 11.625' fill='none' stroke='%23282a2c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+    }}
     /* Descrição do componente: texto cinza justificado, título em branco */
     [class*="st-key-texto_descricao"] p, [class*="st-key-texto_descricao"] li {{
         color: {COR_TEXTO_CINZA}; text-align: justify; font-size: 0.95rem;
@@ -719,7 +726,6 @@ st.markdown(f"""
     .st-key-pagina_componente_cartao [class*="st-key-cartao_"] {{ min-height: 0; }}
     .st-key-pagina_componente_cartao [class*="st-key-grafico_"] > div:last-child {{ margin-top: 0; }}
     .st-key-voltar_catalogo button p, .st-key-voltar_catalogo button span {{ color: #5a9cf8 !important; }}
-    .st-key-voltar_catalogo button [data-testid="stIconMaterial"] {{ font-size: 1.4rem; }}
     /* Colaboradores do projeto: fotos redondas; na ficha, rótulos cinza como no Taipei */
     .foto-colaborador {{ border-radius: 50%; object-fit: cover; display: block; margin: 0 auto; }}
     [class*="st-key-ver_colaborador_"] button p {{ text-align: center; font-size: 0.9rem; }}
@@ -3839,7 +3845,7 @@ def figura_demo_clara(fig):
 def pagina_documentacao():
     if st.session_state.get("doc_claro"):
         st.markdown(CSS_DOC_CLARO, unsafe_allow_html=True)
-    st.button("Voltar ao painel", icon=":material/arrow_circle_left:", type="tertiary", key="voltar_documentacao",
+    st.button("Voltar ao painel", type="tertiary", key="voltar_documentacao",
               on_click=mudar_pagina, args=("painel",))
     if st.session_state.pop("fechar_menu_info", False):
         # O menu ⓘ continua aberto depois do clique; um "Esc" no navegador fecha ele
@@ -4289,7 +4295,7 @@ def pagina_componente():
     if chave not in CARTOES:   # componente que não existe mais: volta ao catálogo
         st.session_state.pagina = "catalogo"
         st.rerun()
-    st.button("Voltar ao catálogo de componentes", icon=":material/arrow_circle_left:", type="tertiary",
+    st.button("Voltar ao catálogo de componentes", type="tertiary",
               key="voltar_catalogo", on_click=mudar_pagina, args=("catalogo",))
     _, desenhar_grafico, desenhar_descricao = CARTOES[chave]
     global altura_descricao
