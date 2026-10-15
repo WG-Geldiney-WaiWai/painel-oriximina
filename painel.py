@@ -4593,12 +4593,16 @@ SEDE_ORIXIMINA = (-1.7669992, -55.868285)
 PRECISAO_APROXIMADA_M = 1000
 
 
-def aviso_localizacao(local):
+def municipio_do_ponto(local):
+    """Município da Calha Norte onde cai a posição, ou None se ela estiver fora da região."""
+    ponto = shapely.geometry.Point(local["lon"], local["lat"])
+    return next((f["properties"]["nome"] for f in geojson_regiao["features"]
+                 if shapely.geometry.shape(f["geometry"]).contains(ponto)), None)
+
+
+def aviso_localizacao(local, municipio):
     """Aviso quando a posição dada pelo navegador não acha a pessoa em Oriximiná, ou None. No computador, sem GPS,
     o Windows estima a posição pela internet e pode errar de cidade (ex.: a rede da operadora registrada em Altamira)."""
-    ponto = shapely.geometry.Point(local["lon"], local["lat"])
-    municipio = next((f["properties"]["nome"] for f in geojson_regiao["features"]
-                      if shapely.geometry.shape(f["geometry"]).contains(ponto)), None)
     dica = "Para a posição exata, abra o painel no celular (com o GPS ligado)."
     if municipio == "Oriximiná":
         precisao = float(local.get("precisao") or 0)
@@ -4606,10 +4610,13 @@ def aviso_localizacao(local):
             return None
         return (f"Localização aproximada (± {formatar_distancia(precisao / 1000)}): o seu aparelho não sabe "
                 f"exatamente onde você está. {dica}")
+    explicacao = ("Se você está em Oriximiná, essa localização está errada: computadores costumam estimá-la "
+                  f"pela internet. {dica}")
+    if municipio:
+        return f"O seu aparelho informou uma posição fora de Oriximiná (em {municipio}). {explicacao}"
     km = distancia_km(*SEDE_ORIXIMINA, pd.Series([local["lat"]]), pd.Series([local["lon"]])).iloc[0]
-    onde = f"em {municipio}" if municipio else f"a {formatar_distancia(km)} da sede de Oriximiná"
-    return (f"O seu aparelho informou uma posição fora de Oriximiná ({onde}). Se você está em Oriximiná, essa "
-            f"localização está errada: computadores costumam estimá-la pela internet. {dica}")
+    return (f"O seu aparelho informou uma posição a {formatar_distancia(km)} de Oriximiná, fora da região do "
+            f"painel, então o mapa continua em Oriximiná. {explicacao}")
 
 
 def carregar_ocorrencias():
@@ -4861,9 +4868,15 @@ def barra_ferramentas_mapa():
                     aviso += f" [Abrir pelo endereço seguro]({link})"
                 st.toast(aviso, icon=":material/location_off:")
             else:   # posição nova: leva o mapa até ela
-                # Zoom 17,5: perto o bastante para ver os prédios, o círculo da precisão e o pino em 3D
-                ir_para(local["lat"], local["lon"], 17.5)
-                aviso = aviso_localizacao(local)
+                municipio = municipio_do_ponto(local)
+                if municipio:
+                    # Zoom 17,5: perto o bastante para ver os prédios, o círculo da precisão e o pino em 3D
+                    ir_para(local["lat"], local["lon"], 17.5)
+                else:
+                    # Longe da Calha Norte (ex.: o Windows estimando pela internet e caindo em Altamira):
+                    # o mapa fica na sede de Oriximiná, e o aviso abaixo explica
+                    ir_para(*SEDE_ORIXIMINA, 14)
+                aviso = aviso_localizacao(local, municipio)
                 if aviso:
                     st.toast(aviso, icon=":material/location_searching:", duration="long")
         # Quem pede a localização é o script do mapa (no navegador); o clique não recarrega a página
