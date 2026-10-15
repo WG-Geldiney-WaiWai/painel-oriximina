@@ -1067,7 +1067,7 @@ def html_mapa_divisoes(df_mapa, _geojson_mapa, chave_mapa, coluna_local):
         });
         gd.on('plotly_unhover', soltarArea);
     """
-    html_mapa = fig_mapa.to_html(
+    html_mapa = fig_mapa.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=aumentar_area,
         config={"displayModeBar": False, "responsive": True},
         default_height="460px", default_width="100%"
@@ -1164,7 +1164,7 @@ def corpo_divisoes(area_escolhida):
         )
         fig_colunas.update_layout(font=dict(family="Source Sans Pro, sans-serif", color="#fafafa"))
 
-        html_colunas = fig_colunas.to_html(
+        html_colunas = fig_colunas.to_html(div_id="grafico",
             full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
             config={"displayModeBar": False, "responsive": True},
             default_height="460px", default_width="100%"
@@ -1234,6 +1234,9 @@ Razão de dependência idosa = 65+ ÷ 15-64; infantil = 0-14 ÷ 15-64; total = (
 # Verdadeiro enquanto a janela "Informações do componente" é montada: aí Reportar, Baixar e Incorporar
 # trocam o conteúdo da própria janela (fechar uma janela e abrir outra fazia a tela pular)
 dentro_da_info = False
+# Reportar / Baixar / Incorporar do componente aberto na janela, montados nesta execução (o session_state
+# guarda só o nome da tela escolhida: uma função guardada lá seria da execução anterior)
+acoes_da_info = {}
 
 
 def sair_da_acao_na_info(fechar_janela=False):
@@ -1515,7 +1518,7 @@ def grafico_historico(chave, series):
         yaxis=dict(showgrid=False, rangemode="tozero", automargin=True),
         showlegend=len(series) > 1, legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, itemclick=False),
         hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555", font=dict(color="white", size=14)))
-    st.iframe('<body style="margin:0">' + fig.to_html(
+    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", config={"displayModeBar": False, "responsive": True},
         default_height="200px", default_width="100%") + "</body>", height=210)
 
@@ -1580,11 +1583,13 @@ def painel_descricao(chave, descricao, dados_relacionados, acao_reportar, acao_b
             for rotulo, nome, acao in (("⚑ Reportar", "reportar", acao_reportar),
                                        ("⤓ Baixar", "baixar", acao_baixar),
                                        ("‹› Incorporar", "incorporar", acao_incorporar)):
-                if st.button(rotulo, key=f"abrir_{nome}_{chave}"):
-                    if dentro_da_info:
-                        # Aparece na mesma janela, sem recarregar a página
-                        st.session_state.acao_na_info = (nome, acao)
-                        st.rerun(scope="fragment")
+                if dentro_da_info:
+                    # Aparece na mesma janela: o clique já atualiza só a janela, e o on_click escolhe a tela
+                    # antes disso (um st.rerun aqui desenhava a janela duas vezes e o gráfico piscava)
+                    acoes_da_info[nome] = acao
+                    st.button(rotulo, key=f"abrir_{nome}_{chave}", on_click=st.session_state.update,
+                              kwargs={"acao_na_info": nome})
+                elif st.button(rotulo, key=f"abrir_{nome}_{chave}"):
                     st.session_state.info_aberto = None
                     st.session_state.janela_pendente = acao
                     st.rerun()
@@ -1607,15 +1612,16 @@ def janela_info(chave):
     if "aviso" in st.session_state:
         st.toast(st.session_state.pop("aviso"), icon=":material/check_circle:")
     dentro_da_info = True
+    acoes_da_info.clear()
     try:
         with st.container(key="conteudo_janela_info"):
             conteudo_info(chave)
-        acao_na_info = st.session_state.get("acao_na_info")
-        if acao_na_info:
+        nome = st.session_state.get("acao_na_info")
+        acao = acoes_da_info.get(nome)
+        if acao:
             # Clicou em Reportar / Baixar / Incorporar: como no Taipei, a janela de informações continua atrás,
             # escurecida, e a nova aparece por cima (o Streamlit não abre uma janela dentro da outra, então
             # esta é uma caixa flutuante desenhada no CSS de .st-key-acao_na_janela_info)
-            nome, acao = acao_na_info
             with st.container(key="acao_na_janela_info"), st.container(key="caixa_acao_info"):
                 # X no canto: o fundo escuro cobre o X da janela de trás (e o Incorporar não tem Cancelar)
                 if st.button("✕", type="tertiary", key="fechar_acao_info", help="Fechar"):
@@ -1843,7 +1849,7 @@ def grafico_emprego(chave="emprego", opcoes_area=("Município de Oriximiná",),
         fig.update_layout(barmode="stack", barcornerradius=5, bargap=0.45)
         fig.update_yaxes(title="%", range=[0, 100], gridcolor="#3a3c3e")
 
-    st.iframe('<body style="margin:0">' + fig.to_html(
+    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
         config={"displayModeBar": False, "responsive": True}, default_height="520px", default_width="100%"
     ) + "</body>", height=390)
@@ -1973,7 +1979,7 @@ def grafico_dependencia(chave="dependencia", opcoes_area=("Município de Oriximi
                     font=dict(color=COR_TEXTO_CINZA, size=14)),
         hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555", font=dict(color="white", size=14))
     )
-    st.iframe('<body style="margin:0">' + fig.to_html(
+    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
         config={"displayModeBar": False, "responsive": True}, default_height="520px", default_width="100%"
     ) + "</body>", height=390)
@@ -2263,7 +2269,7 @@ def grafico_divisoes_regiao():
                           dragmode=False, font=dict(family="Source Sans Pro, sans-serif"),
                           hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555",
                                           font=dict(color="white", size=15)))
-        html_fig = fig.to_html(full_html=False, include_plotlyjs="cdn",
+        html_fig = fig.to_html(div_id="grafico", full_html=False, include_plotlyjs="cdn",
                                config={"displayModeBar": False, "responsive": True},
                                default_height="460px", default_width="100%")
     else:
@@ -2285,7 +2291,7 @@ def grafico_divisoes_regiao():
             legend=dict(title=None, traceorder="normal", orientation="h", yanchor="bottom", y=1.0, xanchor="left", x=0),
             font=dict(family="Source Sans Pro, sans-serif", color="#fafafa"),
         )
-        html_fig = fig.to_html(full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
+        html_fig = fig.to_html(div_id="grafico", full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
                                config={"displayModeBar": False, "responsive": True},
                                default_height="460px", default_width="100%")
     st.iframe(f'<body style="margin:0">{html_fig}</body>', height=350)
@@ -2342,7 +2348,7 @@ TIPOS_FROTA = ["Motocicletas", "Automóveis", "Caminhonetes e utilitários", "Ca
 
 
 def figura_em_iframe(fig, altura=380, destacar_legenda=False):
-    st.iframe('<body style="margin:0">' + fig.to_html(
+    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA if destacar_legenda else None,
         config={"displayModeBar": False, "responsive": True}, default_height=f"{altura}px", default_width="100%"
     ) + "</body>", height=altura + 10)
