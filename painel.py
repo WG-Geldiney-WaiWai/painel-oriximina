@@ -307,6 +307,19 @@ st.markdown(f"""
     [data-testid="stSidebarCollapseButton"] {{ visibility: visible !important; }}
     /* Embaixo, espaço para rolar o conteúdo para fora de trás do robozinho fixo no canto */
     .stMainBlockContainer {{ padding-top: 76px !important; padding-bottom: 130px !important; }}
+    /* Catálogo de componentes, como no Taipei: o formulário fica colado à esquerda, numa coluna estreita, e
+       os cartões ocupam o resto. Aqui no CSS geral (e não na página) para a página abrir já com este layout */
+    .stMainBlockContainer:has(.st-key-lateral_catalogo) {{
+        padding-left: 20px !important; padding-right: 24px !important; max-width: none !important;
+    }}
+    [data-testid="stColumn"]:has(.st-key-lateral_catalogo) {{ flex: 0 0 330px !important; width: 330px !important; }}
+    [data-testid="stColumn"]:has(.st-key-grade_catalogo),
+    [data-testid="stColumn"]:has(.st-key-linha_busca_catalogo) {{ flex: 1 1 0 !important; width: auto !important; }}
+    .st-key-lateral_catalogo {{ gap: 0.6rem; }}
+    /* O Streamlit dá margem negativa (-16px) aos textos; com o texto em duas linhas, a caixa de baixo
+       subia por cima da segunda linha */
+    .st-key-lateral_catalogo [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
+    .st-key-lateral_catalogo .catalogo-fonte {{ line-height: 1.35; }}
     /* Elementos que não aparecem (estilos, scripts e a barra de cima, que fica presa no topo) não somam o
        espaço de 16px entre blocos: assim o título do painel fica logo abaixo da barra, como no Taipei */
     .stMainBlockContainer > div > .stElementContainer:has(> .stMarkdown style):not(:has(p, span, img, a, li, table)),
@@ -3582,9 +3595,7 @@ def barra_topo():
         if not CELULAR:
             with st.container(horizontal=True, key="abas_topo", width="content", gap="small"):
                 for pagina, rotulo in PAGINAS.items():
-                    if st.button(rotulo, key=f"aba_topo_{pagina}", type="tertiary"):
-                        st.session_state.pagina = pagina
-                        st.rerun()
+                    st.button(rotulo, key=f"aba_topo_{pagina}", type="tertiary", on_click=mudar_pagina, args=(pagina,))
         with st.container(horizontal=True, key="usuario_topo", width="content",
                           vertical_alignment="center", gap="small"):
             # Tela cheia (⛶), como no Taipei: quem liga/desliga é o script de script_tela_cheia(), no navegador
@@ -3592,11 +3603,9 @@ def barra_topo():
                 st.button("", icon=":material/fullscreen:", type="tertiary", key="tela_cheia", help="Tela cheia")
             # ⓘ como no Taipei: documentação técnica e colaboradores do projeto
             with st.popover("", icon=":material/info:", key="info_topo"):
-                if st.button("Documentação técnica", icon=":material/description:", type="tertiary",
-                             key="abrir_documentacao", width="stretch"):
-                    st.session_state.pagina = "documentacao"
-                    st.session_state.fechar_menu_info = True
-                    st.rerun()
+                st.button("Documentação técnica", icon=":material/description:", type="tertiary",
+                          key="abrir_documentacao", width="stretch", on_click=mudar_pagina, args=("documentacao",),
+                          kwargs={"fechar_menu_info": True})
                 if st.button("Colaboradores do projeto", icon=":material/groups:", type="tertiary",
                              key="abrir_colaboradores", width="stretch"):
                     janela_colaboradores()
@@ -3610,10 +3619,9 @@ def barra_topo():
                     # Só para administradores, como o "Painel de administração" do Taipei
                     if e_admin():
                         na_admin = st.session_state.pagina == "admin"
-                        if st.button("Voltar ao painel" if na_admin else "Painel de administração",
-                                     key="abrir_admin", width="stretch"):
-                            st.session_state.pagina = "painel" if na_admin else "admin"
-                            st.rerun()
+                        st.button("Voltar ao painel" if na_admin else "Painel de administração",
+                                  key="abrir_admin", width="stretch", on_click=mudar_pagina,
+                                  args=("painel" if na_admin else "admin",))
                     if st.button("Sair", key="sair", width="stretch"):
                         sair()
                         if st.session_state.painel not in PAINEIS_PUBLICOS:
@@ -3778,9 +3786,7 @@ def topo_documentacao():
             if st.button("Sobre nós", icon=":material/play_circle:", key="doc_sobre"):
                 janela_colaboradores()
             st.link_button("Inspirado no Painel de Taipei (GitHub)", LINK_TAIPEI_GITHUB, icon=":material/code:")
-            if st.button("Vá até o painel", key="doc_ir_painel"):
-                st.session_state.pagina = "painel"
-                st.rerun()
+            st.button("Vá até o painel", key="doc_ir_painel", on_click=mudar_pagina, args=("painel",))
     with col_cartao:
         cartao_demo()
     st.markdown('<hr class="doc-divisa">', unsafe_allow_html=True)
@@ -3833,9 +3839,8 @@ def figura_demo_clara(fig):
 def pagina_documentacao():
     if st.session_state.get("doc_claro"):
         st.markdown(CSS_DOC_CLARO, unsafe_allow_html=True)
-    if st.button("Voltar ao painel", icon=":material/arrow_circle_left:", type="tertiary", key="voltar_documentacao"):
-        st.session_state.pagina = "painel"
-        st.rerun()
+    st.button("Voltar ao painel", icon=":material/arrow_circle_left:", type="tertiary", key="voltar_documentacao",
+              on_click=mudar_pagina, args=("painel",))
     if st.session_state.pop("fechar_menu_info", False):
         # O menu ⓘ continua aberto depois do clique; um "Esc" no navegador fecha ele
         with st.container(key="script_fechar_menu"):
@@ -3966,6 +3971,14 @@ def script_tela_cheia():
 
 
 # --- MENU LATERAL (SideBar do Taipei) ---
+def mudar_pagina(pagina, **outros):
+    """Troca de página no on_click do botão: roda antes de a página ser desenhada, então ela abre numa
+    passada só (com st.rerun() depois do clique, a página antiga aparecia antes e a nova "pulava")."""
+    st.session_state.pagina = pagina
+    for chave, valor in outros.items():
+        st.session_state[chave] = valor
+
+
 def abrir_painel(painel):
     st.session_state.painel = painel
     st.session_state.info_aberto = None
@@ -4009,10 +4022,8 @@ def menu_celular():
         st.markdown('<div class="menu-titulo">Páginas</div>', unsafe_allow_html=True)
         for pagina, (rotulo, icone) in {"painel": ("Visão geral do painel", "dashboard"),
                                         "mapa": ("Comparação de mapas", "map")}.items():
-            if st.button(rotulo, key=f"celular_pagina_{pagina}", icon=f":material/{icone}:", type="tertiary",
-                         width="stretch"):
-                st.session_state.pagina = pagina
-                st.rerun()
+            st.button(rotulo, key=f"celular_pagina_{pagina}", icon=f":material/{icone}:", type="tertiary",
+                      width="stretch", on_click=mudar_pagina, args=(pagina,))
         if st.session_state.usuario:
             st.markdown('<div class="menu-titulo">Painel privado</div>', unsafe_allow_html=True)
             aba_menu("favoritos", *PAINEL_FAVORITOS, prefixo="celular_menu")
@@ -4162,10 +4173,8 @@ def item_catalogo(chave):
             st.space("stretch")
             # Abre o painel do cartão já com a descrição aberta
             # Abre a página própria do componente (ComponentInfoView do Taipei)
-            if st.button("Página de informações", type="tertiary", key=f"catalogo_info_{chave}"):
-                st.session_state.pagina = "componente"
-                st.session_state.componente = chave
-                st.rerun()
+            st.button("Página de informações", type="tertiary", key=f"catalogo_info_{chave}",
+                      on_click=mudar_pagina, args=("componente",), kwargs={"componente": chave})
 
 
 def carregar_painel_catalogo():
@@ -4244,18 +4253,8 @@ def lateral_catalogo():
 
 def pagina_catalogo():
     # Como no Taipei: o formulário fica colado à esquerda, numa coluna estreita, e os cartões ocupam o resto
-    st.markdown("""<style>
-        .stMainBlockContainer { padding-left: 20px !important; padding-right: 24px !important;
-                                padding-top: 76px !important; max-width: none !important; }
-        [data-testid="stColumn"]:has(.st-key-lateral_catalogo) { flex: 0 0 330px !important; width: 330px !important; }
-        [data-testid="stColumn"]:has(.st-key-grade_catalogo),
-        [data-testid="stColumn"]:has(.st-key-linha_busca_catalogo) { flex: 1 1 0 !important; width: auto !important; }
-        .st-key-lateral_catalogo { gap: 0.6rem; }
-        /* O Streamlit dá margem negativa (-16px) aos textos; com o texto em duas linhas, a caixa de baixo
-           subia por cima da segunda linha */
-        .st-key-lateral_catalogo [data-testid="stMarkdownContainer"] { margin-bottom: 0 !important; }
-        .st-key-lateral_catalogo .catalogo-fonte { line-height: 1.35; }
-    </style>""", unsafe_allow_html=True)
+    # O estilo desta página fica no CSS geral (procure "lateral_catalogo"): já está na tela antes do clique,
+    # então a página abre com o layout certo, sem "pular" do layout padrão para o do catálogo
     col_lateral, col_cartoes = st.columns([1, 2.3], gap="medium")
     with col_lateral, st.container(key="lateral_catalogo"):
         lateral_catalogo()
@@ -4290,10 +4289,8 @@ def pagina_componente():
     if chave not in CARTOES:   # componente que não existe mais: volta ao catálogo
         st.session_state.pagina = "catalogo"
         st.rerun()
-    if st.button("Voltar ao catálogo de componentes", icon=":material/arrow_circle_left:", type="tertiary",
-                 key="voltar_catalogo"):
-        st.session_state.pagina = "catalogo"
-        st.rerun()
+    st.button("Voltar ao catálogo de componentes", icon=":material/arrow_circle_left:", type="tertiary",
+              key="voltar_catalogo", on_click=mudar_pagina, args=("catalogo",))
     _, desenhar_grafico, desenhar_descricao = CARTOES[chave]
     global altura_descricao
     col_cartao, col_texto = st.columns([1, 1.2], gap="large")
