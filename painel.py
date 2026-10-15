@@ -5625,16 +5625,15 @@ def perguntar_robo(pergunta):
 def robo_ajuda():
     """Botão redondo com o robozinho no canto de baixo; o "–" o recolhe para uma abinha na borda.
     É um fragmento: clicar nas perguntas atualiza só o assistente, sem recarregar os gráficos atrás."""
+    # Botão dentro do fragmento já atualiza só o assistente; o on_click muda o estado antes disso
     if st.session_state.get("robo_minimizado"):
         with st.container(key="robo_recolhido"):
-            if st.button("", icon=":material/smart_toy:", key="robo_mostrar", help="Mostrar o assistente"):
-                st.session_state.robo_minimizado = False
-                st.rerun(scope="fragment")
+            st.button("", icon=":material/smart_toy:", key="robo_mostrar", help="Mostrar o assistente",
+                      on_click=st.session_state.update, kwargs={"robo_minimizado": False})
         return
     with st.container(horizontal_alignment="right", gap=None, key="robo"):
-        if st.button("–", type="tertiary", key="robo_minimizar", help="Esconder o assistente"):
-            st.session_state.robo_minimizado = True
-            st.rerun(scope="fragment")
+        st.button("–", type="tertiary", key="robo_minimizar", help="Esconder o assistente",
+                  on_click=st.session_state.update, kwargs={"robo_minimizado": True})
         # Sem dica (help): ela aparecia por cima do "–" e atrapalhava o clique
         with st.popover("", icon=":material/smart_toy:"):
             with st.container(key="robo_conversa"):
