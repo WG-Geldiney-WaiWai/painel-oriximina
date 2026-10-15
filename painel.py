@@ -4346,15 +4346,20 @@ def linhas_no_mapa(fig, geojson, cores, chave_filtro):
 
 # Vista de satélite: fotos da Esri (World Imagery, sem chave) com nomes de ruas e lugares por cima
 _ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/"
-# Até onde aproximar na vista de satélite: a Esri só tem foto de Oriximiná até o nível 17. As fotos têm
-# 256 px, então o mapa pede um nível acima do seu zoom e arredonda: 16,4 → fotos do 17 (16,5 já pediria o 18)
-ZOOM_MAXIMO_SATELITE = 16.4
+# A Esri só tem foto de Oriximiná até o nível 17 (do 18 em diante vem "Map data not yet available"). Como no
+# Google Maps, o mapa aproxima mais: passando do 17, o script do mapa amplia as fotos do 17 (ficam menos nítidas,
+# mas as ruas, caminhos e prédios do painel continuam nítidos por cima)
+NIVEL_FOTOS_SATELITE = 17
+ZOOM_MAXIMO_SATELITE = 17.5
+# Nomes e ruas da Esri também são imagens: ampliados, as letras ficariam enormes e borradas, então somem
+# quando passariam do tamanho certo (ficam as ruas e caminhos do painel)
+ZOOM_MAXIMO_NOMES_SATELITE = 17
 CAMADAS_SATELITE = [
     dict(below="traces", sourcetype="raster", source=[_ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}"],
          sourceattribution="Imagens: Esri, Maxar, Earthstar Geographics"),
-    dict(below="traces", sourcetype="raster",
+    dict(below="traces", sourcetype="raster", maxzoom=ZOOM_MAXIMO_NOMES_SATELITE,
          source=[_ESRI + "Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"]),
-    dict(below="traces", sourcetype="raster",
+    dict(below="traces", sourcetype="raster", maxzoom=ZOOM_MAXIMO_NOMES_SATELITE,
          source=[_ESRI + "Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}"]),
 ]
 
@@ -4583,6 +4588,30 @@ def minha_localizacao():
         return None
 
 
+# Sede de Oriximiná (IBGE) e a partir de quantos metros de erro a posição do navegador é só aproximada
+SEDE_ORIXIMINA = (-1.7669992, -55.868285)
+PRECISAO_APROXIMADA_M = 1000
+
+
+def aviso_localizacao(local):
+    """Aviso quando a posição dada pelo navegador não acha a pessoa em Oriximiná, ou None. No computador, sem GPS,
+    o Windows estima a posição pela internet e pode errar de cidade (ex.: a rede da operadora registrada em Altamira)."""
+    ponto = shapely.geometry.Point(local["lon"], local["lat"])
+    municipio = next((f["properties"]["nome"] for f in geojson_regiao["features"]
+                      if shapely.geometry.shape(f["geometry"]).contains(ponto)), None)
+    dica = "Para a posição exata, abra o painel no celular (com o GPS ligado)."
+    if municipio == "Oriximiná":
+        precisao = float(local.get("precisao") or 0)
+        if precisao <= PRECISAO_APROXIMADA_M:
+            return None
+        return (f"Localização aproximada (± {formatar_distancia(precisao / 1000)}): o seu aparelho não sabe "
+                f"exatamente onde você está. {dica}")
+    km = distancia_km(*SEDE_ORIXIMINA, pd.Series([local["lat"]]), pd.Series([local["lon"]])).iloc[0]
+    onde = f"em {municipio}" if municipio else f"a {formatar_distancia(km)} da sede de Oriximiná"
+    return (f"O seu aparelho informou uma posição fora de Oriximiná ({onde}). Se você está em Oriximiná, essa "
+            f"localização está errada: computadores costumam estimá-la pela internet. {dica}")
+
+
 def carregar_ocorrencias():
     return carregar_json(ARQ_OCORRENCIAS, [])
 
@@ -4604,7 +4633,9 @@ def distancia_km(lat1, lon1, lat2, lon2):
 
 
 def formatar_distancia(km):
-    return f"{km * 1000:.0f} m" if km < 1 else f"{km:.1f} km".replace(".", ",")
+    if km < 1:
+        return f"{km * 1000:.0f} m"
+    return f"{km:.0f} km" if km >= 10 else f"{km:.1f} km".replace(".", ",")
 
 
 def ir_para(lat, lon, zoom):
@@ -4832,6 +4863,9 @@ def barra_ferramentas_mapa():
             else:   # posição nova: leva o mapa até ela
                 # Zoom 17,5: perto o bastante para ver os prédios, o círculo da precisão e o pino em 3D
                 ir_para(local["lat"], local["lon"], 17.5)
+                aviso = aviso_localizacao(local)
+                if aviso:
+                    st.toast(aviso, icon=":material/location_searching:", duration="long")
         # Quem pede a localização é o script do mapa (no navegador); o clique não recarrega a página
         st.button("Minha localização", icon=":material/my_location:", key="botao_minha_localizacao",
                   help="Mostrar no mapa onde você está (o navegador pede permissão)")
@@ -5171,12 +5205,25 @@ SCRIPT_PREDIOS_3D = """
             }
         }
     }, 700);
-    // Satélite: a Esri só tem foto de Oriximiná até o nível 17 (depois vem "Map data not yet available");
-    // com a marca #mapa-satelite o mapa não aproxima além disso, e sem ela volta ao limite normal
+    // Satélite: a Esri só tem foto de Oriximiná até o nível 17 (depois vem "Map data not yet available").
+    // Com a marca #mapa-satelite, as fontes da Esri param no 17 e o mapa amplia essas fotos até o zoom da marca;
+    // sem ela, volta ao limite normal
+    function fotosAteONivel(mapa, nivel) {
+        // MapLibre 5 chama de tileManagers o que antes era sourceCaches
+        const caches = (mapa.style && (mapa.style.tileManagers || mapa.style.sourceCaches)) || {};
+        for (const id of Object.keys(caches)) {
+            const fonte = mapa.getSource(id);
+            if (!fonte || fonte.type !== "raster" || fonte.maxzoom === nivel
+                || !(fonte.tiles || []).some(t => t.includes("arcgisonline"))) continue;
+            fonte.maxzoom = nivel;
+            caches[id].reload();
+        }
+    }
     setInterval(() => {
         const mapa = mapaDoPainel();
         if (!mapa) return;
         const marca = document.getElementById("mapa-satelite");
+        if (marca) fotosAteONivel(mapa, parseInt(marca.dataset.fotos));
         const limite = marca ? parseFloat(marca.dataset.zoom) : 22;
         if (mapa.getMaxZoom() !== limite) mapa.setMaxZoom(limite);
     }, 500);
@@ -5557,8 +5604,9 @@ def pagina_mapa():
         with st.container(key="scripts_mapa"):
             script_mapa()
             if st.session_state.get("mapa_satelite"):
-                # O script do mapa vê esta marca e não deixa aproximar além do zoom que tem foto
-                st.markdown(f'<div id="mapa-satelite" data-zoom="{ZOOM_MAXIMO_SATELITE}"></div>',
+                # O script do mapa vê esta marca: fotos da Esri até o nível que existe, ampliadas até o zoom máximo
+                st.markdown(f'<div id="mapa-satelite" data-zoom="{ZOOM_MAXIMO_SATELITE}" '
+                            f'data-fotos="{NIVEL_FOTOS_SATELITE}"></div>',
                             unsafe_allow_html=True)
             versao = publicar_predios()
             if st.session_state.get("predios_3d") and versao:
