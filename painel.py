@@ -226,10 +226,15 @@ st.markdown(f"""
     [data-stale="true"] [class*="st-key-botao_favorito_"], [data-stale="true"] [class*="st-key-catalogo_favorito_"] {{
         opacity: 1 !important; transition: none !important; filter: none !important;
     }}
+    /* Dica do coração ("Adicionar/Remover dos favoritos"): some sozinha depois de uns segundos (quem marca
+       o body é o script de script_tela_cheia()); antes ficava na tela enquanto o mouse estivesse em cima */
+    body.esconder-dica [role="tooltip"], body.esconder-dica [data-baseweb="tooltip"] {{ display: none !important; }}
     /* Aviso no alto da tela, como a notificação do Taipei: fundo escuro, ícone e texto verde-claro */
     [data-testid="stToastContainer"] {{
         top: 28px !important; bottom: auto !important; left: 50% !important; right: auto !important;
-        transform: translateX(-50%); z-index: 1000000 !important;
+        /* Acima das janelas (a do Streamlit fica em 1000059): com 1000000, o aviso de favoritar de dentro de
+           "Informações do componente" aparecia atrás da janela */
+        transform: translateX(-50%); z-index: 2000000 !important;
         /* Partindo do meio da tela, a caixa só tinha metade da largura: no celular o texto quebrava
            uma palavra por linha. Agora ela usa a largura do texto, até a tela menos as margens */
         width: max-content !important; max-width: min(560px, calc(100vw - 32px)) !important;
@@ -1622,8 +1627,6 @@ def fechar_info():
 def janela_info(chave):
     """Janela "Informações do componente": o gráfico à esquerda e a descrição à direita, como no Taipei."""
     global dentro_da_info
-    if "aviso" in st.session_state:
-        st.toast(st.session_state.pop("aviso"), icon=":material/check_circle:")
     dentro_da_info = True
     acoes_da_info.clear()
     try:
@@ -1643,6 +1646,10 @@ def janela_info(chave):
                 st.markdown(f'<div class="titulo-acao-info">{TITULOS_ACAO_NA_INFO[nome]}</div>',
                             unsafe_allow_html=True)
                 acao()
+        # Aviso (ex.: favoritar) só depois de desenhar a janela: aparece junto com o coração já na cor nova
+        # (no começo, ele surgia antes de o coração mudar)
+        if "aviso" in st.session_state:
+            st.toast(st.session_state.pop("aviso"), icon=":material/check_circle:")
     finally:
         dentro_da_info = False
 
@@ -3990,6 +3997,36 @@ def script_tela_cheia():
                 setTimeout(() => document.dispatchEvent(new KeyboardEvent("keydown",
                     {key: "Escape", code: "Escape", keyCode: 27, bubbles: true})), 0);
             });
+        `;
+        d.head.appendChild(s);
+    }
+    // Dica do coração: aparece ao pôr o mouse em cima e some sozinha em 2 s (1,5 s depois de um clique);
+    // tirando o mouse e voltando, aparece de novo
+    if (!d.getElementById("script-dica-coracao")) {
+        const s = d.createElement("script");
+        s.id = "script-dica-coracao";
+        s.textContent = `
+            const CORACOES = '[class*="st-key-botao_favorito_"] button, [class*="st-key-catalogo_favorito_"] button';
+            let timerDica = null;
+            function esconderDicaDepois(ms) {
+                clearTimeout(timerDica);
+                timerDica = setTimeout(() => document.body.classList.add("esconder-dica"), ms);
+            }
+            document.addEventListener("mouseover", (ev) => {
+                const coracao = ev.target.closest && ev.target.closest(CORACOES);
+                if (!coracao || coracao.contains(ev.relatedTarget)) return;
+                document.body.classList.remove("esconder-dica");
+                esconderDicaDepois(2000);
+            });
+            document.addEventListener("mouseout", (ev) => {
+                const coracao = ev.target.closest && ev.target.closest(CORACOES);
+                if (!coracao || coracao.contains(ev.relatedTarget)) return;
+                clearTimeout(timerDica);
+                document.body.classList.remove("esconder-dica");
+            });
+            document.addEventListener("click", (ev) => {
+                if (ev.target.closest && ev.target.closest(CORACOES)) esconderDicaDepois(1500);
+            }, true);
         `;
         d.head.appendChild(s);
     }
