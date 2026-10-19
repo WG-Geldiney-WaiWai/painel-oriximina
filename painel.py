@@ -314,6 +314,13 @@ st.markdown(f"""
     [data-testid="stSidebarCollapseButton"] {{ visibility: visible !important; }}
     /* Embaixo, espaço para rolar o conteúdo para fora de trás do robozinho fixo no canto */
     .stMainBlockContainer {{ padding-top: 76px !important; padding-bottom: 130px !important; }}
+    /* Troca de página ou de painel: até a página nova terminar de aparecer, os pedaços da antiga (que o
+       Streamlit marca com data-stale) ficam invisíveis; quem liga e desliga é o script de script_tela_cheia() */
+    /* (opacidade, e não visibility: um filho com visibility: visible aparecia mesmo assim); a barra de cima
+       fica sempre à vista, mesmo com os botões marcados por um instante */
+    body.trocando-pagina [data-testid="stMain"] [data-stale="true"]:not(.st-key-barra_topo *),
+    body.trocando-pagina [data-testid="stSidebar"] [data-stale="true"] {{
+        opacity: 0 !important; transition: none !important; }}
     /* Catálogo de componentes, como no Taipei: o formulário fica colado à esquerda, numa coluna estreita, e
        os cartões ocupam o resto. Aqui no CSS geral (e não na página) para a página abrir já com este layout */
     .stMainBlockContainer:has(.st-key-lateral_catalogo) {{
@@ -337,6 +344,12 @@ st.markdown(f"""
         position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 999990;
         background-color: {COR_CARTAO}; border-bottom: 1px solid #494b4e; padding: 0 16px;
         flex-wrap: nowrap !important;
+    }}
+    /* Faixa da cor do fundo logo abaixo da barra (do tamanho do espaço antes do conteúdo): ao rolar, os cartões
+       somem nela em vez de encostar na barra com as bordas à mostra, como no Taipei */
+    .st-key-barra_topo::after {{
+        content: ""; position: absolute; top: calc(100% + 1px); left: 0; right: 0; height: 16px;
+        background-color: {COR_FUNDO}; pointer-events: none;
     }}
     .topo-logo, .topo-logo:hover {{ display: flex; align-items: center; gap: 12px; text-decoration: none !important;
                                     color: inherit !important; cursor: pointer; }}
@@ -3812,6 +3825,7 @@ def trocar_tema_doc():
 CSS_DOC_CLARO = """<style>
     .stApp, [data-testid="stAppViewContainer"], .stMain { background-color: #f5f6f7 !important; }
     .st-key-barra_topo { background-color: #ffffff !important; border-bottom-color: #d9dadc !important; }
+    .st-key-barra_topo::after { background-color: #f5f6f7 !important; }
     .st-key-barra_topo p, .st-key-barra_topo span, .st-key-barra_topo div { color: #1f2328 !important; }
     .st-key-barra_topo button p, .st-key-barra_topo [data-testid="stIconMaterial"] { color: #1f2328 !important; }
     .st-key-barra_topo button[kind="tertiary"]:hover p { color: #5a9cf8 !important; }
@@ -3976,6 +3990,48 @@ def script_tela_cheia():
                 setTimeout(() => document.dispatchEvent(new KeyboardEvent("keydown",
                     {key: "Escape", code: "Escape", keyCode: 27, bubbles: true})), 0);
             });
+        `;
+        d.head.appendChild(s);
+    }
+    // Troca de página ou de painel (barra de cima, menu lateral, menu ☰): a página nova abre no topo, e os
+    // pedaços da antiga somem até a nova terminar de aparecer (antes ficavam misturados por ~1 s, e a página
+    // nova abria na altura em que a antiga estava rolada)
+    if (!d.getElementById("script-troca-pagina")) {
+        const s = d.createElement("script");
+        s.id = "script-troca-pagina";
+        s.textContent = `
+            const BOTOES_TROCA = '[class*="st-key-aba_topo_"] button, [class*="st-key-aba_menu_"] button, '
+                + '[class*="st-key-celular_pagina_"] button, [class*="st-key-celular_menu_"] button';
+            let vigiaTroca = null;
+            document.addEventListener("click", (ev) => {
+                const botao = ev.target.closest && ev.target.closest(BOTOES_TROCA);
+                if (!botao) return;
+                const caixa = botao.closest('[class*="st-key-"]');
+                const chave = [...caixa.classList].find(c => c.startsWith("st-key-")).slice(7);
+                // Clique na página/painel que já está aberto: nada troca
+                const ativos = getComputedStyle(document.documentElement).getPropertyValue("--troca-ativos");
+                if (ativos.replace(/"/g, "").trim().split(" ").includes(chave)) return;
+                document.body.classList.add("trocando-pagina");
+                clearInterval(vigiaTroca);
+                const inicio = Date.now();
+                let comecou = false;
+                vigiaTroca = setInterval(() => {
+                    const antigos = document.querySelector('[data-testid="stMain"] [data-stale="true"]');
+                    if (antigos && !comecou) {
+                        // A página antiga já sumiu: sobe para o topo sem ninguém ver o pulo
+                        comecou = true;
+                        const principal = document.querySelector('[data-testid="stMain"]');
+                        if (principal) principal.scrollTop = 0;
+                        window.scrollTo(0, 0);
+                    }
+                    // Fim: a página nova terminou; ou a troca foi rápida demais para ver os pedaços antigos
+                    const passou = Date.now() - inicio;
+                    if ((comecou && !antigos) || (!comecou && passou > 2000) || passou > 10000) {
+                        document.body.classList.remove("trocando-pagina");
+                        clearInterval(vigiaTroca);
+                    }
+                }, 50);
+            }, true);
         `;
         d.head.appendChild(s);
     }
@@ -7077,6 +7133,7 @@ else:
     pagina, painel = st.session_state.pagina, st.session_state.painel
     aba = "catalogo" if pagina == "componente" else pagina   # a página do componente faz parte do catálogo
     st.markdown(f"""<style>
+        :root {{ --troca-ativos: "aba_topo_{aba} aba_menu_{painel} celular_menu_{painel} celular_pagina_{aba}"; }}
         .st-key-aba_topo_{aba} button {{ border-bottom: 3px solid #5a9cf8 !important; }}
         .st-key-aba_topo_{aba} button p {{ color: #5a9cf8 !important; }}
         .st-key-aba_menu_{painel} button, .st-key-celular_menu_{painel} button {{
