@@ -231,10 +231,14 @@ st.markdown(f"""
     body.esconder-dica [role="tooltip"], body.esconder-dica [data-baseweb="tooltip"] {{ display: none !important; }}
     /* Aviso no alto da tela, como a notificação do Taipei: fundo escuro, ícone e texto verde-claro */
     [data-testid="stToastContainer"] {{
-        top: 28px !important; bottom: auto !important; left: 50% !important; right: auto !important;
+        /* No meio pela margem automática, e não por transform: com transform (e com o filtro e a sombra
+           desfocada do aviso), o navegador desenhava o aviso numa camada à parte, e na tela com escala (125%)
+           a faixa da altura do aviso mostrava por um instante pedaços velhos da página */
+        top: 28px !important; bottom: auto !important; left: 0 !important; right: 0 !important;
+        margin: 0 auto !important; transform: none !important;
         /* Acima das janelas (a do Streamlit fica em 1000059): com 1000000, o aviso de favoritar de dentro de
            "Informações do componente" aparecia atrás da janela */
-        transform: translateX(-50%); z-index: 2000000 !important;
+        z-index: 2000000 !important;
         /* Partindo do meio da tela, a caixa só tinha metade da largura: no celular o texto quebrava
            uma palavra por linha. Agora ela usa a largura do texto, até a tela menos as margens */
         width: max-content !important; max-width: min(560px, calc(100vw - 32px)) !important;
@@ -247,7 +251,8 @@ st.markdown(f"""
         }}
         [data-testid="stToast"] {{ width: 100% !important; max-width: none !important; }}
     }}
-    [data-testid="stToast"] {{ background-color: #3a3b3d !important; border-radius: 6px; width: auto !important; }}
+    [data-testid="stToast"] {{ background-color: #3a3b3d !important; border-radius: 6px; width: auto !important;
+                               filter: none !important; box-shadow: 0 0 0 1px #4a4b4d !important; }}
     [data-testid="stToast"] p {{ color: #b4f33e !important; font-size: 1rem; }}
     /* O Streamlit corta o aviso em 3 linhas medindo com a letra menor dele: com a letra maior do painel,
        aparecia "view more" mesmo com o texto inteiro. Os avisos são curtos: mostra tudo, sem o botão */
@@ -319,6 +324,12 @@ st.markdown(f"""
     [data-testid="stSidebarCollapseButton"] {{ visibility: visible !important; }}
     /* Embaixo, espaço para rolar o conteúdo para fora de trás do robozinho fixo no canto */
     .stMainBlockContainer {{ padding-top: 76px !important; padding-bottom: 130px !important; }}
+    /* Durante uma atualização (ex.: favoritar), o Streamlit deixa os pedaços antigos semitransparentes, com uma
+       animação: ela faz o navegador desenhar a página em camadas, e na tela com escala (125%) as camadas
+       apareciam desencontradas por um instante (pedaços de cartão por cima da busca). Sem a animação, a
+       página fica parada até a parte nova chegar, como já era dentro das janelas */
+    [data-testid="stMain"] [data-stale="true"], [data-testid="stSidebar"] [data-stale="true"] {{
+        opacity: 1 !important; transition: none !important; }}
     /* Troca de página ou de painel: até a página nova terminar de aparecer, os pedaços da antiga (que o
        Streamlit marca com data-stale) ficam invisíveis; quem liga e desliga é o script de script_tela_cheia() */
     /* (opacidade, e não visibility: um filho com visibility: visible aparecia mesmo assim); a barra de cima
@@ -344,7 +355,8 @@ st.markdown(f"""
     .stMainBlockContainer > div > .stElementContainer:has(> .stMarkdown style):not(:has(p, span, img, a, li, table)),
     .stMainBlockContainer > div > :has(> .st-key-barra_topo),
     .stMainBlockContainer > div > :has(> .st-key-scripts_pagina),
-    .stMainBlockContainer > div > :has(> .st-key-estilo_favoritos) {{ margin-bottom: -16px; }}
+    .stMainBlockContainer > div > :has(> .st-key-estilo_favoritos),
+    .stMainBlockContainer > div > :has(> .st-key-aviso_da_acao) {{ margin-bottom: -16px; }}
     .st-key-barra_topo {{
         position: fixed; top: 0; left: 0; right: 0; height: 60px; z-index: 999990;
         background-color: {COR_CARTAO}; border-bottom: 1px solid #494b4e; padding: 0 16px;
@@ -910,8 +922,11 @@ df_setores["Zona"] = df_setores["SITUACAO"].map({"Urbana": "Zona Urbana", "Rural
 
 # --- CARTÃO NO ESTILO DO PAINEL DE TAIPEI ---
 # Aviso no canto da tela depois de uma ação (como a notificação do Taipei)
-if "aviso" in st.session_state:
-    st.toast(st.session_state.pop("aviso"), icon=":material/check_circle:")
+# Sempre dentro da mesma caixa (mesmo vazia): o aviso é um elemento da página, e solto aqui no começo ele
+# empurrava a posição de tudo o que vem depois quando aparecia, misturando pedaços da página no redesenho
+with st.container(key="aviso_da_acao"):
+    if "aviso" in st.session_state:
+        st.toast(st.session_state.pop("aviso"), icon=":material/check_circle:")
 
 OPCOES_AREA = {"Município de Oriximiná": "geral", "Zona Urbana (bairros)": "urbana"}
 OPCOES_GRAFICO = ["Gráfico de distritos/regiões", "Gráfico de colunas verticais"]
@@ -1478,14 +1493,13 @@ def cabecalho(chave, titulo, fonte, opcoes_area, atualizacao="Censo 2022"):
         col_atualizacao.markdown(f'<span class="cartao-atualizacao">Atualização: {atualizacao}</span>{cor_coracao}',
                                  unsafe_allow_html=True)
         # Como no Taipei, o coração de favoritar só aparece para quem entrou com uma conta
-        if st.session_state.usuario and col_coracao.button(
-            "♥", key=k(f"botao_favorito_{chave}"), type="tertiary",
-            help="Remover dos favoritos" if favorito else "Adicionar aos favoritos"
-        ):
-            alternar_favorito(chave)
-            # Dentro de "Informações do componente", refaz só a janela (refazer a página fecha e reabre
-            # a janela, e a tela pula); o painel de trás é atualizado quando a janela fechar
-            st.rerun(scope="fragment" if dentro_da_info else "app")
+        # on_click: o favorito muda antes de a página ser desenhada, numa passada só (com st.rerun() depois do
+        # clique, a página era desenhada duas vezes e, no computador mais lento, os pedaços se misturavam).
+        # Dentro de "Informações do componente", o clique refaz só a janela; o painel de trás muda ao fechar
+        if st.session_state.usuario:
+            col_coracao.button("♥", key=k(f"botao_favorito_{chave}"), type="tertiary",
+                               help="Remover dos favoritos" if favorito else "Adicionar aos favoritos",
+                               on_click=alternar_favorito, args=(chave,))
         # Com uma única opção a caixa fica travada, como no Taipei
         return st.selectbox("Área", opcoes_area, label_visibility="collapsed", key=k(f"area_{chave}"),
                             disabled=len(opcoes_area) == 1)
@@ -4258,10 +4272,9 @@ def item_catalogo(chave):
                         st.session_state.cat_cartoes.append(chave)
                         st.rerun()
                     favorito = chave in st.session_state.favoritos
-                    if st.button("♥", key=f"catalogo_favorito_{chave}", type="tertiary",
-                                 help="Remover dos favoritos" if favorito else "Adicionar aos favoritos"):
-                        alternar_favorito(chave)
-                        st.rerun()
+                    st.button("♥", key=f"catalogo_favorito_{chave}", type="tertiary",
+                              help="Remover dos favoritos" if favorito else "Adicionar aos favoritos",
+                              on_click=alternar_favorito, args=(chave,))
         st.markdown(f'<div class="catalogo-descricao">{descricao}</div>'
                     f'<div class="catalogo-fonte">{fonte} | {atualizacao}</div>', unsafe_allow_html=True)
         with st.container(horizontal=True, vertical_alignment="bottom"):
@@ -7184,7 +7197,9 @@ else:
     # (sempre desenhado, mesmo vazio, para a página não mudar de lugar ao marcar o primeiro favorito)
     with st.container(key="estilo_favoritos"):
         st.markdown("<style>" + " ".join(
-            f".st-key-botao_favorito_{c} button p, .st-key-botao_favorito_{c}_janela button p, "
+            # (o coração da janela de informações não entra aqui: ele leva a própria cor, porque ao mudar o
+            # favorito lá dentro só a janela é refeita, e esta regra deixava o coração vermelho)
+            f".st-key-botao_favorito_{c} button p, "
             f".st-key-catalogo_favorito_{c} button p "
             "{ color: #f44336 !important; }" for c in st.session_state.favoritos
         ) + "</style>", unsafe_allow_html=True)
