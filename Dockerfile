@@ -10,6 +10,9 @@ ENV TZ=America/Santarem \
 
 WORKDIR /app
 
+# O rasterio (imagem de satélite, no preparar_areas_verdes.py) precisa da libexpat, que a imagem slim não traz
+RUN apt-get update && apt-get install -y --no-install-recommends libexpat1 && rm -rf /var/lib/apt/lists/*
+
 # Bibliotecas primeiro: só são instaladas de novo quando o requirements.txt muda
 COPY requirements.txt .
 # Mais paciência com a internet: espera mais e tenta de novo se a conexão cair
