@@ -111,7 +111,7 @@ def main():
         "tipos": ["barras", "barras_percentuais"],
         "cores": ["#56B96D", "#24B0DD", "#F8CF58", "#F65658", "#a0b8e8", "#c18ad8"],
         "unidade": "obras", "meta": None, "maximo": None,
-        "links": [{"nome": "Obrasgov.br – Obras do Governo Federal", "url": "https://obrasgov.gestao.gov.br"}],
+        "links": [{"nome": "Obrasgov.br – Obras do Governo Federal", "url": "https://www.gov.br/obrasgov/pt-br"}],
         "colaboradores": [], "mapa": None, "historico": None,
     }
 

@@ -199,7 +199,7 @@
       "links": [
         {
           "nome": "Obrasgov.br – Obras do Governo Federal",
-          "url": "https://obrasgov.gestao.gov.br"
+          "url": "https://www.gov.br/obrasgov/pt-br"
         }
       ],
       "colaboradores": [],
@@ -424,6 +424,249 @@
       "colaboradores": [],
       "mapa": null,
       "historico": null
+    },
+    "comp_312": {
+      "id": 312,
+      "titulo": "Idade da área construída por bairro",
+      "fonte": "Comissão Europeia | GHSL",
+      "atualizacao": "2020",
+      "icone": "bar_chart",
+      "area": "Sede urbana de Oriximiná",
+      "resumo": "Quanto da área construída de cada bairro da sede tem mais de 40, de 20 a 40 e de 5 a 20 anos.",
+      "descricao": "Mostra, em cada bairro da sede, a área construída pela época em que ela já existia, segundo o GHSL (Comissão Europeia), que mapeia por imagens de satélite as construções do mundo inteiro desde 1975. A sede tinha 146 hectares construídos em 1985 e 257 em 2020. O bairro mais antigo é Centro (87% da área construída já existia em 1985); o mais novo, Residencial Tia Ana (74% construída de 2005 a 2020). É uma estimativa: o satélite vê quadrados de uns 90 m, e um pouco das construções de um bairro pode cair no vizinho. Mede a área construída, e não cada edifício (o cartão do Taipei usa o ano de cada edifício, do cadastro de imóveis, que Oriximiná não publica). O GHSL tem dados medidos até 2020, por isso não há a faixa de até 5 anos. Bairros e ocupações com menos de 1 hectare construído ficam de fora.",
+      "exemplo": "Ajuda a planejar a manutenção e a infraestrutura: os bairros mais antigos pedem reforma de redes de água, esgoto e drenagem; os mais novos, a chegada dos serviços (escolas, postos, transporte) que ainda faltam.",
+      "tipos": [
+        "barras_percentuais",
+        "barras"
+      ],
+      "cores": [
+        "#8D6E3C",
+        "#A5C882",
+        "#6FD3C0"
+      ],
+      "unidade": "hectares",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "GHSL – Global Human Settlement Layer (Comissão Europeia)",
+          "url": "https://human-settlement.emergency.copernicus.eu/download.php?ds=bu"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_313": {
+      "id": 313,
+      "titulo": "Situação fundiária",
+      "fonte": "Serviço Florestal Brasileiro | CNFP 2025",
+      "atualizacao": "2025",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "De quem é a terra de Oriximiná: unidades de conservação, terras indígenas, quilombos, glebas públicas.",
+      "descricao": "Mostra de quem é a terra dos 107.560 km² de Oriximiná, segundo o Cadastro Nacional de Florestas Públicas (Serviço Florestal Brasileiro, 2025), que junta as áreas da FUNAI, do ICMBio, do Ideflor-Bio, do INCRA e do Iterpa sem contar duas vezes (as linhas somam a área do município). As florestas públicas ocupam 104.796 km² (97%). Onde uma terra indígena, um quilombo ou um assentamento fica dentro de uma unidade de conservação, a área conta uma vez só, na linha \"TIs e outras áreas dentro de UCs\" (TI é terra indígena; UC, unidade de conservação: estação ecológica, reserva biológica, floresta nacional ou estadual). Há 1.439 km² de terra pública sem destinação (glebas arrecadadas pela União e pelo Estado que ainda não viraram unidade de conservação, terra indígena ou assentamento). Fora das florestas públicas ficam a cidade, as áreas sem floresta e as propriedades privadas: as fazendas com georreferenciamento certificado no SIGEF (INCRA) somam só 129 km². O cartão do Taipei mostra os terrenos públicos da cidade por dono; Oriximiná não publica o cadastro dos terrenos da Prefeitura.",
+      "exemplo": "Mostra que quase toda a terra do município é pública e tem regras próprias: o crescimento da cidade, a regularização de terrenos e os projetos no interior precisam ser combinados com a FUNAI, o ICMBio, o Ideflor-Bio, o INCRA e o Iterpa.",
+      "tipos": [
+        "barras",
+        "mapa_arvore"
+      ],
+      "cores": [
+        "#2E7D32",
+        "#F49F36",
+        "#c18ad8",
+        "#56B96D",
+        "#F8CF58",
+        "#F65658",
+        "#a0b8e8"
+      ],
+      "unidade": "km²",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Serviço Florestal Brasileiro – Cadastro Nacional de Florestas Públicas 2025",
+          "url": "https://www.gov.br/florestal/pt-br/assuntos/cadastro-nacional-de-florestas-publicas/cadastro-nacional-de-florestas-publicas-atualizacao-2025"
+        },
+        {
+          "nome": "INCRA – Acervo fundiário (SIGEF)",
+          "url": "https://certificacao.incra.gov.br"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_314": {
+      "id": 314,
+      "titulo": "Parques, praças e áreas de lazer",
+      "fonte": "OpenStreetMap | contribuidores",
+      "atualizacao": "10/2026",
+      "icone": "grid_view",
+      "area": "Sede urbana de Oriximiná",
+      "resumo": "Parques, praças, campos e áreas de lazer da sede desenhados no OpenStreetMap, em hectares.",
+      "descricao": "Mostra as áreas de lazer e verdes da sede desenhadas no OpenStreetMap, o mapa aberto feito por voluntários: 48 áreas, 6 com nome, que somam 37,8 hectares (sem contar duas vezes uma quadra dentro de uma praça). Atenção: o mapa de Oriximiná está incompleto — faltam praças e campos que existem na cidade, e a maioria das áreas desenhadas não tem nome; as sem nome aparecem juntas, por tipo. Qualquer pessoa pode completar o mapa em openstreetmap.org, e o cartão é atualizado ao rodar o script de novo. Para a vegetação de verdade de cada bairro, veja o cartão \"Áreas verdes por bairro\" (satélite). A Prefeitura não publica o cadastro das praças e parques, que o cartão do Taipei usa.",
+      "exemplo": "Ajuda a ver onde estão as praças e áreas de lazer da cidade e a planejar onde faltam; também mostra o que falta mapear, para quem quiser completar o mapa.",
+      "tipos": [
+        "mapa_arvore",
+        "barras"
+      ],
+      "cores": [
+        "#56B96D",
+        "#9DC56E",
+        "#2E7D32",
+        "#F8CF58",
+        "#24B0DD",
+        "#a0b8e8",
+        "#c18ad8",
+        "#F49F36"
+      ],
+      "unidade": "hectares",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "OpenStreetMap – mapa aberto (para ver e completar)",
+          "url": "https://www.openstreetmap.org/#map=15/-1.7650/-55.8650"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_315": {
+      "id": 315,
+      "titulo": "Áreas verdes por bairro",
+      "fonte": "Agência Espacial Europeia | ESA WorldCover",
+      "atualizacao": "2021",
+      "icone": "bar_chart",
+      "area": "Sede urbana de Oriximiná",
+      "resumo": "Quanto de cada bairro da sede é árvore, gramado, área construída e água, por satélite.",
+      "descricao": "Mostra a cobertura do chão em cada bairro da sede, segundo o ESA WorldCover 2021 (Agência Espacial Europeia), que classifica cada quadrado de 10 m × 10 m da Terra por imagem de satélite. Na sede, 40% da área dos bairros é verde (27% de árvores; o resto, gramado e arbustos). O bairro mais verde é Loteamento sem denominação 1 (89%); o menos, Residencial Tia Ana (20%). Conta toda a vegetação — praças, quintais, terrenos vazios e matas —, e não só os parques. É uma estimativa: quadrados de 10 m misturam o que está dentro deles (uma árvore sobre o telhado conta como árvore), e a imagem é de 2021.",
+      "exemplo": "Ajuda a planejar a arborização e as novas praças: os bairros com pouco verde esquentam mais e pedem árvores nas ruas; os mais verdes mostram onde proteger as matas que restam.",
+      "tipos": [
+        "barras_percentuais",
+        "barras"
+      ],
+      "cores": [
+        "#2E7D32",
+        "#9DC56E",
+        "#F65658",
+        "#24B0DD",
+        "#bdbdbd"
+      ],
+      "unidade": "hectares",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "ESA WorldCover (Agência Espacial Europeia)",
+          "url": "https://esa-worldcover.org"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_316": {
+      "id": 316,
+      "titulo": "Infraestrutura das escolas",
+      "fonte": "INEP | Censo Escolar",
+      "atualizacao": "2024",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantas escolas urbanas e rurais de Oriximiná têm água, energia, esgoto, internet, biblioteca...",
+      "descricao": "Mostra, para cada item, a porcentagem das 98 escolas em atividade de Oriximiná que o têm, separando as 34 urbanas das 64 rurais, segundo o Censo Escolar 2024 (INEP), respondido pelas próprias escolas. 11 escolas não têm energia elétrica, e 40 usam gerador a combustível; 42 não têm internet. As escolas rurais, muitas ribeirinhas, quilombolas e em assentamentos, são as que mais esperam por água potável, energia, internet e espaços como biblioteca e quadra. \"Energia elétrica\" vale para qualquer fonte (rede, gerador ou placa solar); \"Energia da rede pública\" só para a rede.",
+      "exemplo": "Mostra onde investir primeiro: levar energia, água potável e internet às escolas rurais que ainda não têm, e planejar bibliotecas, laboratórios e quadras.",
+      "tipos": [
+        "barras",
+        "mapa_calor"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D"
+      ],
+      "unidade": "% das escolas",
+      "meta": null,
+      "maximo": 100,
+      "links": [
+        {
+          "nome": "INEP – Microdados do Censo Escolar 2024",
+          "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_317": {
+      "id": 317,
+      "titulo": "Escolas e matrículas por localização",
+      "fonte": "INEP | Censo Escolar",
+      "atualizacao": "2024",
+      "icone": "donut_large",
+      "area": "Município de Oriximiná",
+      "resumo": "Escolas e alunos da cidade, dos assentamentos, dos quilombos, das terras indígenas e da zona rural.",
+      "descricao": "Mostra onde ficam as 98 escolas em atividade de Oriximiná (86 municipais, 8 particulares, 4 estaduais) e quantos alunos estudam nelas (21.585 matrículas na educação básica), segundo o Censo Escolar 2024 (INEP): na cidade, nos assentamentos da reforma agrária, nos quilombos, nas terras indígenas e nas outras comunidades rurais. A maior parte das escolas é rural, mas a maior parte dos alunos estuda na cidade: as escolas do interior são pequenas e ficam longe umas das outras.",
+      "exemplo": "Ajuda a planejar o transporte escolar (muitas vezes por barco), a merenda e a contratação de professores para as escolas do interior, inclusive as quilombolas e indígenas.",
+      "tipos": [
+        "rosca",
+        "barras"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#F8CF58",
+        "#c18ad8",
+        "#F49F36",
+        "#56B96D"
+      ],
+      "unidade": "escolas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "INEP – Microdados do Censo Escolar 2024",
+          "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_318": {
+      "id": 318,
+      "titulo": "Creches e pré-escolas",
+      "fonte": "INEP | Censo Escolar e IBGE | Censo 2022",
+      "atualizacao": "2024",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantas crianças de 0 a 3 e de 4 e 5 anos moram em Oriximiná e quantas estão na creche e na pré-escola.",
+      "descricao": "Compara as crianças que moram em Oriximiná (Censo 2022 do IBGE) com as matrículas na educação infantil (Censo Escolar 2024 do INEP). Na creche são 892 matrículas para 5.486 crianças de 0 a 3 anos, cerca de 16%; a meta do Plano Nacional de Educação é atender pelo menos 50% delas. São 59 escolas com creche, 719 das matrículas na cidade, e as do interior atendem poucas crianças cada. Na pré-escola são 2.801 matrículas para 2.601 crianças de 4 e 5 anos: a pré-escola está praticamente universalizada (também é meta do Plano). As matrículas podem passar do número de crianças porque incluem crianças fora da idade exata e porque o Censo da população é de 2022 e o das escolas, de 2024. O cartão do Taipei soma vários serviços de apoio à creche; em Oriximiná, os dados públicos são os das creches das escolas.",
+      "exemplo": "Mostra onde faltam vagas: com poucas crianças de até 3 anos na creche, abrir vagas de creche (sobretudo na cidade, onde mora a maior parte das famílias) é o que mais aproxima Oriximiná da meta nacional.",
+      "tipos": [
+        "barras",
+        "colunas"
+      ],
+      "cores": [
+        "#a0b8e8",
+        "#F49F36"
+      ],
+      "unidade": "crianças",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "INEP – Microdados do Censo Escolar 2024",
+          "url": "https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar"
+        },
+        {
+          "nome": "IBGE – SIDRA, Censo 2022, tabela 9514 (população por idade)",
+          "url": "https://sidra.ibge.gov.br/tabela/9514"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
     }
   },
   "paineis_publicos": {
@@ -476,7 +719,21 @@
       "icone": "home_work",
       "cartoes": [
         "comp_310",
-        "comp_311"
+        "comp_311",
+        "comp_312",
+        "comp_313",
+        "comp_314",
+        "comp_315"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "educacao": {
+      "titulo": "Educação",
+      "icone": "school",
+      "cartoes": [
+        "comp_316",
+        "comp_317",
+        "comp_318"
       ],
       "grupo": "Painel de Oriximiná"
     },
