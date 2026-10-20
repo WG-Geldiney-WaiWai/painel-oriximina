@@ -140,6 +140,11 @@ Cada script em `scripts/` gera os seus arquivos na pasta `dados/`:
 | `preparar_vias.py` | `vias_oriximina.geojson` | OpenStreetMap |
 | `preparar_regiao.py` | `regiao_municipios.geojson`, `regiao_idades.csv`, `regiao_dependencia.csv`, `regiao_emprego.csv` | IBGE, DATASUS, RAIS |
 | `preparar_transporte.py` | `regiao_transporte_meio.csv`, `regiao_transporte_tempo.csv`, `regiao_frota.csv` | IBGE, SENATRAN |
+| `preparar_trafego.py` | `componentes/comp_301.csv` a `comp_304.csv`, `comp_309.csv` (meio de transporte para o trabalho, lido de `regiao_transporte_meio.csv`) e o painel "Tráfego rodoviário" em `usuarios/admin_painel.json` | IBGE Cidades (frota da SENATRAN), DATASUS (SIM e SIH), IBGE (Censo 2022) |
+| `preparar_frota_circulante.py` | `componentes/comp_306.csv` (frota registrada e circulante, no painel "Tráfego rodoviário"); baixa um ZIP de uns 500 MB para a pasta `RENAEST` das fontes | SENATRAN, RENAEST |
+| `preparar_habitacao.py` | `componentes/comp_307.csv` e `comp_308.csv` e o painel "Habitação" em `usuarios/admin_painel.json` | Ministério das Cidades, Minha Casa Minha Vida |
+| `preparar_planejamento.py` | `componentes/comp_310.csv` (e `comp_310_historico.csv`) e `comp_311.csv` e o painel "Planejamento urbano" em `usuarios/admin_painel.json`; baixa os arquivos para as pastas `MapBiomas` e `AreasProtegidas` das fontes | MapBiomas (Coleção 11), FUNAI, INCRA, MMA (CNUC) e o contorno do IBGE (`PA_Municipios_2025`) |
+| `preparar_obras.py` | `componentes/comp_305.csv` (obras com recursos federais, no painel "Tráfego rodoviário"); leva uns 10 minutos | Obrasgov.br (Governo Federal) |
 | `preparar_cartografia_regiao.py` | `regiao_estradas.geojson`, `regiao_sedes.csv` | OpenStreetMap |
 | `preparar_predios.py` | `predios_oriximina.geojson` | OpenStreetMap (contornos) e GHSL, Comissão Europeia (altura) |
 

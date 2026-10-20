@@ -34,6 +34,396 @@
         "cor": "#28a6d6"
       },
       "historico": null
+    },
+    "comp_301": {
+      "id": 301,
+      "titulo": "Frota de veículos de Oriximiná",
+      "fonte": "IBGE Cidades | SENATRAN – Frota de veículos",
+      "atualizacao": "2025",
+      "icone": "show_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Veículos registrados em Oriximiná, ano a ano, por tipo.",
+      "descricao": "Mostra quantos veículos estão registrados em Oriximiná a cada ano, por tipo, segundo a frota da SENATRAN publicada pelo IBGE. A frota passou de 2.585 veículos em 2006 para 12.590 em 2025; as motocicletas e motonetas são 8.688 (69%), o meio de transporte mais comum da cidade. A frota conta os veículos registrados no município, inclusive os que já não circulam (o registro só sai quando o dono dá baixa), por isso é uma medida do tamanho do trânsito, e não do movimento nas ruas.",
+      "exemplo": "Ajuda a planejar a sinalização, a fiscalização e as campanhas de trânsito: com a frota de motos crescendo, faz sentido priorizar o uso do capacete, a habilitação e a segurança dos motociclistas.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D",
+        "#F8CF58",
+        "#F65658",
+        "#9DC56E",
+        "#a0b8e8"
+      ],
+      "unidade": "veículos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE Cidades – Frota de veículos de Oriximiná",
+          "url": "https://cidades.ibge.gov.br/brasil/pa/oriximina/pesquisa/22/28120"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_302": {
+      "id": 302,
+      "titulo": "Composição da frota em 2025",
+      "fonte": "IBGE Cidades | SENATRAN – Frota de veículos",
+      "atualizacao": "2025",
+      "icone": "donut_large",
+      "area": "Município de Oriximiná",
+      "resumo": "Divisão dos 12.590 veículos de Oriximiná por tipo, em 2025.",
+      "descricao": "Mostra como se dividem os 12.590 veículos registrados em Oriximiná em 2025. Motocicletas e motonetas são 69% da frota; automóveis, 16%. Em \"Outros\" estão reboques, tratores, ciclomotores, triciclos e demais tipos.",
+      "exemplo": "Mostra para quem o trânsito da cidade precisa ser pensado: numa frota de maioria de motos, estacionamentos, faixas e campanhas devem considerar principalmente os motociclistas.",
+      "tipos": [
+        "rosca",
+        "barras"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D",
+        "#F8CF58",
+        "#F65658",
+        "#9DC56E",
+        "#a0b8e8"
+      ],
+      "unidade": "veículos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE Cidades – Frota de veículos de Oriximiná",
+          "url": "https://cidades.ibge.gov.br/brasil/pa/oriximina/pesquisa/22/28120"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_303": {
+      "id": 303,
+      "titulo": "Mortes em acidentes de transporte",
+      "fonte": "Ministério da Saúde | DATASUS – SIM",
+      "atualizacao": "2024",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Moradores de Oriximiná que morreram em acidentes de transporte, por ano e tipo de vítima.",
+      "descricao": "Mostra quantos moradores de Oriximiná morreram em acidentes de transporte (CID-10 V01 a V99) a cada ano, de 2010 a 2024, segundo o Sistema de Informações sobre Mortalidade. Foram 125 mortes no período, 50 delas de motociclistas. Conta pelo lugar onde a pessoa morava, mesmo que o acidente ou a morte tenha sido em outra cidade. \"Ocupantes de veículos\" são os de carros, caminhonetes e caminhões. Inclui os acidentes de barco (\"por água\"), comuns na região. Os anos seguintes ainda são prévias do Ministério da Saúde e ficam de fora até virarem dados finais.",
+      "exemplo": "Ajuda a ver quem mais morre no trânsito e a direcionar as ações: se a maioria das vítimas é de motociclistas, campanhas de capacete, fiscalização e atendimento rápido aos acidentados salvam mais vidas.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "colunas"
+      ],
+      "cores": [
+        "#F65658",
+        "#F8CF58",
+        "#24B0DD",
+        "#56B96D",
+        "#a0b8e8"
+      ],
+      "unidade": "mortes",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet, óbitos por causas externas (Pará)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/ext10pa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_304": {
+      "id": 304,
+      "titulo": "Internações por acidentes de transporte",
+      "fonte": "Ministério da Saúde | DATASUS – SIH/SUS",
+      "atualizacao": "2025",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Internações no SUS de moradores de Oriximiná por acidentes de transporte, por ano.",
+      "descricao": "Mostra quantas vezes moradores de Oriximiná foram internados no SUS por acidentes de transporte, a cada ano, segundo o Sistema de Informações Hospitalares (por ano de processamento da internação). De 2021 a 2025 foram 165 internações, 128 de motociclistas. Atenção: até 2020 a maior parte das internações foi registrada sem o tipo de vítima (\"tipo não especificado\"); a subida dos motociclistas a partir de 2021 vem em parte do registro melhor, e não só de mais acidentes. Internações fora do SUS (planos de saúde e particulares) não entram.",
+      "exemplo": "Mostra o peso dos acidentes de trânsito nos hospitais: ajuda a planejar leitos, ortopedia e reabilitação, e a medir o efeito das campanhas de segurança no trânsito.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "colunas"
+      ],
+      "cores": [
+        "#F65658",
+        "#24B0DD",
+        "#a0b8e8"
+      ],
+      "unidade": "internações",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet, internações por causas externas (Pará)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sih/cnv/frpa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_305": {
+      "id": 305,
+      "titulo": "Obras públicas com recursos federais",
+      "fonte": "Governo Federal | Obrasgov.br",
+      "atualizacao": "10/2026",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Obras em Oriximiná feitas com dinheiro federal, por área e situação.",
+      "descricao": "Mostra as 35 obras de Oriximiná cadastradas no Obrasgov.br, o cadastro do governo federal das obras feitas com recursos federais (como as do PAC), separadas por área e situação: 12 concluídas; 9 em execução; 10 aguardando início; 1 paralisadas ou inacabadas; 3 canceladas ou inativadas. \"Aguardando início\" são obras cadastradas que ainda não começaram. As obras pagas só pela Prefeitura ou pelo Estado não estão aqui; elas ficam no Geo-Obras do TCM-PA e no Portal da Transparência da Prefeitura. Diferente do cartão de Taipei, não mostra as obras abertas nas ruas em tempo real: Oriximiná não publica esse tipo de licença.",
+      "exemplo": "Ajuda a acompanhar o andamento das obras com dinheiro federal na cidade: quais já foram entregues, quais estão em execução e quais estão paradas ou ainda não começaram, para cobrar prazos e planejar a fiscalização.",
+      "tipos": [
+        "barras",
+        "barras_percentuais"
+      ],
+      "cores": [
+        "#56B96D",
+        "#24B0DD",
+        "#F8CF58",
+        "#F65658",
+        "#a0b8e8",
+        "#c18ad8"
+      ],
+      "unidade": "obras",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Obrasgov.br – Obras do Governo Federal",
+          "url": "https://obrasgov.gestao.gov.br"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_306": {
+      "id": 306,
+      "titulo": "Frota registrada e frota circulante",
+      "fonte": "SENATRAN | RENAEST",
+      "atualizacao": "05/2026",
+      "icone": "show_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Veículos registrados em Oriximiná e quantos deles ainda circulam, ano a ano.",
+      "descricao": "Compara a frota registrada em Oriximiná com a frota circulante, a estimativa da SENATRAN de quantos desses veículos ainda estão em circulação, publicada no RENAEST. Em 05/2026, eram 12.912 veículos registrados e 9.044 circulando (70%), cerca de 124 veículos em circulação para cada mil habitantes. Em 2018, a frota circulante era 62% da registrada. A diferença são veículos que continuam no registro mas já não rodam (quebrados, abandonados, vendidos para fora sem transferência). Os valores são de dezembro de cada ano; o ano corrente vai até o último mês publicado.",
+      "exemplo": "Dá a medida mais real do trânsito da cidade: é a frota circulante que ocupa as ruas e os estacionamentos, e é com ela que se planejam sinalização, fiscalização e campanhas.",
+      "tipos": [
+        "linha_tempo_separada",
+        "colunas"
+      ],
+      "cores": [
+        "#a0b8e8",
+        "#24B0DD"
+      ],
+      "unidade": "veículos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "RENAEST – dados abertos (Ministério dos Transportes)",
+          "url": "https://dados.transportes.gov.br/dataset/renaest"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_307": {
+      "id": 307,
+      "titulo": "Moradias do Minha Casa Minha Vida",
+      "fonte": "Ministério das Cidades | MCMV",
+      "atualizacao": "06/2026",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Empreendimentos do Minha Casa Minha Vida em Oriximiná: moradias entregues e em obra.",
+      "descricao": "Mostra os 7 empreendimentos do Minha Casa Minha Vida subsidiado em Oriximiná (moradias pagas quase todas pelo governo, para famílias de baixa renda), com 1.233 moradias: 1.141 entregues e 92 ainda em obra. O maior é o Residencial Tia Ana, com 994 moradias. FAR são os conjuntos contratados pela Caixa com construtoras; Entidades, os feitos com associações e sindicatos; Rural, as casas no campo (92 moradias, nenhuma entregue até 30/06/2026). As datas são as da assinatura do contrato.",
+      "exemplo": "Ajuda a acompanhar a entrega das moradias populares e a cobrar as obras atrasadas, como as casas rurais contratadas que ainda não foram entregues.",
+      "tipos": [
+        "barras_percentuais",
+        "barras"
+      ],
+      "cores": [
+        "#56B96D",
+        "#F8CF58",
+        "#F65658"
+      ],
+      "unidade": "moradias",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério das Cidades – Bases de dados do Minha Casa Minha Vida",
+          "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/habitacao/programa-minha-casa-minha-vida/bases-de-dados-do-programa-minha-casa-minha-vida"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_308": {
+      "id": 308,
+      "titulo": "Moradias financiadas com FGTS",
+      "fonte": "Ministério das Cidades | MCMV-FGTS",
+      "atualizacao": "2024",
+      "icone": "show_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Moradias financiadas em Oriximiná com FGTS, por ano, e quantas tiveram desconto do governo.",
+      "descricao": "Mostra quantas moradias foram financiadas em Oriximiná pelo Minha Casa Minha Vida com recursos do FGTS (a família compra a casa e paga em prestações, com desconto do governo conforme a renda), por ano do contrato: 134 de 2010 a 2024, com o pico em 2016. Dessas, 91 (68%) tiveram desconto do governo, que somou R$ 1.077.106 de R$ 8.509.729 financiados (é o parecido, aqui, com o subsídio de juros do Taipei: o governo paga parte da casa das famílias de renda mais baixa). Os números são pequenos porque, em Oriximiná, poucas famílias conseguem comprar casa financiada; a maior parte das moradias do programa na cidade são as subsidiadas (o outro cartão).",
+      "exemplo": "Mostra se o crédito para a casa própria chega à cidade: poucos financiamentos indicam espaço para ações com a Caixa e as imobiliárias, e para a regularização de terrenos.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D"
+      ],
+      "unidade": "moradias",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério das Cidades – Bases de dados do Minha Casa Minha Vida",
+          "url": "https://www.gov.br/cidades/pt-br/acesso-a-informacao/acoes-e-programas/habitacao/programa-minha-casa-minha-vida/bases-de-dados-do-programa-minha-casa-minha-vida"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_309": {
+      "id": 309,
+      "titulo": "Meio de transporte para ir ao trabalho",
+      "fonte": "IBGE | Censo 2022 – Trabalho e deslocamento",
+      "atualizacao": "Censo 2022",
+      "icone": "donut_large",
+      "area": "Município de Oriximiná",
+      "resumo": "Como os moradores de Oriximiná vão ao trabalho: moto, a pé, barco, bicicleta, carro, ônibus.",
+      "descricao": "Mostra o meio de transporte em que os 15.678 moradores de Oriximiná que trabalham fora de casa passam mais tempo no caminho para o trabalho, segundo o Censo 2022 (IBGE, tabela 10332). A moto ou o mototáxi leva 29%; a pé vão 23%; de barco ou lancha, 15%; de bicicleta, 13%; de carro ou táxi, 11%. Oriximiná não tem bicicletas compartilhadas (como o YouBike do Taipei), mas a bicicleta é um dos meios mais usados da cidade.",
+      "exemplo": "Mostra para quem as ruas precisam ser feitas: com muita gente a pé, de bicicleta e de moto, calçadas, ciclofaixas, iluminação e a segurança dos motociclistas pesam mais que estacionamentos para carros.",
+      "tipos": [
+        "rosca",
+        "barras"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D",
+        "#F8CF58",
+        "#9DC56E",
+        "#F65658",
+        "#a0b8e8",
+        "#c18ad8"
+      ],
+      "unidade": "pessoas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE – SIDRA, Censo 2022, tabela 10332",
+          "url": "https://sidra.ibge.gov.br/tabela/10332"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_310": {
+      "id": 310,
+      "titulo": "Uso e cobertura da terra",
+      "fonte": "MapBiomas | Coleção 11",
+      "atualizacao": "2025",
+      "icone": "grid_view",
+      "area": "Município de Oriximiná",
+      "resumo": "Como são usados os 107.529 km² de Oriximiná: floresta, rios, campos, pastagem, mineração, cidade.",
+      "descricao": "Mostra como estão cobertos os 107.529 km² de Oriximiná em 2025, segundo o MapBiomas, que mapeia o Brasil por imagens de satélite ano a ano desde 1985. A floresta ocupa 102.245 km² (95%); rios e lagos, 1.738 km². A ocupação humana é pequena, mas cresceu: a pastagem passou de 55 km² em 1985 para 662 km²; a mineração (a bauxita de Porto Trombetas), de 11 para 68 km²; a área urbana, de 12 para 16 km². O Plano Diretor de Oriximiná tem um zoneamento, mas ele não está publicado como dados (o cartão do Taipei mostra o zoneamento da cidade); este cartão mostra o uso real da terra.",
+      "exemplo": "Ajuda a planejar o crescimento da cidade e a proteger a floresta: mostra onde a ocupação avança (pastagem, mineração, área urbana) e quanto ainda é floresta e rio.",
+      "tipos": [
+        "mapa_arvore",
+        "barras"
+      ],
+      "cores": [
+        "#2E7D32",
+        "#56B96D",
+        "#9DC56E",
+        "#F8CF58",
+        "#24B0DD",
+        "#a0b8e8",
+        "#F49F36",
+        "#F65658",
+        "#c18ad8",
+        "#8D6E63",
+        "#bdbdbd",
+        "#E57373",
+        "#FFF176"
+      ],
+      "unidade": "km²",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "MapBiomas – Estatísticas de cobertura e uso da terra",
+          "url": "https://brasil.mapbiomas.org/estatisticas/"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_311": {
+      "id": 311,
+      "titulo": "Áreas protegidas",
+      "fonte": "FUNAI | INCRA | MMA – CNUC",
+      "atualizacao": "10/2026",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Terras indígenas, territórios quilombolas e unidades de conservação dentro de Oriximiná, em km².",
+      "descricao": "Mostra quanto de cada área protegida fica dentro de Oriximiná: 5 terras indígenas (FUNAI), 6 territórios quilombolas (INCRA) e 5 unidades de conservação (Cadastro Nacional de Unidades de Conservação). Juntas, sem contar duas vezes as partes em que se sobrepõem, cobrem 102.111 km² dos 107.560 km² do município (95%). As áreas se sobrepõem em vários lugares (a maior sobreposição: a TI Kaxuyana-Tunayana e a Floresta Estadual do Trombetas dividem cerca de 15.773 km²), por isso a soma das áreas do gráfico passa da área protegida total. Em regra, a proteção integral (estação ecológica, reserva biológica) não permite moradia nem exploração (onde ela encontra territórios tradicionais, há acordos e disputas); o uso sustentável (florestas nacionais e estaduais) permite o uso controlado dos recursos. As áreas foram calculadas com o contorno do município do IBGE.",
+      "exemplo": "Mostra que quase todo o município é área protegida: o planejamento da cidade e das comunidades precisa considerar as regras de cada área e os povos que vivem nelas.",
+      "tipos": [
+        "mapa_arvore",
+        "barras"
+      ],
+      "cores": [
+        "#2E7D32",
+        "#F49F36",
+        "#9DC56E",
+        "#56B96D",
+        "#c18ad8",
+        "#24B0DD",
+        "#F8CF58",
+        "#a0b8e8"
+      ],
+      "unidade": "km²",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "FUNAI – Terras indígenas (geoserver)",
+          "url": "https://geoserver.funai.gov.br"
+        },
+        {
+          "nome": "INCRA – Acervo fundiário (quilombolas)",
+          "url": "https://certificacao.incra.gov.br"
+        },
+        {
+          "nome": "MMA – Cadastro Nacional de Unidades de Conservação",
+          "url": "https://dados.mma.gov.br/dataset/unidadesdeconservacao"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
     }
   },
   "paineis_publicos": {
@@ -54,6 +444,39 @@
       "icone": "public",
       "cartoes": [
         "vias"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "trafego": {
+      "titulo": "Tráfego rodoviário",
+      "icone": "traffic",
+      "cartoes": [
+        "comp_301",
+        "comp_306",
+        "comp_302",
+        "comp_309",
+        "comp_305",
+        "comp_303",
+        "comp_304",
+        "vias"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "habitacao": {
+      "titulo": "Habitação",
+      "icone": "home",
+      "cartoes": [
+        "comp_307",
+        "comp_308"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "planejamento": {
+      "titulo": "Planejamento urbano",
+      "icone": "home_work",
+      "cartoes": [
+        "comp_310",
+        "comp_311"
       ],
       "grupo": "Painel de Oriximiná"
     },
