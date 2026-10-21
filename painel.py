@@ -6455,10 +6455,14 @@ def menu_admin():
             if grupo != grupo_anterior:
                 st.markdown(f'<div class="menu-grupo">{grupo}</div>', unsafe_allow_html=True)
                 grupo_anterior = grupo
-            if st.button(titulo, key=f"aba_menu_admin_{secao}", icon=f":material/{icone}:", type="tertiary",
-                         width="stretch"):
-                st.session_state.admin_secao = secao
-                st.rerun()
+            # on_click (e não st.rerun() depois do clique): a seção troca antes de a página ser desenhada, numa
+            # passada só; com o st.rerun(), a seção antiga aparecia de novo por um instante e a página piscava
+            st.button(titulo, key=f"aba_menu_admin_{secao}", icon=f":material/{icone}:", type="tertiary",
+                      width="stretch", on_click=mudar_secao_admin, args=(secao,))
+
+
+def mudar_secao_admin(secao):
+    st.session_state.admin_secao = secao
 
 
 def pagina_admin():
@@ -7302,8 +7306,10 @@ else:
     # Aba ativa da barra de cima e do menu lateral em azul, como no Taipei
     pagina, painel = st.session_state.pagina, st.session_state.painel
     aba = "catalogo" if pagina == "componente" else pagina   # a página do componente faz parte do catálogo
+    # (na administração, o menu lateral é o das seções: clicar na que já está aberta não esconde a página)
+    ativo_menu = f"admin_{st.session_state.get('admin_secao', 'paineis')}" if pagina == "admin" else painel
     st.markdown(f"""<style>
-        :root {{ --troca-ativos: "aba_topo_{aba} aba_menu_{painel} celular_menu_{painel} celular_pagina_{aba}"; }}
+        :root {{ --troca-ativos: "aba_topo_{aba} aba_menu_{ativo_menu} celular_menu_{painel} celular_pagina_{aba}"; }}
         .st-key-aba_topo_{aba} button {{ border-bottom: 3px solid #5a9cf8 !important; }}
         .st-key-aba_topo_{aba} button p {{ color: #5a9cf8 !important; }}
         .st-key-aba_menu_{painel} button, .st-key-celular_menu_{painel} button {{
