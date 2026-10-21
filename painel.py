@@ -725,6 +725,27 @@ st.markdown(f"""
     .st-key-linha_atualizacao {{ position: fixed; right: 24px; bottom: 6px; z-index: 998; width: auto !important; }}
     .st-key-linha_atualizacao [data-testid="stMarkdownContainer"] {{ margin-bottom: 0 !important; }}
     .proxima-atualizacao {{ color: {COR_TEXTO_CINZA}; font-size: 0.85rem; }}
+    /* ⓘ do topo, como no Taipei: só o círculo branco cheio com o "i" (sem a setinha do menu) */
+    .st-key-info_topo [data-testid="stPopoverButton"] div[aria-hidden="true"] {{ display: none; }}
+    .st-key-info_topo [data-testid="stPopoverButton"] {{
+        border: none !important; background: transparent !important; padding: 0 6px !important; min-height: 0;
+        height: auto !important; display: flex; align-items: center; line-height: 1;
+    }}
+    /* Espaço entre o ⛶ e o ⓘ, como no Taipei (antes ficavam grudados) */
+    .st-key-info_topo {{ margin-left: 22px; }}
+    .st-key-info_topo [data-testid="stPopoverButton"] > div {{ margin: 0 !important; }}
+    /* (o ícone "info" do Streamlit é só o contorno: no lugar dele vai um círculo branco desenhado com o "i") */
+    .st-key-info_topo [data-testid="stPopoverButton"] [data-testid="stIconMaterial"] {{
+        font-size: 0 !important; width: auto; height: auto; display: inline-flex; align-items: center;
+    }}
+    .st-key-info_topo [data-testid="stPopoverButton"] [data-testid="stIconMaterial"]::after {{
+        content: "i"; display: inline-flex; align-items: center; justify-content: center;
+        width: 22px; height: 22px; border-radius: 50%; background: #ffffff; color: #1e1e1e;
+        font: 700 15px/1 "Source Sans Pro", "Source Sans 3", sans-serif;
+    }}
+    .st-key-info_topo [data-testid="stPopoverButton"]:hover [data-testid="stIconMaterial"]::after {{
+        background: {COR_TEXTO_CINZA};
+    }}
     /* ☰ do celular (no lugar do menu lateral) e botão "Camadas" do mapa */
     .st-key-menu_celular [data-testid="stPopoverButton"] [data-testid="stIconMaterial"] {{ font-size: 1.7rem; }}
     .st-key-menu_celular [data-testid="stPopoverButton"] div[aria-hidden="true"] {{ display: none; }}
@@ -3997,6 +4018,50 @@ def script_tela_cheia():
         `;
         d.head.appendChild(s);
     }
+    // Menu ⓘ do topo, como no Taipei: abre ao pôr o mouse em cima e fecha sozinho quando o mouse sai do
+    // botão e do menu (com uma folga, para dar tempo de chegar às opções). O Streamlit só abre no clique:
+    // o script "clica" por quem passou o mouse e fecha com "Esc"
+    if (!d.getElementById("script-menu-info-hover")) {
+        const s = d.createElement("script");
+        s.id = "script-menu-info-hover";
+        s.textContent = `
+            (() => {
+                const BOTAO = ".st-key-info_topo button";
+                const corpoDoMenu = () => {
+                    const opcao = document.querySelector(".st-key-abrir_documentacao");
+                    return opcao && opcao.closest('[data-testid="stPopoverBody"]');
+                };
+                let fechar = null, abertoPeloMouse = false;
+                const cancelar = () => { clearTimeout(fechar); fechar = null; };
+                document.addEventListener("mouseover", (ev) => {
+                    const alvo = ev.target.closest && (ev.target.closest(BOTAO) ||
+                        (corpoDoMenu() && corpoDoMenu().contains(ev.target) ? corpoDoMenu() : null));
+                    if (!alvo) return;
+                    cancelar();
+                    if (alvo.matches(BOTAO) && !corpoDoMenu()) { abertoPeloMouse = true; alvo.click(); }
+                });
+                document.addEventListener("mouseout", (ev) => {
+                    if (!abertoPeloMouse || !corpoDoMenu()) return;
+                    const de = ev.target.closest && (ev.target.closest(BOTAO) || corpoDoMenu().contains(ev.target));
+                    const para = ev.relatedTarget && ev.relatedTarget.closest &&
+                        (ev.relatedTarget.closest(BOTAO) || corpoDoMenu().contains(ev.relatedTarget));
+                    if (!de || para) return;
+                    cancelar();
+                    fechar = setTimeout(() => {
+                        if (corpoDoMenu()) document.dispatchEvent(new KeyboardEvent("keydown",
+                            {key: "Escape", code: "Escape", keyCode: 27, bubbles: true}));
+                        abertoPeloMouse = false;
+                    }, 400);
+                });
+                // Clicar no ⓘ com o menu já aberto pelo mouse não o fecha (senão abriria e fecharia na hora)
+                document.addEventListener("click", (ev) => {
+                    if (ev.target.closest && ev.target.closest(BOTAO) && abertoPeloMouse && corpoDoMenu()
+                        && ev.isTrusted) { ev.preventDefault(); ev.stopPropagation(); }
+                }, true);
+            })();
+        `;
+        d.head.appendChild(s);
+    }
     // Menu ☰ do celular: ao tocar numa página ou painel, o menu fecha na hora (antes ficava aberto
     // por cima da página nova). Escuta depois do Streamlit (sem "capture"), então o toque já foi
     // registrado; o "Esc" é o que fecha o menu
@@ -5934,7 +5999,10 @@ def desenhar_grafico_generico(tipo, df, cores, unidade="", meta=None, maximo=Non
             else:
                 fig.add_trace(go.Bar(name=serie, y=rotulos, x=df[serie], orientation="h", marker_color=cores[i],
                                      hovertemplate=f"%{{y}}<br>%{{fullData.name}}: %{{x:,.1~f}}{sufixo}<extra></extra>"))
-        fig.update_layout(barmode="group", showlegend=len(series) > 1, legend=legenda,
+        # Cada linha com valor numa série só (ex.: casos na coluna do nível de alerta da semana): empilhar
+        # desenha uma coluna inteira por linha, em vez de colunas finas deslocadas
+        uma_por_linha = len(series) > 1 and ((df[series].fillna(0) != 0).sum(axis=1) <= 1).all()
+        fig.update_layout(barmode="stack" if uma_por_linha else "group", showlegend=len(series) > 1, legend=legenda,
                           yaxis=dict(autorange="reversed") if tipo == "barras" else {})
     elif tipo == "barras_percentuais":
         totais = df[series].sum(axis=1).replace(0, 1)
@@ -5986,7 +6054,9 @@ def desenhar_grafico_generico(tipo, df, cores, unidade="", meta=None, maximo=Non
                                  hovertemplate=f"%{{label}}: %{{value:,.1f}}{sufixo}<extra></extra>"))
         fig.update_layout(margin=dict(l=0, r=0, t=10, b=0))
     elif tipo == "mapa_calor":
+        # O número dentro de cada quadradinho, como no Taipei (a cor sozinha não diz o valor)
         fig.add_trace(go.Heatmap(z=df[series].T.values, x=rotulos, y=series, colorscale=[[0, COR_CARTAO], [1, cores[0]]],
+                                 texttemplate="%{z:.0f}", textfont=dict(size=10, color="#ffffff"),
                                  hovertemplate=f"%{{y}} · %{{x}}: %{{z:,.1f}}{sufixo}<extra></extra>",
                                  colorbar=dict(tickfont=dict(color=COR_TEXTO_CINZA))))
     elif tipo in ("velocimetro", "medidor"):
@@ -6118,10 +6188,21 @@ def camada_do_componente(chave):
 
 
 def camada_nova_regional(camada):
-    """Camada de componente novo com valores por município (o mapa mostra a região inteira)."""
+    """Camada de componente novo que pede o mapa da região inteira: valores por município, ou pontos quase
+    todos longe da sede (ex.: estações nos rios, a mais de 100 km), que no mapa da sede ficariam fora da tela."""
     if not camada.startswith("novo_"):
         return False
-    return (componentes_novos().get(camada[len("novo_"):], {}).get("mapa") or {}).get("tipo") == "municipios"
+    chave = camada[len("novo_"):]
+    tipo = (componentes_novos().get(chave, {}).get("mapa") or {}).get("tipo")
+    if tipo == "municipios":
+        return True
+    if tipo == "pontos":
+        _, df = mapa_componente(chave)
+        if df is not None and {"Latitude", "Longitude"} <= set(df.columns) and len(df):
+            longe = ((para_coordenada(df["Latitude"]) + 1.763).abs() > 0.25) | \
+                    ((para_coordenada(df["Longitude"]) + 55.866).abs() > 0.25)   # ~25 km da sede
+            return bool(longe.mean() > 0.5)
+    return False
 
 
 def desenhar_camada_nova(fig, camada):
@@ -7031,6 +7112,43 @@ FONTES_DADOS = {
                                        "Quando o mapa colaborativo muda", "internet"),
     "preparar_predios.py": ("Prédios em 3D da sede", "OpenStreetMap (contornos) e GHSL – Comissão Europeia (altura)",
                             ["predios_oriximina.geojson"], "Quando o mapa colaborativo muda", "internet"),
+    "preparar_dengue.py": ("Alerta de dengue", "InfoDengue – Fiocruz e FGV",
+                           ["componentes/comp_325.csv", "componentes/comp_325_historico.csv"], "Semanal", "internet"),
+    "preparar_criminalidade.py": ("Ocorrências criminais", "Ministério da Justiça – Sinesp VDE",
+                                  ["componentes/comp_326.csv"], "Mensal", "internet"),
+    "preparar_pronaf.py": ("Crédito do Pronaf", "Banco Central – Matriz de Dados do Crédito Rural",
+                           ["componentes/comp_327.csv"], "Mensal", "internet"),
+    "preparar_emissoes.py": ("Emissões de gases de efeito estufa", "Observatório do Clima – SEEG",
+                             ["componentes/comp_328.csv", "componentes/comp_328_historico.csv"], "Anual", ["SEEG"]),
+    "preparar_ar.py": ("Qualidade do ar", "Copernicus (CAMS) – Open-Meteo", ["componentes/comp_330.csv"],
+                       "Diária", "internet"),
+    "preparar_rio.py": ("Nível do rio Trombetas", "ANA – estação 16900000 (Oriximiná)",
+                        ["componentes/comp_331.csv", "componentes/comp_331_historico.csv"], "Diária", "internet"),
+    "preparar_mortalidade.py": ("Principais causas de morte", "DATASUS – SIM e IBGE (população)",
+                                ["componentes/comp_334.csv"], "Anual", "internet"),
+    "preparar_aviao.py": ("Passageiros de avião", "ANAC – Dados Estatísticos do Transporte Aéreo",
+                          ["componentes/comp_336.csv"], "Mensal", "internet"),
+    "preparar_merenda.py": ("Merenda escolar (PNAE)", "FNDE – liberações do PNAE",
+                            ["componentes/comp_337.csv"], "Mensal", "internet"),
+    "preparar_industria_alimentos.py": ("Fábricas de alimentos e bebidas", "Ministério do Trabalho – RAIS",
+                                        ["componentes/comp_338.csv", "componentes/comp_338_historico.csv"],
+                                        "Anual", ["RAIS_ESTAB"]),
+    "preparar_chuva.py": ("Chuva em Oriximiná", "ANA – estações de chuva", ["componentes/comp_340.csv",
+                          "componentes/comp_340_historico.csv", "componentes/comp_340_mapa.csv"], "Diária", "internet"),
+    "preparar_queimadas.py": ("Focos de queimada", "INPE – Programa Queimadas", ["componentes/comp_341.csv",
+                              "componentes/comp_341_historico.csv", "componentes/comp_341_mapa.csv"], "Diária",
+                              "internet"),
+    "preparar_saude_familia.py": ("Equipes de Saúde da Família", "DATASUS – CNES e IBGE (população)",
+                                  ["componentes/comp_342.csv"], "Mensal", "internet"),
+    "preparar_estabelecimentos_saude.py": ("Estabelecimentos de saúde por tipo", "DATASUS – CNES e RAIS",
+                                           ["componentes/comp_343.csv", "componentes/comp_343_historico.csv"],
+                                           "Mensal", "internet"),
+    "preparar_hospedagem.py": ("Hotéis e pousadas", "RAIS e Cadastur", ["componentes/comp_344.csv"], "Anual",
+                               "internet"),
+    "preparar_organicos.py": ("Produtores orgânicos certificados", "Ministério da Agricultura – CNPO",
+                              ["componentes/comp_345.csv", "componentes/comp_345_mapa.csv"], "Mensal", "internet"),
+    "preparar_comercio_alimentos.py": ("Comércio de alimentos", "Ministério do Trabalho – RAIS",
+                                       ["componentes/comp_346.csv"], "Anual", ["RAIS_ESTAB"]),
 }
 
 
@@ -7079,7 +7197,9 @@ def rodar_script(script):
     os.makedirs(pasta_copia, exist_ok=True)
     for arquivo in arquivos:
         if os.path.exists(os.path.join(PASTA_DADOS, arquivo)):
-            shutil.copy2(os.path.join(PASTA_DADOS, arquivo), pasta_copia)
+            # Mantém a subpasta (ex.: componentes/), para a cópia voltar ao mesmo lugar se der erro
+            os.makedirs(os.path.dirname(os.path.join(pasta_copia, arquivo)), exist_ok=True)
+            shutil.copy2(os.path.join(PASTA_DADOS, arquivo), os.path.join(pasta_copia, arquivo))
     inicio = time.time()
     try:
         processo = subprocess.run([sys.executable, os.path.join(PASTA_SCRIPTS, script)], cwd=PASTA_SCRIPTS,

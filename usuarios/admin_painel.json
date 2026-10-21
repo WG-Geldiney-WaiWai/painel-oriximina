@@ -667,6 +667,1030 @@
       "colaboradores": [],
       "mapa": null,
       "historico": null
+    },
+    "comp_319": {
+      "id": 319,
+      "titulo": "Leitos hospitalares por especialidade",
+      "fonte": "Ministério da Saúde | DATASUS – CNES",
+      "atualizacao": "Set/2026",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Leitos de internação dos hospitais de Oriximiná por especialidade, do SUS e particulares.",
+      "descricao": "Mostra os 124 leitos de internação dos hospitais de Oriximiná em Set/2026, por especialidade, segundo o Cadastro Nacional de Estabelecimentos de Saúde (CNES): 103 atendem pelo SUS. Os leitos obstétricos, para partos e gestantes, são 21 (20 do SUS), quase todos na maternidade da cidade. Para comparar: nascem em média 1.437 bebês por ano de mães de Oriximiná (cartão \"Nascimentos por ano e local do parto\"). Leitos de UTI e de observação não entram nesta conta do CNES.",
+      "exemplo": "Ajuda a planejar a rede hospitalar: mostra se os leitos de maternidade, pediatria e clínica acompanham o número de nascimentos e a população, e quanto depende do SUS.",
+      "tipos": [
+        "barras",
+        "mapa_arvore"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#a0b8e8"
+      ],
+      "unidade": "leitos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet, leitos de internação (CNES, Pará)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?cnes/cnv/leiintpa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_320": {
+      "id": 320,
+      "titulo": "Nascimentos por ano e local do parto",
+      "fonte": "Ministério da Saúde | DATASUS – SINASC",
+      "atualizacao": "2024",
+      "icone": "show_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Bebês de mães que moram em Oriximiná, por ano, e onde nasceram: hospital, em casa, aldeia.",
+      "descricao": "Mostra quantos bebês de mães que moram em Oriximiná nasceram a cada ano, de 2014 a 2024, e onde foi o parto, segundo o Sistema de Informações sobre Nascidos Vivos (SINASC). Em 2024 foram 1.209 nascimentos, 31 fora de uma unidade de saúde (em casa, em aldeia indígena ou em outro lugar): no interior, com comunidades longe da cidade e acesso por rio, parte dos partos ainda acontece em casa. Conta pelo lugar onde a mãe mora, mesmo que o parto tenha sido em outra cidade (como Santarém). Os anos seguintes ainda são prévias do Ministério da Saúde e ficam de fora até virarem dados finais.",
+      "exemplo": "Ajuda a planejar a maternidade e o transporte de gestantes do interior: os partos fora do hospital mostram onde fortalecer o pré-natal, as parteiras e a remoção para a cidade.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "colunas"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D",
+        "#F49F36",
+        "#c18ad8",
+        "#F8CF58",
+        "#bdbdbd"
+      ],
+      "unidade": "nascimentos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet, nascidos vivos (SINASC, Pará)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sinasc/cnv/nvpa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_321": {
+      "id": 321,
+      "titulo": "Consultas de pré-natal",
+      "fonte": "Ministério da Saúde | DATASUS – SINASC",
+      "atualizacao": "2024",
+      "icone": "bar_chart",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantas mães de Oriximiná fizeram 7 ou mais consultas de pré-natal, por ano.",
+      "descricao": "Mostra, para os bebês de mães que moram em Oriximiná, quantas consultas de pré-natal a mãe fez na gravidez, a cada ano, segundo o SINASC. O Ministério da Saúde recomenda 7 consultas ou mais: em 2024, 71% das mães chegaram a isso, contra 45% em 2014. Mães sem nenhuma consulta e com poucas consultas pedem atenção, sobretudo nas comunidades do interior.",
+      "exemplo": "Mostra onde reforçar a atenção básica: mais consultas de pré-natal evitam complicações no parto e mortes de mães e bebês.",
+      "tipos": [
+        "barras_percentuais",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#56B96D",
+        "#F8CF58",
+        "#F65658",
+        "#bdbdbd"
+      ],
+      "unidade": "nascimentos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet, nascidos vivos (SINASC, Pará)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sinasc/cnv/nvpa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_322": {
+      "id": 322,
+      "titulo": "Crianças de 0 a 4 anos por bairro",
+      "fonte": "IBGE | Censo 2022 e CNEFE 2022",
+      "atualizacao": "Censo 2022",
+      "icone": "bar_chart",
+      "area": "Sede urbana de Oriximiná",
+      "resumo": "Quantas crianças de 0 a 4 anos moram em cada bairro da sede: onde mais se precisa de creche.",
+      "descricao": "Mostra quantas crianças de 0 a 4 anos moram em cada bairro da sede de Oriximiná, segundo o Censo 2022: 4.038 crianças entre 43.636 moradores dos bairros. O bairro com mais crianças pequenas é Residencial Tia Ana (459); entre os bairros com mais de mil moradores, a maior parte de crianças pequenas está em Bela Vista (14% dos moradores). Os moradores de cada setor censitário foram repartidos entre os bairros conforme onde ficam os seus domicílios no CNEFE, como no cartão \"Moradores por bairro da sede\"; por isso os números por bairro são estimativas. Junto do cartão \"Creches e pré-escolas\", mostra em que bairros abrir vagas de creche. A faixa do Censo por setor é de 0 a 4 anos (o cartão do Taipei usa as crianças pequenas).",
+      "exemplo": "Ajuda a decidir onde construir creches e ampliar vagas: os bairros com mais crianças pequenas são os que mais precisam, sobretudo os novos, onde moram muitas famílias jovens.",
+      "tipos": [
+        "barras",
+        "mapa_arvore"
+      ],
+      "cores": [
+        "#a0b8e8"
+      ],
+      "unidade": "crianças",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE – Censo Demográfico 2022",
+          "url": "https://censo2022.ibge.gov.br"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "bairros",
+        "nome": "Crianças de 0 a 4 anos por bairro",
+        "cor": "#7d9be0"
+      },
+      "historico": null
+    },
+    "comp_323": {
+      "id": 323,
+      "titulo": "Destino do lixo das casas",
+      "fonte": "IBGE | Censos 2000, 2010 e 2022",
+      "atualizacao": "Censo 2022",
+      "icone": "delete",
+      "area": "Município de Oriximiná",
+      "resumo": "O que as casas de Oriximiná fazem com o lixo: coleta, caçamba, queimam, enterram...",
+      "descricao": "Mostra o destino do lixo das 17.956 casas de Oriximiná no Censo 2022. 12.036 casas (67%) têm o lixo levado pelo serviço de limpeza, recolhido na porta ou deixado numa caçamba. Nas outras, o lixo é sobretudo queimado no próprio terreno (5.222 casas, 29%); poucas o enterram, jogam em terreno ou área pública ou dão outro destino. Na zona urbana, 94% das casas têm coleta; na zona rural, só 2%, porque o caminhão não chega às comunidades dos rios e da floresta. Em 2000 eram 51% das casas com coleta (veja o histórico). Em Taipei, este cartão mostra os pontos de parada do caminhão de lixo; Oriximiná não publica as rotas da coleta, então o cartão mostra quantas casas o serviço alcança.",
+      "exemplo": "Mostra o tamanho do desafio da coleta: onde o caminhão não chega, o lixo é queimado, o que faz mal à saúde e ao meio ambiente. Ajuda a planejar a coleta nas comunidades e pontos de entrega voluntária.",
+      "tipos": [
+        "rosca",
+        "barras"
+      ],
+      "cores": [
+        "#56B96D",
+        "#F49F36",
+        "#9DC56E",
+        "#a1887f",
+        "#F65658",
+        "#bdbdbd"
+      ],
+      "unidade": "casas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE – SIDRA: Censo 2022, tabela 6892 (destino do lixo)",
+          "url": "https://sidra.ibge.gov.br/tabela/6892"
+        },
+        {
+          "nome": "IBGE – Censo 2022: agregados por setores censitários",
+          "url": "https://www.ibge.gov.br/estatisticas/sociais/populacao/22827-censo-demografico-2022.html"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_324": {
+      "id": 324,
+      "titulo": "Coleta de lixo por bairro",
+      "fonte": "IBGE | Censo 2022 e CNEFE 2022",
+      "atualizacao": "Censo 2022",
+      "icone": "delete",
+      "area": "Sede urbana de Oriximiná",
+      "resumo": "Em cada bairro da sede, quantas casas têm coleta de lixo e quantas queimam ou dão outro destino.",
+      "descricao": "Mostra, em cada bairro da sede de Oriximiná, quantas casas têm o lixo recolhido pelo serviço de limpeza (na porta ou em caçamba) e quantas queimam o lixo ou dão outro destino, segundo o Censo 2022. Nos bairros da sede, 616 das 11.665 casas (5%) não têm coleta. Entre os bairros com mais de 200 casas, o que tem a maior parte sem coleta é Bela Vista (28% das casas). O mapa pinta os bairros conforme a parte das casas sem coleta. As casas de cada setor censitário foram repartidas entre os bairros conforme onde ficam os seus domicílios no CNEFE, como no cartão \"Moradores por bairro da sede\"; por isso os números por bairro são estimativas.",
+      "exemplo": "Mostra em que bairros a coleta precisa chegar ou passar mais vezes, e onde colocar caçambas ou pontos de entrega de lixo.",
+      "tipos": [
+        "barras_percentuais",
+        "barras"
+      ],
+      "cores": [
+        "#56B96D",
+        "#F49F36",
+        "#F65658"
+      ],
+      "unidade": "casas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE – SIDRA: Censo 2022, tabela 6892 (destino do lixo)",
+          "url": "https://sidra.ibge.gov.br/tabela/6892"
+        },
+        {
+          "nome": "IBGE – Censo 2022: agregados por setores censitários",
+          "url": "https://www.ibge.gov.br/estatisticas/sociais/populacao/22827-censo-demografico-2022.html"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "bairros",
+        "nome": "Casas sem coleta de lixo por bairro",
+        "cor": "#F65658"
+      },
+      "historico": null
+    },
+    "comp_325": {
+      "id": 325,
+      "titulo": "Alerta de dengue",
+      "fonte": "InfoDengue | Fiocruz e FGV",
+      "atualizacao": "Semanal",
+      "icone": "coronavirus",
+      "area": "Município de Oriximiná",
+      "resumo": "Casos de dengue das últimas semanas, com a cor do nível de alerta de cada semana.",
+      "descricao": "Mostra os casos de dengue de Oriximiná nas últimas 26 semanas epidemiológicas (cada coluna tem a data do domingo em que a semana começa). A cor de cada coluna é o nível de alerta daquela semana, calculado pelo InfoDengue (Fiocruz e FGV) a partir dos casos notificados e do clima: verde, sem risco; amarelo, clima favorável ao mosquito Aedes aegypti; laranja, transmissão em alta; vermelho, epidemia. Como os casos chegam com atraso, os números das semanas mais recentes são os casos estimados pelo InfoDengue e ainda podem mudar. O histórico mostra os casos por ano de dengue, chikungunya e zika, as três doenças do mesmo mosquito. Em Taipei, este cartão é o alerta de enterovírus, doença que no Brasil não é de notificação obrigatória; a dengue é o alerta semanal de doença que existe para Oriximiná.",
+      "exemplo": "Avisa quando a dengue começa a subir, para a Prefeitura reforçar a visita dos agentes de endemias, os mutirões contra o mosquito e o atendimento nas unidades de saúde.",
+      "tipos": [
+        "colunas"
+      ],
+      "cores": [
+        "#56B96D",
+        "#F8CF58",
+        "#F49F36",
+        "#F65658"
+      ],
+      "unidade": "casos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "InfoDengue – boletim de Oriximiná",
+          "url": "https://info.dengue.mat.br/alerta/1505304/dengue"
+        },
+        {
+          "nome": "InfoDengue – sobre os níveis de alerta",
+          "url": "https://info.dengue.mat.br"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_326": {
+      "id": 326,
+      "titulo": "Ocorrências criminais",
+      "fonte": "Ministério da Justiça | Sinesp",
+      "atualizacao": "Mensal",
+      "icone": "local_police",
+      "area": "Município de Oriximiná",
+      "resumo": "Vítimas de homicídio e de tentativa de homicídio e mandados de prisão cumpridos, por ano.",
+      "descricao": "Mostra, ano a ano desde 2015, os crimes contra a vida em Oriximiná registrados pela Polícia Civil do Pará no Sinesp, o sistema de estatísticas de segurança pública do Ministério da Justiça: as vítimas de homicídio e de outras mortes violentas (homicídio doloso, feminicídio, latrocínio e lesão corporal seguida de morte) e as vítimas de tentativa de homicídio ou de feminicídio. A terceira linha são os mandados de prisão cumpridos no município. O ano atual vai até o último mês já publicado. Por município, o Sinesp não traz roubos e furtos (só o total do estado), nem quantos casos foram esclarecidos, que é a outra linha do cartão de Taipei; os mandados de prisão cumpridos são o dado mais próximo do trabalho da polícia.",
+      "exemplo": "Acompanha a violência em Oriximiná ao longo dos anos e ajuda a planejar a segurança junto com o Estado: iluminação, guarda municipal e ações de prevenção.",
+      "tipos": [
+        "linha_tempo_separada",
+        "colunas"
+      ],
+      "cores": [
+        "#F65658",
+        "#F8CF58",
+        "#24B0DD"
+      ],
+      "unidade": "",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério da Justiça – Sinesp VDE (base de dados)",
+          "url": "https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_327": {
+      "id": 327,
+      "titulo": "Crédito do Pronaf",
+      "fonte": "Banco Central | Matriz de Dados do Crédito Rural",
+      "atualizacao": "Mensal",
+      "icone": "agriculture",
+      "area": "Município de Oriximiná",
+      "resumo": "Quanto os agricultores familiares de Oriximiná pegaram de crédito do Pronaf por ano, em cada linha.",
+      "descricao": "Mostra, ano a ano, o valor dos empréstimos do Pronaf (Programa Nacional de Fortalecimento da Agricultura Familiar) feitos em Oriximiná, em mil reais, segundo a Matriz de Dados do Crédito Rural do Banco Central: o custeio, para plantar e criar, e os investimentos do Mais Alimentos (máquinas e equipamentos), do microcrédito rural do Grupo B (as famílias de menor renda), da reforma agrária (assentados) e outros. O ano atual vai até o último mês já publicado. Em Taipei, este cartão mostra os empréstimos da cidade para jovens empreendedores; aqui, a linha parecida é o Pronaf Jovem, para agricultores de 16 a 29 anos, mas ela não teve nenhum contrato em Oriximiná desde 2013, o começo dos dados.",
+      "exemplo": "Mostra quanto crédito chega à agricultura familiar e quais linhas ninguém usa, como o Pronaf Jovem, para a Prefeitura, a Emater e o sindicato rural divulgarem e ajudarem os agricultores a fazer os projetos.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "colunas"
+      ],
+      "cores": [
+        "#56B96D",
+        "#24B0DD",
+        "#F8CF58",
+        "#c18ad8",
+        "#bdbdbd"
+      ],
+      "unidade": "mil reais",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Banco Central – Matriz de Dados do Crédito Rural",
+          "url": "https://www.bcb.gov.br/estabilidadefinanceira/micrrural"
+        },
+        {
+          "nome": "BNDES – Pronaf Jovem",
+          "url": "https://www.bndes.gov.br/wps/portal/site/home/financiamento/produto/pronaf-jovem"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_328": {
+      "id": 328,
+      "titulo": "Emissões de gases de efeito estufa",
+      "fonte": "Observatório do Clima | SEEG 13.0",
+      "atualizacao": "2024",
+      "icone": "factory",
+      "area": "Município de Oriximiná",
+      "resumo": "Quanto gás de efeito estufa Oriximiná emite por ano e de onde ele vem: desmatamento, gado, combustíveis...",
+      "descricao": "Mostra as emissões de gases de efeito estufa de Oriximiná em 2024, por setor, em mil toneladas de CO2 equivalente, segundo o SEEG do Observatório do Clima. No total, o município emitiu cerca de 2,1 milhões de toneladas. A maior parte vem do desmatamento e da mudança do uso da terra (70%), seguida da agropecuária, sobretudo o gado (15%), e do combustível queimado na indústria, principalmente na mineração de Porto Trombetas. As florestas de Oriximiná, sobretudo as das áreas protegidas e terras indígenas, absorvem muito mais: cerca de 18,2 milhões de toneladas por ano, umas 9 vezes o que o município emite. Essa absorção e as emissões dentro dessas áreas (mais 199 mil toneladas) ficam fora das colunas, como no inventário oficial. O histórico mostra cada setor desde 2007, quando o SEEG começa a calcular a energia por município; o desmatamento teve o pico em 2009.",
+      "exemplo": "Mostra onde agir para reduzir as emissões de Oriximiná: combater o desmatamento, melhorar o manejo do gado e cuidar do lixo, e mostra o valor das florestas em pé.",
+      "tipos": [
+        "barras",
+        "rosca"
+      ],
+      "cores": [
+        "#F65658",
+        "#F49F36",
+        "#c18ad8",
+        "#24B0DD",
+        "#F8CF58",
+        "#a1887f"
+      ],
+      "unidade": "mil t CO2e",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "SEEG – Observatório do Clima (dados)",
+          "url": "https://seeg.eco.br/dados"
+        },
+        {
+          "nome": "Plataforma SEEG – municípios",
+          "url": "https://plataforma.seeg.eco.br"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_329": {
+      "id": 329,
+      "titulo": "Como são as ruas onde as pessoas moram",
+      "fonte": "IBGE | Censo 2022 (entorno)",
+      "atualizacao": "Censo 2022",
+      "icone": "park",
+      "area": "Áreas urbanas de Oriximiná",
+      "resumo": "Quantos moradores da cidade vivem em rua com árvores, pavimento, calçada, iluminação, ciclovia...",
+      "descricao": "Mostra o que existe nas ruas onde moram os 44.862 moradores das áreas urbanas de Oriximiná (a sede e Porto Trombetas), segundo a Pesquisa Urbanística do Entorno dos Domicílios do Censo 2022: o recenseador anotou cada quadra. 77% dos moradores vivem em rua com pelo menos uma árvore no seu trecho, mas só 21% em rua com cinco árvores ou mais. 82% têm rua pavimentada, 81% têm calçada e 99,5% têm iluminação pública; já a rampa para cadeirante (5%), o ponto de ônibus (0,2%) e a ciclovia (0,2%) quase não existem. \"Não declarado\" é sobretudo a rampa nas ruas sem calçada. Em Taipei, este cartão conta as árvores plantadas nas ruas; Oriximiná não tem esse cadastro, e a parte dos moradores em rua com árvores é o dado mais próximo. Ruas arborizadas ficam mais frescas e ajudam a enfrentar o calor.",
+      "exemplo": "Mostra onde plantar árvores, fazer calçadas, rampas e ciclovias para a cidade ficar mais fresca, segura e fácil de andar a pé e de bicicleta.",
+      "tipos": [
+        "barras_percentuais",
+        "barras"
+      ],
+      "cores": [
+        "#56B96D",
+        "#F65658",
+        "#bdbdbd"
+      ],
+      "unidade": "moradores",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "IBGE – SIDRA, tabela 6752 (entorno dos domicílios)",
+          "url": "https://sidra.ibge.gov.br/tabela/6752"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_330": {
+      "id": 330,
+      "titulo": "Qualidade do ar",
+      "fonte": "Copernicus (CAMS) | Open-Meteo",
+      "atualizacao": "Diária",
+      "icone": "air",
+      "area": "Sede de Oriximiná",
+      "resumo": "Quanta fumaça e poeira fina há no ar de Oriximiná, mês a mês: o ar piora na época das queimadas.",
+      "descricao": "Mostra a média de cada mês da fumaça e poeira fina no ar da sede de Oriximiná (PM2.5, em microgramas por metro cúbico), nos últimos três anos. Oriximiná não tem estação que mede o ar: os números são estimativas do serviço europeu Copernicus (CAMS), feitas por satélite e modelo de computador. O ar piora sobretudo na época das queimadas, de agosto a novembro (as colunas laranja), quando chega fumaça de toda a região: em média 15,2, contra 7,7 no resto do ano. O pior mês foi novembro de 2024. Nos últimos 12 meses, o ar passou do limite da Organização Mundial da Saúde (15 na média do dia) em 52 dias, e ficou ruim pelo índice de qualidade do ar do Ministério do Meio Ambiente (acima de 50) em 2 dias. Na última semana, a média foi 34,3. Em Taipei, este cartão mostra as estações que medem o ar ao vivo.",
+      "exemplo": "Avisa quando o ar fica pior por causa das queimadas, para a Saúde orientar crianças, idosos e quem tem asma, e mostra a importância de combater o fogo na região.",
+      "tipos": [
+        "colunas"
+      ],
+      "cores": [
+        "#F49F36",
+        "#24B0DD"
+      ],
+      "unidade": "µg/m³",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Open-Meteo – qualidade do ar (Copernicus CAMS)",
+          "url": "https://open-meteo.com/en/docs/air-quality-api"
+        },
+        {
+          "nome": "OMS – diretrizes de qualidade do ar (2021)",
+          "url": "https://www.who.int/publications/i/item/9789240034228"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_331": {
+      "id": 331,
+      "titulo": "Nível do rio Trombetas",
+      "fonte": "ANA | Estação 16900000 – Oriximiná",
+      "atualizacao": "Diária",
+      "icone": "water",
+      "area": "Rio Trombetas, na sede de Oriximiná",
+      "resumo": "O nível do rio Trombetas na cidade, mês a mês, comparado com o normal: cheias e secas.",
+      "descricao": "Mostra o nível médio do rio Trombetas em frente à cidade em cada um dos últimos 13 meses, ao lado do normal daquele mês (a média de todos os anos desde 1970), em centímetros na régua da ANA (Agência Nacional de Águas). O rio sobe de janeiro a junho, com a cheia, e desce até a seca, de outubro a dezembro. Na última leitura (20/10/2026 às 21:00), o rio estava em 84 cm, 110 cm abaixo do normal de outubro (195 cm). O nível mais baixo já registrado foi -130 cm, em 12 de outubro de 2024. A maior cheia foi 935 cm, em 19 de maio de 2022. O histórico mostra a maior cheia e a menor seca de cada ano. Os meses mais recentes vêm da régua automática, que manda o nível a cada 15 minutos.",
+      "exemplo": "Ajuda a Defesa Civil a se preparar para as cheias (famílias desalojadas nas áreas baixas) e para as secas (barcos que não chegam às comunidades, falta de água e de peixe).",
+      "tipos": [
+        "colunas",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#bdbdbd"
+      ],
+      "unidade": "cm",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "ANA – HidroWeb, estação 16900000 (Oriximiná)",
+          "url": "https://www.snirh.gov.br/hidroweb/serieshistoricas"
+        },
+        {
+          "nome": "ANA – Sala de Situação (rios da Amazônia)",
+          "url": "https://www.gov.br/ana/pt-br/sala-de-situacao"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_332": {
+      "id": 332,
+      "titulo": "Áreas de risco de desastre",
+      "fonte": "Serviço Geológico do Brasil (SGB/CPRM)",
+      "atualizacao": "Estudos de 2012, 2018 e 2023",
+      "icone": "warning",
+      "area": "Sede de Oriximiná",
+      "resumo": "Os lugares da cidade com risco alto de inundação, deslizamento de encosta e erosão, e quantas pessoas moram neles.",
+      "descricao": "Mostra os 7 setores de risco alto ou muito alto da sede de Oriximiná marcados pelo Serviço Geológico do Brasil nos estudos de 2012 (atualizado em 2018) e de 2023, depois das chuvas daquele ano. 5 deles são de risco muito alto. Moram neles cerca de 2.120 pessoas, em 510 casas, sobretudo nas encostas da orla do Centro, de Santa Terezinha, São José, Fátima e Santa Luzia, onde o barranco pode deslizar (1.680 pessoas), e na parte baixa do Centro, que a cheia do rio Trombetas inunda (400 pessoas). Os outros setores são ravinas abertas pela água da chuva sem drenagem, que avançam sobre as casas nos bairros novos. Os números de casas e pessoas são as estimativas dos geólogos na visita. Quando o mesmo lugar aparece nos dois estudos, vale o mais novo. O mapa (e a Comparação de mapas) mostra cada setor.",
+      "exemplo": "Mostra à Defesa Civil onde fazer vistorias, obras de drenagem e contenção de encostas e onde avisar os moradores antes das chuvas e das cheias.",
+      "tipos": [
+        "numero"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#F49F36",
+        "#F65658"
+      ],
+      "unidade": "pessoas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "SGB – Ação emergencial: áreas de risco de Oriximiná (2012)",
+          "url": "https://rigeo.sgb.gov.br/handle/doc/20756"
+        },
+        {
+          "nome": "SGB – Avaliação técnica pós-desastre: Oriximiná (2023)",
+          "url": "https://rigeo.sgb.gov.br/handle/doc/23682"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "pontos",
+        "nome": "Áreas de risco de desastre",
+        "cor": "#F65658"
+      },
+      "historico": null
+    },
+    "comp_333": {
+      "id": 333,
+      "titulo": "Assistência social para idosos",
+      "fonte": "MDS | Censo SUAS 2025",
+      "atualizacao": "Censo SUAS 2025",
+      "icone": "elderly",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantos idosos participam dos grupos dos CRAS de Oriximiná, e onde ficam os CRAS.",
+      "descricao": "Mostra quantas pessoas de 60 anos ou mais participam regularmente dos grupos do PAIF nos 3 CRAS (Centros de Referência de Assistência Social) de Oriximiná, segundo o Censo SUAS 2025 do Ministério do Desenvolvimento e Assistência Social: 363 idosos, 220 mulheres e 143 homens. O CRAS Ribeirinho, com as equipes volantes que atendem as comunidades ribeirinhas, é o que atende mais idosos. Os 3 CRAS orientam e emitem a carteira da pessoa idosa, e 2 deles têm, na rede de entidades ligadas a eles, grupos de convivência para idosos. Em Oriximiná não há lar de idosos (instituição de longa permanência), centro-dia nem centro de convivência só para idosos, que são o que os cartões do Taipei contam; a única unidade de acolhimento do município é para crianças e adolescentes. Nenhum CRAS oferece o atendimento no domicílio para idosos e pessoas com deficiência. O mapa (e a Comparação de mapas) mostra onde fica cada CRAS.",
+      "exemplo": "Mostra quantos idosos a assistência social alcança e ajuda a planejar grupos de convivência, o atendimento em casa para quem não pode sair e um centro-dia para os idosos que precisam de cuidado durante o dia.",
+      "tipos": [
+        "barras",
+        "rosca"
+      ],
+      "cores": [
+        "#c18ad8",
+        "#24B0DD"
+      ],
+      "unidade": "idosos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "MDS – Censo SUAS 2025 (vigilância socioassistencial)",
+          "url": "https://aplicacoes.mds.gov.br/sagi/snas/vigilancia/index2.php"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "pontos",
+        "nome": "CRAS (assistência social)",
+        "cor": "#c18ad8"
+      },
+      "historico": null
+    },
+    "comp_334": {
+      "id": 334,
+      "titulo": "Principais causas de morte",
+      "fonte": "Ministério da Saúde | DATASUS – SIM",
+      "atualizacao": "2024 (e prévia de 2025)",
+      "icone": "monitor_heart",
+      "area": "Município de Oriximiná",
+      "resumo": "De que morrem os moradores de Oriximiná: mortes por causa a cada 100 mil habitantes, ano a ano.",
+      "descricao": "Mostra, de 2015 a 2025, quantos moradores de Oriximiná morreram de cada uma das principais causas, a cada 100 mil habitantes, segundo o Sistema de Informações sobre Mortalidade (SIM) do Ministério da Saúde. Quanto mais forte a cor, mais mortes. AVC são as doenças cerebrovasculares; infarto, as doenças isquêmicas do coração; pressão alta, as doenças hipertensivas; câncer, todas as neoplasias; homicídios, as agressões; trânsito, os acidentes de transporte (inclusive de barco). Em 2015–2024, as causas que mais mataram foram câncer, pneumonia, infarto e AVC. A covid-19 (que a lista do SUS põe no grupo 031, das outras doenças infecciosas) matou cerca de 210 moradores em 2020 e 2021. Uma parte grande das mortes (15%) tem a causa mal definida: muitas vezes a pessoa morreu sem assistência médica, em casa ou numa comunidade longe do hospital, e por isso a causa de verdade não foi registrada. 2025 ainda é prévia e pode mudar. Como os números de Oriximiná são pequenos, as causas mais raras (suicídios, afogamentos) sobem e descem bastante de um ano para outro. A população de cada ano é a estimativa do IBGE (e o Censo em 2022).",
+      "exemplo": "Mostra onde a saúde pode evitar mais mortes: controle da pressão e do diabetes, vacinas contra a pneumonia, prevenção de câncer e de violência, e mais atendimento nas comunidades, para menos pessoas morrerem sem assistência.",
+      "tipos": [
+        "mapa_calor",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#F65658",
+        "#F49F36",
+        "#F8CF58",
+        "#c18ad8",
+        "#24B0DD",
+        "#56B96D",
+        "#9DC56E",
+        "#a1887f",
+        "#7d9be0",
+        "#e57fb0",
+        "#bdbdbd",
+        "#8d6e63"
+      ],
+      "unidade": "por 100 mil",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet: mortalidade no Pará (CID-10)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?sim/cnv/obt10pa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_335": {
+      "id": 335,
+      "titulo": "Cobertura vacinal das crianças",
+      "fonte": "Ministério da Saúde | SI-PNI (DATASUS)",
+      "atualizacao": "2022",
+      "icone": "vaccines",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantas crianças de Oriximiná tomaram as vacinas do calendário, ano a ano, e a meta de 95%.",
+      "descricao": "Mostra, de 2013 a 2022, a cobertura vacinal das crianças de Oriximiná: a parte das crianças da idade certa (até 1 ano, ou 1 ano na tríplice viral) que tomaram cada vacina do calendário, segundo o Programa Nacional de Imunizações. A meta é vacinar 95% das crianças (90% na BCG e na rotavírus). A cobertura caiu muito: a penta foi de 87% em 2013 para 36% em 2022, e a tríplice viral, contra o sarampo, de 83% para 38%. Em 2022, nenhuma das 7 vacinas (fora a BCG) chegou à meta. A BCG, dada na maternidade, pode passar de 100% porque conta também os bebês de outros municípios que nascem no hospital de Oriximiná. A cobertura é calculada com as doses aplicadas e uma estimativa do número de crianças, por isso pode ter erros, sobretudo em municípios pequenos. Os dados vão até 2022: depois disso, o Ministério da Saúde mudou o sistema e publica a cobertura só no painel de vacinação, sem arquivo para baixar. Em Taipei, este cartão mostra os hospitais que aplicam a vacina da gripe; em Oriximiná, as vacinas são dadas nas unidades básicas de saúde (veja a camada de estabelecimentos de saúde na Comparação de mapas).",
+      "exemplo": "Mostra o tamanho da queda da vacinação e ajuda a planejar busca ativa das crianças atrasadas, vacinação nas escolas e nas comunidades ribeirinhas.",
+      "tipos": [
+        "linha_tempo_separada",
+        "mapa_calor"
+      ],
+      "cores": [
+        "#a1887f",
+        "#24B0DD",
+        "#F65658",
+        "#56B96D",
+        "#F8CF58",
+        "#c18ad8",
+        "#F49F36",
+        "#7d9be0"
+      ],
+      "unidade": "%",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet: cobertura vacinal (SI-PNI)",
+          "url": "http://tabnet.datasus.gov.br/cgi/dhdat.exe?bd_pni/cpnibr.def"
+        },
+        {
+          "nome": "Ministério da Saúde – painel de cobertura vacinal (2023 em diante)",
+          "url": "https://infoms.saude.gov.br/extensions/SEIDIGI_DEMAS_VACINACAO_CALENDARIO_NACIONAL_MENU_COBERTURA/SEIDIGI_DEMAS_VACINACAO_CALENDARIO_NACIONAL_MENU_COBERTURA.html"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_336": {
+      "id": 336,
+      "titulo": "Passageiros de avião",
+      "fonte": "ANAC | Dados Estatísticos do Transporte Aéreo",
+      "atualizacao": "Mensal",
+      "icone": "flight",
+      "area": "Aeroportos de Oriximiná",
+      "resumo": "Quantos passageiros embarcam e desembarcam de avião em Oriximiná por ano (Porto Trombetas e sede).",
+      "descricao": "Mostra, de 2010 a 2026, quantos passageiros embarcaram e desembarcaram nos voos das empresas aéreas nos aeroportos de Oriximiná, segundo a ANAC: o de Porto Trombetas (SBTB), que tem voos regulares, e o da sede (SNOX). O movimento é quase todo em Porto Trombetas. Desde 2000, o maior ano foi 2009, com 38.263 passageiros (somando embarques e desembarques). O movimento caiu a partir de 2014 e mais ainda na pandemia, em 2020, e o menor ano foi 2022, com 3.221; depois voltou a subir. Em 2026 (até setembro), já foram 12.011, em voos de Azul Linhas Aéreas Brasileiras ligando Oriximiná a Manaus e Santarém. O aeródromo da sede não tem voos de empresas aéreas desde 2024. Não entram os voos particulares e de táxi aéreo sem registro na ANAC. Em Oriximiná quase todo mundo viaja de barco, mas a ANTAQ não publica os passageiros do porto; em Taipei, este cartão mostra os passageiros das estações do metrô.",
+      "exemplo": "Mostra quanto Oriximiná depende do avião para chegar a Manaus e Santarém e ajuda a discutir com as empresas aéreas e o governo a oferta de voos.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#56B96D"
+      ],
+      "unidade": "passageiros",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "ANAC – Dados Estatísticos do Transporte Aéreo",
+          "url": "https://www.gov.br/anac/pt-br/assuntos/dados-e-estatisticas/dados-estatisticos"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_337": {
+      "id": 337,
+      "titulo": "Merenda escolar (PNAE)",
+      "fonte": "FNDE | Liberações do PNAE",
+      "atualizacao": "Mensal",
+      "icone": "restaurant",
+      "area": "Rede municipal de Oriximiná",
+      "resumo": "Quanto dinheiro do governo federal a Prefeitura recebe por ano para a merenda, por tipo de escola.",
+      "descricao": "Mostra quanto a Prefeitura de Oriximiná recebeu por ano do FNDE (governo federal) para a merenda das escolas municipais, pelo Programa Nacional de Alimentação Escolar (PNAE), em mil reais. O dinheiro vem por aluno, com valores diferentes para cada tipo: creche e pré-escola, ensino fundamental e outros (EJA, atendimento especializado, tempo integral), e um valor maior por aluno nas escolas quilombolas e indígenas. Em 2025, foram R$ 3,3 milhões, dos quais R$ 522 mil (16%) para as escolas das comunidades quilombolas e indígenas; em 2015, tinham sido R$ 2,0 milhões. Os municípios costumam completar a merenda com dinheiro próprio, que não aparece aqui. A Lei 11.947/2009 manda usar pelo menos 30% do dinheiro do PNAE para comprar alimentos da agricultura familiar; quanto Oriximiná comprou dos agricultores só aparece no painel do FNDE, sem arquivo para baixar. As escolas estaduais recebem a merenda pelo Governo do Pará e não entram aqui. Em Taipei, este cartão mostra os fornecedores de cada escola, que no Brasil não são publicados.",
+      "exemplo": "Mostra o tamanho da merenda escolar e ajuda a planejar compras dos agricultores, quilombolas e ribeirinhos de Oriximiná, com alimentos frescos e da região.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_empilhada"
+      ],
+      "cores": [
+        "#F8CF58",
+        "#24B0DD",
+        "#c18ad8",
+        "#56B96D"
+      ],
+      "unidade": "mil reais",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "FNDE – liberações (consulta pública)",
+          "url": "https://www.fnde.gov.br/sigefweb/index.php/liberacoes"
+        },
+        {
+          "nome": "FNDE – PNAE: dados da agricultura familiar",
+          "url": "https://www.gov.br/fnde/pt-br/acesso-a-informacao/acoes-e-programas/programas/pnae/consultas/pnae-dados-da-agricultura-familiar"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_338": {
+      "id": 338,
+      "titulo": "Fábricas de alimentos e bebidas",
+      "fonte": "Ministério do Trabalho | RAIS",
+      "atualizacao": "RAIS 2025",
+      "icone": "bakery_dining",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantas fábricas de alimentos e bebidas (polpas de frutas, padarias, gelo, água) há em Oriximiná.",
+      "descricao": "Mostra quantas empresas de fabricação de alimentos e bebidas de Oriximiná declararam a RAIS, do Ministério do Trabalho, a cada ano, de 2018 a 2025, por tipo: polpas de frutas (como o açaí), padarias e confeitarias, gelo, água mineral e bebidas e outros. Em 2025, eram 15 (as mais comuns: padarias e confeitarias e gelo), com 50 empregados de carteira assinada (o histórico mostra os empregados de cada ano). Algumas estavam sem empregados no fim do ano. A RAIS só conta as empresas que declaram ao Ministério do Trabalho: as fábricas familiares, como a maioria das casas de farinha, e quem trabalha sem carteira assinada não entram, então a produção de alimentos de Oriximiná é bem maior do que o cartão mostra. Os supermercados, restaurantes e o comércio de alimentos também não entram (só quem fabrica).",
+      "exemplo": "Mostra quem fabrica alimentos em Oriximiná e ajuda a planejar o apoio às agroindústrias, a fiscalização sanitária e a compra local para a merenda.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_empilhada"
+      ],
+      "cores": [
+        "#c18ad8",
+        "#F8CF58",
+        "#7d9be0",
+        "#24B0DD",
+        "#a1887f",
+        "#F65658",
+        "#bdbdbd"
+      ],
+      "unidade": "estabelecimentos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério do Trabalho – microdados da RAIS (PDET)",
+          "url": "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/microdados-rais-e-caged"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_339": {
+      "id": 339,
+      "titulo": "Estações de qualidade da água",
+      "fonte": "ANA | Inventário de estações",
+      "atualizacao": "Inventário da ANA",
+      "icone": "water_drop",
+      "area": "Rios de Oriximiná",
+      "resumo": "Onde a Agência Nacional de Águas mede a qualidade da água dos rios de Oriximiná, e desde quando.",
+      "descricao": "Mostra as 7 estações da ANA (Agência Nacional de Águas) que medem a qualidade da água dos rios de Oriximiná e estão funcionando: no Rio Cachorro, no Rio Erepecuru (Cuminá), no Rio Mapuera e no Rio Trombetas. Nelas, técnicos colhem amostras de água algumas vezes por ano para medir a turbidez (água barrenta), o oxigênio, a temperatura e outros indicadores. A mais antiga é a de Cachoeira da Porteira, no Rio Trombetas, que mede desde 1976. O mapa (e a Comparação de mapas) mostra onde fica cada uma. Os resultados das análises não estão abertos: só saem do HidroWeb, o sistema da ANA, com cadastro e senha, e o serviço aberto de indicadores de qualidade da ANA só traz as redes dos estados (o Pará não aparece nele). Em Taipei, este cartão mostra os pontos de monitoramento da qualidade da água da cidade.",
+      "exemplo": "Mostra onde já se acompanha a água dos rios, perto das áreas protegidas, da mineração e das comunidades, e onde faltaria acompanhar, como na frente da cidade.",
+      "tipos": [
+        "barras"
+      ],
+      "cores": [
+        "#24B0DD"
+      ],
+      "unidade": "anos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "ANA – HidroWeb (séries históricas das estações)",
+          "url": "https://www.snirh.gov.br/hidroweb/serieshistoricas"
+        },
+        {
+          "nome": "ANA – Indicadores de qualidade de água (metadados)",
+          "url": "https://metadados.snirh.gov.br/geonetwork/srv/api/records/647706bb-bbad-4b99-8413-6b4f48697521"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "pontos",
+        "nome": "Estações de qualidade da água (ANA)",
+        "cor": "#24B0DD"
+      },
+      "historico": null
+    },
+    "comp_340": {
+      "id": 340,
+      "titulo": "Chuva em Oriximiná",
+      "fonte": "ANA | Estações de chuva",
+      "atualizacao": "Diária",
+      "icone": "rainy",
+      "area": "Sede de Oriximiná",
+      "resumo": "Quanto choveu na sede de Oriximiná em cada mês, comparado com o normal, e as estações de chuva.",
+      "descricao": "Mostra quanto choveu na sede de Oriximiná em cada um dos últimos 13 meses, em milímetros, ao lado do normal daquele mês (a média desde 1970), medido pela estação de chuva da ANA (Agência Nacional de Águas) na cidade. Em Oriximiná chove em média 2.435 mm por ano; o mês mais chuvoso costuma ser março e o mais seco, setembro. Dos últimos meses completos, 3 de 12 tiveram chuva acima do normal. Os meses mais recentes vêm do pluviômetro automático, que manda a chuva a cada 15 minutos; se ele falha alguns dias, o mês pode aparecer com menos chuva do que caiu. O histórico mostra a chuva de cada ano. O mapa (e a Comparação de mapas) mostra as 7 estações de chuva da ANA em Oriximiná. Nenhuma delas mede o vento ou a temperatura; em Taipei, este cartão mostra as estações meteorológicas completas.",
+      "exemplo": "Mostra se o ano está mais seco ou mais chuvoso que o normal, o que ajuda a prever cheias, secas, queimadas e a época de plantar.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#24B0DD",
+        "#bdbdbd"
+      ],
+      "unidade": "mm",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "ANA – HidroWeb (estação 00155000, Oriximiná)",
+          "url": "https://www.snirh.gov.br/hidroweb/serieshistoricas"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "pontos",
+        "nome": "Estações de chuva (ANA)",
+        "cor": "#7d9be0"
+      },
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_341": {
+      "id": 341,
+      "titulo": "Focos de queimada",
+      "fonte": "INPE | Programa Queimadas",
+      "atualizacao": "Diária",
+      "icone": "local_fire_department",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantos focos de fogo os satélites viram em Oriximiná a cada mês, comparado com a média.",
+      "descricao": "Mostra quantos focos de queimada os satélites viram em Oriximiná em cada um dos últimos 13 meses, ao lado da média daquele mês desde 2003, segundo o Programa Queimadas do INPE. Para dar para comparar os anos, conta só o satélite de referência do INPE (AQUA, à tarde); somando todos os satélites, o número de focos é bem maior. As queimadas se concentram no fim da seca, de setembro a novembro; o mês com mais fogo costuma ser novembro. Em 2026, de janeiro a setembro, foram 137 focos, contra uma média de 129 no mesmo período dos anos anteriores. O ano com mais focos foi 2009, com 743. Um foco é um ponto onde o satélite viu fogo; uma queimada grande pode ter vários focos, e fogo pequeno ou debaixo das árvores pode não aparecer. O histórico mostra os focos de cada ano (2026 ainda não acabou), e o mapa (e a Comparação de mapas) mostra onde foram os focos dos últimos 12 meses. Em Taipei, este cartão mostra os prédios com risco de incêndio.",
+      "exemplo": "Avisa quando o fogo está acima do normal, para a Defesa Civil, os brigadistas e a Saúde se prepararem, e mostra onde as queimadas se repetem.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_separada"
+      ],
+      "cores": [
+        "#F65658",
+        "#bdbdbd"
+      ],
+      "unidade": "focos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "INPE – Programa Queimadas (BDQueimadas)",
+          "url": "https://terrabrasilis.dpi.inpe.br/queimadas/bdqueimadas/"
+        },
+        {
+          "nome": "INPE – dados abertos dos focos",
+          "url": "https://dataserver-coids.inpe.br/queimadas/queimadas/focos/csv/"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "pontos",
+        "nome": "Focos de queimada (últimos 12 meses)",
+        "cor": "#F49F36"
+      },
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_342": {
+      "id": 342,
+      "titulo": "Equipes de Saúde da Família",
+      "fonte": "Ministério da Saúde | CNES (DATASUS)",
+      "atualizacao": "Mensal",
+      "icone": "family_restroom",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantas equipes de Saúde da Família, de dentistas, de agentes comunitários e indígenas Oriximiná tem.",
+      "descricao": "Mostra quantas equipes de saúde da atenção básica Oriximiná tinha cadastradas no CNES, o cadastro do Ministério da Saúde, em dezembro de cada ano desde 2008 e no mês mais recente: as equipes de Saúde da Família (médico, enfermeiro, técnico e agentes comunitários, nas UBS), as de saúde bucal (dentista), as de agentes comunitários e as de saúde indígena. Em set/2026, eram 20 equipes de Saúde da Família (era 1 em 2008), 3.665 moradores para cada uma (população estimada pelo IBGE em 2026: 73.301). O Ministério recomenda de 2.000 a 3.500 pessoas por equipe, então Oriximiná está um pouco acima do recomendado. Nenhuma equipe está cadastrada como ribeirinha ou fluvial (de barco), os tipos criados para as comunidades dos rios. Em 2020 o Ministério mudou os tipos de equipe: até 2019, as equipes de dentista entravam junto com as de Saúde da Família, e depois as equipes só de agentes comunitários deixam de aparecer. Em Taipei, este cartão mostra as clínicas de medicina de família.",
+      "exemplo": "Mostra se a atenção básica está crescendo junto com a população e ajuda a planejar novas equipes, inclusive ribeirinhas e fluviais, para as comunidades dos rios.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "colunas"
+      ],
+      "cores": [
+        "#56B96D",
+        "#24B0DD",
+        "#F8CF58",
+        "#c18ad8",
+        "#bdbdbd"
+      ],
+      "unidade": "equipes",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet: equipes de saúde do Pará (CNES)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?cnes/cnv/equipepa.def"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_343": {
+      "id": 343,
+      "titulo": "Estabelecimentos de saúde por tipo",
+      "fonte": "DATASUS – CNES e Ministério do Trabalho – RAIS",
+      "atualizacao": "Mensal",
+      "icone": "local_pharmacy",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantos postos, UBS, clínicas, hospitais, laboratórios e farmácias Oriximiná tem.",
+      "descricao": "Mostra quantos estabelecimentos de saúde Oriximiná tem de cada tipo, segundo o CNES, o cadastro do Ministério da Saúde, em set/2026: 17 postos e unidades básicas de saúde, 15 clínicas, policlínicas e consultórios, 5 hospitais, 5 laboratórios e serviços de exames, 6 unidades de saúde indígena e 3 unidades móveis (entre elas 1 fluvial, um barco de atendimento). No CNES aparecem só 4 farmácias, porque a maioria das drogarias não se cadastra nele; por isso as farmácias e drogarias vêm da RAIS, do Ministério do Trabalho: 47 em 2025, contra 26 em 2018. Em 2010, o CNES tinha 29 estabelecimentos (sem contar as farmácias); o histórico mostra cada tipo ano a ano. Os consultórios particulares nem sempre se cadastram no CNES, então podem ser mais. O mapa dos estabelecimentos de saúde está na Comparação de mapas. Em Taipei, estes cartões mostram os consultórios de clínica geral, de medicina interna e as farmácias.",
+      "exemplo": "Mostra onde a rede de saúde cresceu e o que falta (por exemplo, exames ou atendimento nos rios), para planejar novas unidades e serviços.",
+      "tipos": [
+        "barras",
+        "rosca"
+      ],
+      "cores": [
+        "#56B96D",
+        "#24B0DD",
+        "#F65658",
+        "#F8CF58",
+        "#c18ad8",
+        "#7d9be0",
+        "#bdbdbd",
+        "#F49F36"
+      ],
+      "unidade": "estabelecimentos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "DATASUS – TabNet: estabelecimentos do Pará (CNES)",
+          "url": "http://tabnet.datasus.gov.br/cgi/deftohtm.exe?cnes/cnv/estabpa.def"
+        },
+        {
+          "nome": "Ministério do Trabalho – microdados da RAIS (PDET)",
+          "url": "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/microdados-rais-e-caged"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": {
+        "tipo": "arquivo"
+      }
+    },
+    "comp_344": {
+      "id": 344,
+      "titulo": "Hotéis e pousadas",
+      "fonte": "Ministério do Trabalho – RAIS e Ministério do Turismo – Cadastur",
+      "atualizacao": "RAIS 2025",
+      "icone": "hotel",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantos hotéis, pousadas e outros alojamentos Oriximiná tem, ano a ano.",
+      "descricao": "Mostra quantos hotéis, pousadas e outros alojamentos de Oriximiná declararam a RAIS, do Ministério do Trabalho, a cada ano de 2018 a 2025. Em 2025, eram 13 hotéis e pousadas e 2 outros alojamentos, com 12 empregados de carteira assinada; em 2018, eram 7 hotéis e pousadas. No Cadastur, o cadastro do Ministério do Turismo, que é voluntário, só 3 estão cadastrados (segundo trimestre de 2026): Pousada Tia Amélia, Pousada Paraiso e Pousada Arapari, com 22 quartos e 66 leitos no total. Quem não tem empregado registrado nem se cadastrou não aparece (como muitas pousadas familiares e casas que alugam quartos). Em Taipei, este cartão mostra os hotéis de cada distrito.",
+      "exemplo": "Mostra quanto Oriximiná pode receber de visitantes e ajuda a planejar o turismo e os eventos, como o Círio e o Festribal, e a incentivar o cadastro no Cadastur.",
+      "tipos": [
+        "colunas",
+        "linha_tempo_empilhada"
+      ],
+      "cores": [
+        "#c18ad8",
+        "#24B0DD"
+      ],
+      "unidade": "estabelecimentos",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério do Turismo – Cadastur (meios de hospedagem)",
+          "url": "https://dados.turismo.gov.br/dataset/meios-de-hospedagem"
+        },
+        {
+          "nome": "Ministério do Trabalho – microdados da RAIS (PDET)",
+          "url": "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/microdados-rais-e-caged"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
+    },
+    "comp_345": {
+      "id": 345,
+      "titulo": "Produtores orgânicos certificados",
+      "fonte": "Ministério da Agricultura | CNPO",
+      "atualizacao": "15/10/2026",
+      "icone": "eco",
+      "area": "Calha Norte do Pará",
+      "resumo": "Quantos produtores orgânicos certificados há em Oriximiná e nos municípios vizinhos.",
+      "descricao": "Mostra quantos produtores orgânicos certificados há em cada município da Calha Norte, segundo o Cadastro Nacional de Produtores Orgânicos do Ministério da Agricultura (15/10/2026). Oriximiná tem 24, todos no extrativismo de óleo de copaíba, 1 também com o processamento do óleo, certificados pela Ecocert Brasil Certificadora. Na região, só Oriximiná (24) e Óbidos (11) têm produtores orgânicos certificados. No cadastro, a cidade é escrita à mão, e Oriximiná aparece com o nome errado (\"ORIXIMA\"); o painel junta os nomes parecidos. Os produtores que vendem como orgânicos sem certificado não entram. Em Taipei, este cartão mostra as fazendas orgânicas.",
+      "exemplo": "Mostra o potencial dos produtos da floresta certificados, como o óleo de copaíba, e ajuda a planejar apoio à certificação de mais produtores, como a castanha e o açaí.",
+      "tipos": [
+        "barras"
+      ],
+      "cores": [
+        "#56B96D"
+      ],
+      "unidade": "produtores",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério da Agricultura – Cadastro Nacional de Produtores Orgânicos",
+          "url": "https://www.gov.br/agricultura/pt-br/assuntos/sustentabilidade/organicos/cadastro-nacional-de-produtores-organicos-cnpo"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": {
+        "tipo": "municipios",
+        "nome": "Produtores orgânicos certificados",
+        "cor": "#56B96D"
+      },
+      "historico": null
+    },
+    "comp_346": {
+      "id": 346,
+      "titulo": "Comércio de alimentos",
+      "fonte": "Ministério do Trabalho | RAIS",
+      "atualizacao": "RAIS 2025",
+      "icone": "storefront",
+      "area": "Município de Oriximiná",
+      "resumo": "Quantos mercadinhos, supermercados, padarias, açougues e outras lojas de alimentos Oriximiná tem.",
+      "descricao": "Mostra quantas lojas de alimentos de Oriximiná declararam a RAIS, do Ministério do Trabalho, a cada ano de 2018 a 2025, por tipo. Em 2025, eram 151 (eram 100 em 2018), com 313 empregados de carteira assinada. A maioria são mercadinhos e mercearias (92); supermercados são 10. A RAIS não traz o endereço, então não dá para pôr as lojas no mapa. As bancas das feiras, como a Feira do Produtor, e as lojas sem empregado registrado que não declaram a RAIS não entram. Em Taipei, este cartão mostra os mercados, supermercados e feiras no mapa.",
+      "exemplo": "Mostra onde as famílias compram comida e ajuda a planejar feiras e a fiscalização sanitária, e a ver se o comércio acompanha o crescimento da cidade.",
+      "tipos": [
+        "linha_tempo_empilhada",
+        "colunas"
+      ],
+      "cores": [
+        "#F49F36",
+        "#24B0DD",
+        "#F8CF58",
+        "#7d9be0",
+        "#F65658",
+        "#56B96D",
+        "#bdbdbd"
+      ],
+      "unidade": "lojas",
+      "meta": null,
+      "maximo": null,
+      "links": [
+        {
+          "nome": "Ministério do Trabalho – microdados da RAIS (PDET)",
+          "url": "https://www.gov.br/trabalho-e-emprego/pt-br/assuntos/estatisticas-trabalho/microdados-rais-e-caged"
+        }
+      ],
+      "colaboradores": [],
+      "mapa": null,
+      "historico": null
     }
   },
   "paineis_publicos": {
@@ -678,7 +1702,8 @@
         "emprego",
         "divisoes",
         "indicadores",
-        "comp_300"
+        "comp_300",
+        "comp_333"
       ],
       "grupo": "Painel de Oriximiná"
     },
@@ -701,7 +1726,8 @@
         "comp_305",
         "comp_303",
         "comp_304",
-        "vias"
+        "vias",
+        "comp_336"
       ],
       "grupo": "Painel de Oriximiná"
     },
@@ -733,7 +1759,82 @@
       "cartoes": [
         "comp_316",
         "comp_317",
-        "comp_318"
+        "comp_318",
+        "comp_322"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "saude": {
+      "titulo": "Saúde",
+      "icone": "local_hospital",
+      "cartoes": [
+        "comp_319",
+        "comp_320",
+        "comp_321",
+        "comp_325",
+        "comp_334",
+        "comp_335",
+        "comp_342",
+        "comp_343"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "servindo": {
+      "titulo": "Servindo ao povo",
+      "icone": "emoji_people",
+      "cartoes": [
+        "comp_323",
+        "comp_324",
+        "comp_326",
+        "comp_327"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "clima": {
+      "titulo": "Mudança climática",
+      "icone": "eco",
+      "cartoes": [
+        "comp_328",
+        "comp_329",
+        "comp_330",
+        "comp_341"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "desastres": {
+      "titulo": "Uma cidade resistente a desastres",
+      "icone": "flood",
+      "cartoes": [
+        "comp_331",
+        "comp_332"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "alimentar": {
+      "titulo": "Segurança e saúde alimentar",
+      "icone": "restaurant",
+      "cartoes": [
+        "comp_337",
+        "comp_338",
+        "comp_345",
+        "comp_346"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "ambiente": {
+      "titulo": "Meio ambiente sustentável",
+      "icone": "nature",
+      "cartoes": [
+        "comp_339",
+        "comp_340"
+      ],
+      "grupo": "Painel de Oriximiná"
+    },
+    "comercio": {
+      "titulo": "Revitalizando o distrito comercial",
+      "icone": "shopping_cart",
+      "cartoes": [
+        "comp_344"
       ],
       "grupo": "Painel de Oriximiná"
     },
