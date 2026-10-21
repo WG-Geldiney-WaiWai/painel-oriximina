@@ -337,6 +337,10 @@ st.markdown(f"""
     body.trocando-pagina [data-testid="stMain"] [data-stale="true"]:not(.st-key-barra_topo *),
     body.trocando-pagina [data-testid="stSidebar"] [data-stale="true"] {{
         opacity: 0 !important; transition: none !important; }}
+    /* A caixa cinza do cartão não é marcada (só o que tem dentro): com conteúdo antigo dentro, some também,
+       senão ficavam caixas vazias na tela durante a troca */
+    body.trocando-pagina [data-testid="stMain"] [class*="st-key-cartao_"]:has([data-stale="true"]) {{
+        opacity: 0 !important; transition: none !important; }}
     /* Catálogo de componentes, como no Taipei: o formulário fica colado à esquerda, numa coluna estreita, e
        os cartões ocupam o resto. Aqui no CSS geral (e não na página) para a página abrir já com este layout */
     .stMainBlockContainer:has(.st-key-lateral_catalogo) {{
@@ -4116,12 +4120,19 @@ def script_tela_cheia():
         const s = d.createElement("script");
         s.id = "script-troca-pagina";
         s.textContent = `
+            // (também "Painel de administração"/"Voltar ao painel" do menu do usuário e "Documentação técnica" do ⓘ:
+            // sem eles aqui, os cartões do painel antigo ficavam misturados e espremidos na página nova)
             const BOTOES_TROCA = '[class*="st-key-aba_topo_"] button, [class*="st-key-aba_menu_"] button, '
-                + '[class*="st-key-celular_pagina_"] button, [class*="st-key-celular_menu_"] button';
+                + '[class*="st-key-celular_pagina_"] button, [class*="st-key-celular_menu_"] button, '
+                + '.st-key-abrir_admin button, .st-key-abrir_documentacao button';
             let vigiaTroca = null;
             document.addEventListener("click", (ev) => {
                 const botao = ev.target.closest && ev.target.closest(BOTOES_TROCA);
                 if (!botao) return;
+                // Botão de dentro de um menu (do usuário ou ⓘ): o menu fecha, em vez de ficar por cima da página nova
+                if (botao.closest('[data-testid="stPopoverBody"]'))
+                    setTimeout(() => document.dispatchEvent(new KeyboardEvent("keydown",
+                        {key: "Escape", code: "Escape", keyCode: 27, bubbles: true})), 0);
                 const caixa = botao.closest('[class*="st-key-"]');
                 const chave = [...caixa.classList].find(c => c.startsWith("st-key-")).slice(7);
                 // Clique na página/painel que já está aberto: nada troca
