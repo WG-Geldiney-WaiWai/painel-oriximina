@@ -3735,18 +3735,24 @@ def barra_topo():
 
 
 # --- COLABORADORES DO PROJETO (ContributorsList e ContributorInfo do Taipei) ---
-# Para acrescentar alguém, copie um item da lista: "imagem" é um arquivo da pasta imagens/
+# Para acrescentar alguém, copie um item da lista: "imagem" é um arquivo da pasta imagens/ (None: sem foto)
+LINK_GITHUB_AUTOR = "https://github.com/WG-Geldiney-WaiWai"
 COLABORADORES = [
     {"nome": "Prefeitura Municipal de Oriximiná", "imagem": "oriximina-logo.jpg",
      "funcao": "Órgão responsável pelo painel",
      "contribuicao": "Responsável pelo Painel Oriximiná e pela organização dos dados do município.",
      "link": "https://www.oriximina.pa.gov.br"},
+    {"nome": "WG-Geldiney-WaiWai", "imagem": None,
+     "funcao": "Desenvolvedor do painel",
+     "contribuicao": "Criou e mantém o Painel Oriximiná: os painéis, os cartões, os mapas e a busca dos dados "
+                     "nas fontes oficiais.",
+     "link": LINK_GITHUB_AUTOR},
 ]
 
 
 def foto_colaborador(colaborador, tamanho):
-    arquivo = os.path.join(PASTA_IMAGENS, colaborador["imagem"])
-    if not os.path.exists(arquivo):
+    arquivo = os.path.join(PASTA_IMAGENS, colaborador["imagem"] or "")
+    if not os.path.isfile(arquivo):
         return f'<span class="icone-material foto-colaborador" style="font-size:{tamanho}px">account_circle</span>'
     with open(arquivo, "rb") as arq:
         dados = base64.b64encode(arq.read()).decode()
