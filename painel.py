@@ -817,18 +817,34 @@ st.markdown(f"""
     /* Alto da documentação, como o do Taipei: título grande em degradê, frase, botões e cartão de exemplo */
     .doc-heroi {{ text-align: center; padding: 40px 0 18px 0; }}
     .doc-titulo {{
-        font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 700; line-height: 1.15;
+        font-size: clamp(3.2rem, 7vw, 6rem); font-weight: 700; line-height: 1.15;
         background: linear-gradient(90deg, #5a9cf8 0%, #7a90b8 55%, #5a9cf8 100%);
         -webkit-background-clip: text; background-clip: text; color: transparent;
     }}
     .doc-titulo span {{ display: inline-block; }}
-    .doc-frase {{ color: #b8b8b8; font-size: clamp(1.3rem, 2.4vw, 2.1rem); margin-top: 18px; }}
+    .doc-frase {{ color: #b8b8b8; font-size: clamp(1.5rem, 2.9vw, 2.6rem); margin-top: 20px; }}
     .st-key-doc_botoes {{ flex-wrap: wrap; }}
-    .st-key-doc_botoes button, .st-key-doc_botoes a {{ border-radius: 5px !important; min-height: 40px; }}
+    .st-key-doc_botoes button, .st-key-doc_botoes a {{ border-radius: 5px !important; min-height: 46px; padding: 0 14px !important; }}
     .st-key-doc_sobre button {{ background-color: #6b6c6e !important; border: none !important; }}
     .st-key-doc_botoes [data-testid="stLinkButton"] a {{ background: transparent !important; border: 2px solid #ffffff !important; }}
     .st-key-doc_ir_painel button {{ background-color: #5a9cf8 !important; border: none !important; }}
-    .st-key-doc_botoes button p, .st-key-doc_botoes a p, .st-key-doc_botoes span {{ color: #ffffff !important; font-size: 1.05rem; }}
+    .st-key-doc_botoes button p, .st-key-doc_botoes a p, .st-key-doc_botoes span {{ color: #ffffff !important; font-size: 1.15rem; }}
+    /* Cartões das pastas do projeto, abaixo do alto da documentação */
+    .st-key-doc_pastas {{ flex-wrap: wrap; justify-content: center; margin: 30px auto 50px auto; max-width: 1500px; width: 100%;
+                        align-items: stretch !important; }}
+    .st-key-doc_pastas > div {{ flex: 1 1 300px; }}
+    [class*="st-key-doc_pasta_"] {{ background-color: {COR_CARTAO}; border-radius: 6px; padding: 30px 28px 26px 28px;
+                                   min-height: 260px; justify-content: space-between; }}
+    .doc-pasta-titulo {{ color: #ffffff; font-size: 2rem; font-weight: 700; line-height: 1.25; }}
+    .doc-pasta-texto {{ color: #e6e6e6; font-size: 1.5rem; line-height: 1.45; margin-top: 22px; }}
+    [class*="st-key-doc_pasta_"] [data-testid="stElementContainer"]:has(button) {{
+        align-self: flex-end; width: auto !important; margin-top: auto; }}
+    [class*="st-key-doc_pasta_"] button {{ background-color: #5a9cf8 !important; border: none !important;
+        border-radius: 4px !important; }}
+    [class*="st-key-doc_pasta_"] button:hover {{ background-color: #4a8be6 !important; }}
+    [class*="st-key-doc_pasta_"] button p,
+    [class*="st-key-doc_pasta_"] button span {{ color: #ffffff !important; font-size: 1.35rem; }}
+    .doc-pasta-subtitulo {{ color: {COR_TEXTO_CINZA}; font-size: 1.05rem; margin: -6px 0 10px 0; }}
     .st-key-cartao_demo {{ background-color: {COR_CARTAO}; border-radius: 6px; padding: 20px 22px 14px 22px;
                           height: 520px; overflow: hidden; }}
     .demo-topo {{ display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }}
@@ -840,7 +856,8 @@ st.markdown(f"""
     .demo-legenda {{ display: block; font-size: 0.9rem; color: {COR_TEXTO_CINZA}; margin-top: 2px; }}
     .demo-escala {{ display: inline-block; width: 60px; height: 14px; border-radius: 4px; vertical-align: -2px;
                     background: linear-gradient(90deg, #b46fd0, #4a2f5c); margin: 0 6px; }}
-    .doc-divisa {{ border: none; border-top: 1px dashed #494b4e; margin: 28px 0 18px 0; }}
+    .doc-divisa {{ border: none !important; border-top: 1px dashed #6b6d70 !important; background: none !important;
+                   height: 0 !important; margin: 28px 0 18px 0; }}
     /* Chavinha escuro/claro da documentação (como a do Taipei): pílula cinza com a bolinha branca */
     .st-key-tema_doc_escuro button, .st-key-tema_doc_claro button {{
         width: 52px !important; min-width: 52px; height: 28px; min-height: 28px !important; padding: 0 3px !important;
@@ -1194,7 +1211,7 @@ def corpo_divisoes(area_escolhida):
             }
             </style>
         """
-        st.iframe(f'<body style="margin:0">{estilo_mapa}{html_mapa}</body>', height=350)
+        st.iframe(f'<body style="margin:0; overflow:hidden">{estilo_mapa}{html_mapa}</body>', height=350)
     else:
         # Colunas verticais empilhadas por faixa de idade, do maior para o menor
         df_colunas = df_dados.sort_values("Habitantes", ascending=False)
@@ -1233,7 +1250,7 @@ def corpo_divisoes(area_escolhida):
             config={"displayModeBar": False, "responsive": True},
             default_height="460px", default_width="100%"
         )
-        st.iframe(f'<body style="margin:0">{html_colunas}</body>', height=350)
+        st.iframe(f'<body style="margin:0; overflow:hidden">{html_colunas}</body>', height=350)
 
     return df_dados
 
@@ -1581,7 +1598,7 @@ def grafico_historico(chave, series):
         yaxis=dict(showgrid=False, rangemode="tozero", automargin=True),
         showlegend=len(series) > 1, legend=dict(orientation="h", yanchor="bottom", y=1.02, x=0, itemclick=False),
         hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555", font=dict(color="white", size=14)))
-    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
+    st.iframe('<body style="margin:0; overflow:hidden">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", config={"displayModeBar": False, "responsive": True},
         default_height="200px", default_width="100%") + "</body>", height=210)
 
@@ -1914,9 +1931,9 @@ def grafico_emprego(chave="emprego", opcoes_area=("Município de Oriximiná",),
         fig.update_layout(barmode="stack", barcornerradius=5, bargap=0.45)
         fig.update_yaxes(title="%", range=[0, 100], gridcolor="#3a3c3e")
 
-    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
+    st.iframe('<body style="margin:0; overflow:hidden">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
-        config={"displayModeBar": False, "responsive": True}, default_height="520px", default_width="100%"
+        config={"displayModeBar": False, "responsive": True}, default_height="380px", default_width="100%"
     ) + "</body>", height=390)
     return area_escolhida, df_emprego
 
@@ -2044,9 +2061,9 @@ def grafico_dependencia(chave="dependencia", opcoes_area=("Município de Oriximi
                     font=dict(color=COR_TEXTO_CINZA, size=14)),
         hoverlabel=dict(bgcolor="#1e1f21", bordercolor="#555555", font=dict(color="white", size=14))
     )
-    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
+    st.iframe('<body style="margin:0; overflow:hidden">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
-        config={"displayModeBar": False, "responsive": True}, default_height="520px", default_width="100%"
+        config={"displayModeBar": False, "responsive": True}, default_height="380px", default_width="100%"
     ) + "</body>", height=390)
     return area_escolhida, dados
 
@@ -2359,7 +2376,7 @@ def grafico_divisoes_regiao():
         html_fig = fig.to_html(div_id="grafico", full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA,
                                config={"displayModeBar": False, "responsive": True},
                                default_height="460px", default_width="100%")
-    st.iframe(f'<body style="margin:0">{html_fig}</body>', height=350)
+    st.iframe(f'<body style="margin:0; overflow:hidden">{html_fig}</body>', height=350)
     return area, dados
 
 
@@ -2413,7 +2430,7 @@ TIPOS_FROTA = ["Motocicletas", "Automóveis", "Caminhonetes e utilitários", "Ca
 
 
 def figura_em_iframe(fig, altura=380, destacar_legenda=False):
-    st.iframe('<body style="margin:0">' + fig.to_html(div_id="grafico",
+    st.iframe('<body style="margin:0; overflow:hidden">' + fig.to_html(div_id="grafico",
         full_html=False, include_plotlyjs="cdn", post_script=JS_DESTACAR_LEGENDA if destacar_legenda else None,
         config={"displayModeBar": False, "responsive": True}, default_height=f"{altura}px", default_width="100%"
     ) + "</body>", height=altura + 10)
@@ -3453,8 +3470,10 @@ def escolher_componentes():
                   and indice in f"{CARTOES[c][0]} {c}".lower()]
     st.markdown(f'<div class="escolha-contagem">{len(candidatos)} componentes correspondem aos filtros | '
                 f'Selecionados: {len(selecao)}</div>', unsafe_allow_html=True)
-    # Cartão escolhido fica com a borda azul
-    st.markdown("<style>" + " ".join(f".st-key-pp_resumo_{c} {{ border-color: #5a9cf8 !important; }}"
+    # Cartão escolhido fica com a borda azul grossa e o fundo azulado (só a borda fina quase não se via)
+    st.markdown("<style>" + " ".join(f".st-key-pp_resumo_{c} {{ border-color: #5a9cf8 !important; "
+                                     "box-shadow: inset 0 0 0 2px #5a9cf8, 0 0 10px rgba(90, 156, 248, 0.45); "
+                                     "background-color: rgba(90, 156, 248, 0.14) !important; }"
                                      for c in selecao) + "</style>", unsafe_allow_html=True)
     with st.container(height=520, border=False):
         for inicio in range(0, len(candidatos), 2):
@@ -3682,7 +3701,7 @@ def barra_topo():
             with st.popover("", icon=":material/info:", key="info_topo"):
                 st.button("Documentação técnica", icon=":material/description:", type="tertiary",
                           key="abrir_documentacao", width="stretch", on_click=mudar_pagina, args=("documentacao",),
-                          kwargs={"fechar_menu_info": True})
+                          kwargs={"fechar_menu_info": True, "doc_pasta": None})
                 if st.button("Colaboradores do projeto", icon=":material/groups:", type="tertiary",
                              key="abrir_colaboradores", width="stretch"):
                     janela_colaboradores()
@@ -3774,6 +3793,33 @@ def janela_colaboradores():
 # No alto, como na página de documentação do Taipei: título grande, botões e um cartão de exemplo que
 # troca sozinho entre gráficos do painel (com os dados reais dos cartões)
 LINK_TAIPEI_GITHUB = "https://github.com/tpe-doit/Taipei-City-Dashboard"
+LINK_GITHUB = "https://github.com/geldiney/painel-oriximina"
+# Cartões das "pastas" abaixo do alto da documentação, como os do Taipei: (título, texto, link no GitHub,
+# partes do README.md que ficam dentro da pasta). O que vem antes da 1ª parte e as partes que não estão
+# em nenhuma lista entram nos "Arquivos do sistema"
+PASTAS_DOC = [
+    ("Arquivos do painel", "Telas, cartões com gráficos, mapas bonitos e muito mais",
+     f"{LINK_GITHUB}/blob/main/painel.py", ["Painéis", "Funções do painel", "Prédios em 3D", "Resumo com IA"]),
+    ("Arquivos do sistema", "Configurações, Docker, bibliotecas, entrar e cadastrar, administração",
+     LINK_GITHUB, ["Como abrir", "Pastas", "Entrar, cadastrar"]),
+    ("Documentação dos dados", "Busca nas fontes oficiais, preparação e armazenamento dos dados e mais",
+     f"{LINK_GITHUB}/tree/main/scripts", ["Atualizar os dados"]),
+]
+PASTA_DOC_PADRAO = 1
+
+
+def partes_readme(texto):
+    """Separa o README.md pelas partes "## ..." e devolve o texto de cada pasta da documentação."""
+    pastas = [[] for _ in PASTAS_DOC]
+    pedacos = re.split(r"(?m)^(?=## )", texto)
+    # O título "# Painel Oriximiná" já está no alto da página; fica só a frase de apresentação
+    pastas[PASTA_DOC_PADRAO].append(re.sub(r"(?m)^# .*\n", "", pedacos[0], count=1))
+    for pedaco in pedacos[1:]:
+        titulo = pedaco.splitlines()[0][3:].strip()
+        dono = next((i for i, pasta in enumerate(PASTAS_DOC) if any(titulo.startswith(t) for t in pasta[3])),
+                    PASTA_DOC_PADRAO)
+        pastas[dono].append(pedaco)
+    return ["\n".join(p) for p in pastas]
 INTERVALO_DEMO = 5   # segundos entre um gráfico e outro
 CORES_DEMO_IDADES = ["#24B0DD", "#56B96D", "#F8CF58"]
 
@@ -3829,15 +3875,85 @@ def demo_vias():
             f"{total} km", fig)
 
 
-DEMOS = [demo_idades, demo_frota, demo_municipios, demo_vias]
+CORES_DEMO_BARRAS = ["#d94f4f", "#e08a3c", "#d9b45a", "#8fae6e", "#4a9e8a", "#4b8a96", "#5a7fb0", "#7d6fb0", "#a06aa8"]
+
+
+def demo_componente(chave, forma):
+    """Cartão de exemplo com um dos componentes novos (os dos painéis mais recentes), lido da tabela dele.
+    forma: "barras" (deitadas, uma cor por linha), "rosca", "colunas_linha" (últimos 12 meses com a normal
+    em linha) ou "empilhadas" (colunas por ano, uma cor por série)."""
+    def demo():
+        comp = componentes_novos()[chave]
+        df = tabela_componente(chave)
+        rotulos, series = df.iloc[:, 0].tolist(), list(df.columns[1:])
+        unidade = comp.get("unidade") or ""
+        if forma == "barras":
+            tabela = df.sort_values(series[0])
+            cores = CORES_DEMO_BARRAS[:len(tabela)][::-1]
+            fig = go.Figure(go.Bar(
+                x=tabela[series[0]], y=tabela.iloc[:, 0], orientation="h", marker_color=cores,
+                text=[numero_br(v) for v in tabela[series[0]]], textposition="auto", insidetextanchor="end",
+                textfont=dict(color="#ffffff", size=13), cliponaxis=False,
+                hovertemplate=f"%{{y}}: %{{x:,.1~f}} {unidade}<extra></extra>"))
+            fig.update_layout(xaxis=dict(visible=False), yaxis=dict(tickfont=dict(color="#c8c8c8", size=12)),
+                              bargap=0.35)
+            resumo = f"{numero_br(df[series[0]].sum())} {unidade}"
+        elif forma == "rosca":
+            total = df[series[0]].sum() or 1
+            fig = go.Figure(go.Pie(
+                labels=rotulos, values=df[series[0]], hole=0.82, sort=False, direction="clockwise",
+                marker=dict(colors=comp.get("cores") or CORES_DEMO_BARRAS, line=dict(width=3, color=COR_CARTAO)),
+                # Só as fatias de 5% ou mais mostram a porcentagem (as pequenas ficavam umas sobre as outras)
+                texttemplate=[f"{v / total:.0%}" if v / total >= 0.05 else "" for v in df[series[0]]],
+                textposition="outside", textfont=dict(color="#ffffff", size=13),
+                hovertemplate=f"%{{label}}: %{{value:,.0f}} {unidade}<extra></extra>"))
+            fig.add_annotation(text=f'<span style="color:{COR_TEXTO_CINZA}">Total</span><br>'
+                                    f'<span style="font-size:22px; color:#c8c8c8">{numero_br(df[series[0]].sum())}</span>',
+                               showarrow=False, font=dict(size=15))
+            resumo = None
+        elif forma == "colunas_linha":
+            tabela = df.tail(12)
+            fig = go.Figure([
+                go.Bar(x=tabela.iloc[:, 0], y=tabela[series[0]], name=series[0], marker_color="#24B0DD",
+                       marker_cornerradius=4, hovertemplate=f"%{{x}}: %{{y:,.0f}} {unidade}<extra>{series[0]}</extra>"),
+                go.Scatter(x=tabela.iloc[:, 0], y=tabela[series[1]], name=series[1], mode="lines+markers",
+                           line=dict(color="#F8CF58", width=2.5),
+                           hovertemplate=f"%{{x}}: %{{y:,.0f}} {unidade}<extra>{series[1]}</extra>")])
+            fig.update_layout(bargap=0.35, yaxis=dict(gridcolor="#3a3c3e", tickfont=dict(color="#c8c8c8")),
+                              xaxis=dict(tickfont=dict(color="#c8c8c8")))
+            ultimo = str(tabela.iloc[-1, 0])   # mês em curso vem como "até 20/out"
+            resumo = (f"{numero_br(tabela[series[0]].iloc[-1])} {unidade} "
+                      + (f"({ultimo})" if ultimo.startswith("até") else f"em {ultimo}"))
+        else:   # empilhadas
+            cores = (comp.get("cores") or []) + CORES_DEMO_BARRAS
+            fig = go.Figure([go.Bar(x=rotulos, y=df[s], name=s, marker_color=cores[i],
+                                    hovertemplate=f"%{{x}} – {s}: %{{y:,.0f}} {unidade}<extra></extra>")
+                             for i, s in enumerate(series)])
+            fig.update_layout(barmode="stack", bargap=0.35,
+                              yaxis=dict(gridcolor="#3a3c3e", tickfont=dict(color="#c8c8c8")),
+                              xaxis=dict(tickfont=dict(color="#c8c8c8"), type="category"))
+            resumo = f"{numero_br(df[series].iloc[-1].sum())} {unidade} em {rotulos[-1]}"
+        return comp["titulo"], comp.get("atualizacao", ""), comp.get("fonte", ""), resumo, fig
+    return demo
+
+
+# Os gráficos que se revezam no cartão de exemplo: os primeiros do painel e os dos painéis mais recentes
+DEMOS = [demo_idades, demo_componente("comp_343", "barras"), demo_frota, demo_componente("comp_331", "colunas_linha"),
+         demo_municipios, demo_componente("comp_323", "rosca"), demo_vias, demo_componente("comp_341", "colunas_linha"),
+         demo_componente("comp_328", "barras"), demo_componente("comp_346", "empilhadas")]
 
 
 @st.fragment(run_every=INTERVALO_DEMO)
 def cartao_demo():
     """Cartão de exemplo do alto da documentação: a cada poucos segundos mostra outro gráfico do painel."""
     vez = st.session_state.get("demo_vez", -1) + 1
+    for _ in DEMOS:   # componente apagado ou tabela com problema: passa para o próximo gráfico
+        try:
+            titulo, atualizacao, fonte, resumo, fig = DEMOS[vez % len(DEMOS)]()
+            break
+        except Exception:
+            vez += 1
     st.session_state.demo_vez = vez
-    titulo, atualizacao, fonte, resumo, fig = DEMOS[vez % len(DEMOS)]()
     fig.update_layout(height=340, margin=dict(l=4, r=4, t=10, b=4), paper_bgcolor=COR_CARTAO,
                       plot_bgcolor=COR_CARTAO, showlegend=False, separators=",.",
                       font=dict(family="Source Sans Pro, sans-serif", color="#fafafa"),
@@ -3867,6 +3983,15 @@ def topo_documentacao():
     with col_cartao:
         cartao_demo()
     st.markdown('<hr class="doc-divisa">', unsafe_allow_html=True)
+    # As três "pastas" do projeto, como os cartões de arquivos do Taipei (cada botão abre a pasta)
+    with st.container(horizontal=True, gap="medium", key="doc_pastas"):
+        for i, (titulo, texto, _, _) in enumerate(PASTAS_DOC):
+            with st.container(key=f"doc_pasta_{i}"):
+                st.markdown(f'<div class="doc-pasta-titulo">{titulo}</div><div class="doc-pasta-texto">{texto}</div>',
+                            unsafe_allow_html=True)
+                st.button("Vá ao arquivo", key=f"doc_abrir_pasta_{i}", icon=":material/arrow_forward:",
+                          icon_position="right", on_click=mudar_pagina, args=("documentacao",),
+                          kwargs={"doc_pasta": i})
 
 
 def trocar_tema_doc():
@@ -3898,6 +4023,8 @@ CSS_DOC_CLARO = """<style>
     .st-key-doc_botoes [data-testid="stLinkButton"] a { border-color: #1f2328 !important; }
     .st-key-doc_botoes [data-testid="stLinkButton"] a p,
     .st-key-doc_botoes [data-testid="stLinkButton"] a span { color: #1f2328 !important; }
+    [class*="st-key-doc_pasta_"] { background-color: #ffffff !important; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12); }
+    .doc-pasta-titulo, .doc-pasta-texto { color: #1f2328 !important; }
 </style>"""
 
 
@@ -3917,22 +4044,31 @@ def figura_demo_clara(fig):
 def pagina_documentacao():
     if st.session_state.get("doc_claro"):
         st.markdown(CSS_DOC_CLARO, unsafe_allow_html=True)
-    st.button("Voltar ao painel", type="tertiary", key="voltar_documentacao",
-              on_click=mudar_pagina, args=("painel",))
+    pasta = st.session_state.get("doc_pasta")
+    if pasta is None:   # dentro de uma pasta fica só o "Voltar às pastas"
+        st.button("Voltar ao painel", type="tertiary", key="voltar_documentacao",
+                  on_click=mudar_pagina, args=("painel",))
     if st.session_state.pop("fechar_menu_info", False):
         # O menu ⓘ continua aberto depois do clique; um "Esc" no navegador fecha ele
         with st.container(key="script_fechar_menu"):
             st.iframe("""<script>window.parent.document.dispatchEvent(
                 new KeyboardEvent("keydown", {key: "Escape", code: "Escape", keyCode: 27, bubbles: true}));
                 </script>""", height=1)
-    topo_documentacao()
+    if pasta is None:
+        topo_documentacao()
+        return
+    # Dentro de uma pasta: só a parte do README.md daquela pasta, como as páginas de documentação do Taipei
+    titulo, texto, link, _ = PASTAS_DOC[pasta]
     with st.container(key="documentacao"):
-        st.markdown('<div class="titulo-painel"><span class="icone-material">description</span>'
-                    'Documentação técnica</div>', unsafe_allow_html=True)
+        st.button("Voltar às pastas", icon=":material/arrow_back:", type="tertiary", key="doc_voltar_pastas",
+                  on_click=mudar_pagina, args=("documentacao",), kwargs={"doc_pasta": None})
+        st.markdown(f'<div class="titulo-painel"><span class="icone-material">folder_open</span>{titulo}</div>'
+                    f'<div class="doc-pasta-subtitulo">{texto}</div>', unsafe_allow_html=True)
+        st.link_button("Ver os arquivos no GitHub", link, icon=":material/code:")
         arquivo = os.path.join(PASTA_PROJETO, "README.md")
         if os.path.exists(arquivo):
             with open(arquivo, encoding="utf-8") as arq:
-                st.markdown(arq.read())
+                st.markdown(partes_readme(arq.read())[pasta])
         else:
             st.markdown('<div class="aviso-vazio">O arquivo README.md não foi encontrado na pasta do painel.</div>',
                         unsafe_allow_html=True)
@@ -4130,7 +4266,8 @@ def script_tela_cheia():
             // sem eles aqui, os cartões do painel antigo ficavam misturados e espremidos na página nova)
             const BOTOES_TROCA = '[class*="st-key-aba_topo_"] button, [class*="st-key-aba_menu_"] button, '
                 + '[class*="st-key-celular_pagina_"] button, [class*="st-key-celular_menu_"] button, '
-                + '.st-key-abrir_admin button, .st-key-abrir_documentacao button';
+                + '.st-key-abrir_admin button, .st-key-abrir_documentacao button, '
+                + '[class*="st-key-doc_abrir_pasta_"] button, .st-key-doc_voltar_pastas button';
             const SEM_MENU_LATERAL = ["aba_topo_catalogo", "abrir_documentacao"];
             let vigiaTroca = null;
             document.addEventListener("click", (ev) => {
@@ -7376,7 +7513,8 @@ else:
         pagina_admin()
     else:
         pagina_painel()
-    robo_ajuda()
+    if pagina != "documentacao":   # na documentação não há robozinho, como no Taipei
+        robo_ajuda()
     with st.container(key="linha_atualizacao"):
         proxima_atualizacao()
     # Aviso inicial: uma vez por visita, a não ser que a pessoa tenha pedido para não ver mais
