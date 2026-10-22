@@ -22,6 +22,9 @@ RUN pip install --default-timeout=120 --retries 10 -r requirements.txt
 # à pasta do computador no docker-compose.yml, para não se perderem ao recriar o container)
 COPY . .
 
+# Aba do navegador já abre com o nome e o brasão do painel (em vez de "Streamlit" e da coroa)
+RUN python scripts/ajustar_streamlit.py
+
 EXPOSE 8501
 
 # Avisa o Docker Desktop se o painel parou de responder

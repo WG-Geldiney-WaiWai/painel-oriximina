@@ -55,6 +55,7 @@ CELULAR = e_celular()
 # 1. Configura a página para modo painel (Tela cheia)
 st.set_page_config(
     page_title="Painel Oriximiná",
+    page_icon=os.path.join(PASTA_IMAGENS, "icone.png"),   # brasão redondo na aba do navegador, como o do Taipei
     layout="wide",
     initial_sidebar_state="collapsed" if CELULAR else "expanded"
 )
