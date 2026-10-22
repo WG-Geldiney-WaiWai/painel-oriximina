@@ -335,8 +335,10 @@ st.markdown(f"""
     /* (opacidade, e não visibility: um filho com visibility: visible aparecia mesmo assim); a barra de cima
        fica sempre à vista, mesmo com os botões marcados por um instante */
     body.trocando-pagina [data-testid="stMain"] [data-stale="true"]:not(.st-key-barra_topo *),
-    body.trocando-pagina [data-testid="stSidebar"] [data-stale="true"] {{
+    body.trocando-pagina:not(.mantem-menu) [data-testid="stSidebar"] [data-stale="true"] {{
         opacity: 0 !important; transition: none !important; }}
+    /* Indo para o catálogo ou a documentação (sem menu lateral): o menu some já no clique */
+    body.sem-menu-lateral section[data-testid="stSidebar"] {{ display: none !important; }}
     /* A caixa cinza do cartão não é marcada (só o que tem dentro): com conteúdo antigo dentro, some também,
        senão ficavam caixas vazias na tela durante a troca */
     body.trocando-pagina [data-testid="stMain"] [class*="st-key-cartao_"]:has([data-stale="true"]) {{
@@ -529,6 +531,10 @@ st.markdown(f"""
         margin-right: 4px;
     }}
     .catalogo-index {{ color: {COR_TEXTO_CINZA}; font-size: 0.85rem; margin-top: 2px; }}
+    /* Etiquetas à esquerda e o ícone à direita, embaixo (como antes, quando eram peças separadas) */
+    .catalogo-corpo {{
+        display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-top: 8px;
+    }}
     .catalogo-icone {{
         font-family: "Material Symbols Rounded"; font-size: 2.6rem; line-height: 1; color: #1e1f21;
         background: #d0d0d0; border-radius: 6px; padding: 4px;
@@ -4125,6 +4131,7 @@ def script_tela_cheia():
             const BOTOES_TROCA = '[class*="st-key-aba_topo_"] button, [class*="st-key-aba_menu_"] button, '
                 + '[class*="st-key-celular_pagina_"] button, [class*="st-key-celular_menu_"] button, '
                 + '.st-key-abrir_admin button, .st-key-abrir_documentacao button';
+            const SEM_MENU_LATERAL = ["aba_topo_catalogo", "abrir_documentacao"];
             let vigiaTroca = null;
             document.addEventListener("click", (ev) => {
                 const botao = ev.target.closest && ev.target.closest(BOTOES_TROCA);
@@ -4139,6 +4146,15 @@ def script_tela_cheia():
                 const ativos = getComputedStyle(document.documentElement).getPropertyValue("--troca-ativos");
                 if (ativos.replace(/"/g, "").trim().split(" ").includes(chave)) return;
                 document.body.classList.add("trocando-pagina");
+                // Catálogo e documentação não têm menu lateral: ele some já no clique (o Streamlit só o tira
+                // no fim, e enquanto isso o menu vazio empurrava a página nova para a direita)
+                document.body.classList.toggle("sem-menu-lateral", SEM_MENU_LATERAL.includes(chave));
+                // Mesmo menu lateral na página nova (outro painel, outra seção da administração, ou entre a
+                // visão geral e a comparação de mapas): o menu fica à vista; antes sumia e voltava (piscava)
+                const naAdmin = ativos.includes("aba_menu_admin_");
+                const temMenu = !!document.querySelector('section[data-testid="stSidebar"] [class*="st-key-aba_menu_"]');
+                document.body.classList.toggle("mantem-menu", temMenu && (chave.startsWith("aba_menu_") ||
+                    (!naAdmin && ["aba_topo_painel", "aba_topo_mapa"].includes(chave))));
                 clearInterval(vigiaTroca);
                 const inicio = Date.now();
                 let comecou = false;
@@ -4154,7 +4170,7 @@ def script_tela_cheia():
                     // Fim: a página nova terminou; ou a troca foi rápida demais para ver os pedaços antigos
                     const passou = Date.now() - inicio;
                     if ((comecou && !antigos) || (!comecou && passou > 2000) || passou > 10000) {
-                        document.body.classList.remove("trocando-pagina");
+                        document.body.classList.remove("trocando-pagina", "sem-menu-lateral", "mantem-menu");
                         clearInterval(vigiaTroca);
                     }
                 }, 50);
@@ -4351,21 +4367,19 @@ def item_catalogo(chave):
                     st.button("♥", key=f"catalogo_favorito_{chave}", type="tertiary",
                               help="Remover dos favoritos" if favorito else "Adicionar aos favoritos",
                               on_click=alternar_favorito, args=(chave,))
+        # Descrição, fonte, etiquetas, ID e ícone num pedaço só de HTML (antes eram 5 peças e 2 caixas por cartão):
+        # com uns 70 cartões, o navegador levava segundos para desenhar o catálogo
         st.markdown(f'<div class="catalogo-descricao">{descricao}</div>'
-                    f'<div class="catalogo-fonte">{fonte} | {atualizacao}</div>', unsafe_allow_html=True)
-        with st.container(horizontal=True, vertical_alignment="bottom"):
-            st.markdown(
-                f'<div class="catalogo-etiquetas">{etiquetas_do_cartao(chave)}'
-                f'<div class="catalogo-index">ID: {CARTOES[chave][0]} · Index: {chave}</div></div>',
-                unsafe_allow_html=True, width="content")
-            st.space("stretch")
-            st.markdown(f'<span class="catalogo-icone">{icone}</span>', unsafe_allow_html=True, width="content")
-        with st.container(horizontal=True, vertical_alignment="center"):
+                    f'<div class="catalogo-fonte">{fonte} | {atualizacao}</div>'
+                    f'<div class="catalogo-corpo"><div class="catalogo-etiquetas">{etiquetas_do_cartao(chave)}'
+                    f'<div class="catalogo-index">ID: {CARTOES[chave][0]} · Index: {chave}</div></div>'
+                    f'<span class="catalogo-icone">{icone}</span></div>', unsafe_allow_html=True)
+        # "Filtrar mapa" à esquerda e o botão à direita (distribute), sem as peças de espaço do meio
+        with st.container(horizontal=True, vertical_alignment="center", horizontal_alignment="distribute"
+                          if CAMADAS_DO_CARTAO[chave] else "right"):
             if CAMADAS_DO_CARTAO[chave]:
                 st.markdown('<span class="catalogo-filtro">Filtrar mapa</span>', unsafe_allow_html=True,
                             width="content")
-            st.space("stretch")
-            # Abre o painel do cartão já com a descrição aberta
             # Abre a página própria do componente (ComponentInfoView do Taipei)
             st.button("Página de informações", type="tertiary", key=f"catalogo_info_{chave}",
                       on_click=mudar_pagina, args=("componente",), kwargs={"componente": chave})
