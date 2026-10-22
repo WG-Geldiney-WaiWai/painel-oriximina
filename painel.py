@@ -3794,7 +3794,7 @@ def janela_colaboradores():
 # No alto, como na página de documentação do Taipei: título grande, botões e um cartão de exemplo que
 # troca sozinho entre gráficos do painel (com os dados reais dos cartões)
 LINK_TAIPEI_GITHUB = "https://github.com/tpe-doit/Taipei-City-Dashboard"
-LINK_GITHUB = "https://github.com/geldiney/painel-oriximina"
+LINK_GITHUB = "https://github.com/WG-Geldiney-WaiWai/painel-oriximina"
 # Cartões das "pastas" abaixo do alto da documentação, como os do Taipei: (título, texto, link no GitHub,
 # partes do README.md que ficam dentro da pasta). O que vem antes da 1ª parte e as partes que não estão
 # em nenhuma lista entram nos "Arquivos do sistema"
