@@ -743,7 +743,7 @@ st.markdown(f"""
         height: auto !important; display: flex; align-items: center; line-height: 1;
     }}
     /* Espaço entre o ⛶ e o ⓘ, como no Taipei (antes ficavam grudados) */
-    .st-key-info_topo {{ margin-left: 22px; }}
+    .st-key-info_topo {{ margin-left: 22px; margin-right: 26px; }}   /* longe do "Entrar" / nome do usuário */
     .st-key-info_topo [data-testid="stPopoverButton"] > div {{ margin: 0 !important; }}
     /* (o ícone "info" do Streamlit é só o contorno: no lugar dele vai um círculo branco desenhado com o "i") */
     .st-key-info_topo [data-testid="stPopoverButton"] [data-testid="stIconMaterial"] {{
