@@ -75,6 +75,17 @@ Na janela **Entrar**: quem não tem conta clica em **"Não tem conta? Cadastre-s
 fica logado. Quem esqueceu a senha clica em **"Esqueci a senha"**, digita o e-mail e recebe um **código de 6
 números**; com ele, cria uma senha nova e entra normalmente.
 
+**Primeiro administrador:** dentro do painel, só um administrador torna outra conta administradora (em
+Administração > Usuários). Num servidor novo ninguém é administrador ainda; crie o primeiro com:
+
+```
+python scripts/criar_admin.py email@exemplo.com
+docker compose exec painel python scripts/criar_admin.py email@exemplo.com     (com o Docker)
+```
+
+Se a conta já existe, ela vira administradora; se não, o script pede o nome e a senha e cria a conta. Sem
+e-mail, ele mostra quem é administrador hoje.
+
 - O código vale por 15 minutos e aceita 5 tentativas; um código novo só pode ser pedido depois de 1 minuto.
 - O código fica guardado embaralhado em `usuarios/recuperacao_senha.json` (nunca em texto aberto).
 - A resposta é a mesma com ou sem conta, para ninguém descobrir quais e-mails estão cadastrados.
