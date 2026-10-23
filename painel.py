@@ -649,6 +649,9 @@ st.markdown(f"""
     .st-key-alternar_login button p {{ color: #5a9cf8 !important; font-size: 0.85rem; }}
     .login-texto {{ color: #888787; font-size: 0.9rem; text-align: center; margin-top: 8px; line-height: 1.5; }}
     .login-texto a {{ color: #5a9cf8 !important; text-decoration: none; }}
+    /* Frase do fim da janela Entrar, como a do Taipei: entre 《 》, "Faça do Painel" em azul, longe da borda */
+    .login-lema {{ color: #b8b8b8; font-size: 0.98rem; text-align: center; white-space: nowrap; margin: 18px 0 14px 0; }}
+    .login-lema span {{ color: #5a9cf8; }}
     .login-erro {{ color: #e5484d; font-size: 0.9rem; text-align: center; }}
     /* Esqueci a senha: link pequeno à direita, títulos e avisos da recuperação */
     /* "Esqueci a senha" logo abaixo do campo da senha (tira os espaços do script escondido entre os dois) */
@@ -3275,7 +3278,7 @@ def janela_login():
         '<div class="login-texto">Ao entrar, você declara que leu e concorda com<br>'
         f'<a href="{LINK_PAINEL}" target="_blank" rel="noopener">o Painel da Cidade de Oriximiná</a> e com '
         f'<a href="{LINK_POLITICA_PRIVACIDADE}" target="_blank" rel="noopener">a Política de Privacidade</a></div>'
-        '<div class="login-texto">"Faça do Painel da Cidade de Oriximiná o seu painel"</div>',
+        '<div class="login-lema">《<span>Faça do Painel</span> da Cidade de Oriximiná seu Painel》</div>',
         unsafe_allow_html=True)
 
 
