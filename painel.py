@@ -814,6 +814,8 @@ st.markdown(f"""
                         border-bottom: 1px solid #494b4e; padding-bottom: 6px; }}
     .admin-celula {{ color: #e6e6e6; font-size: 0.92rem; line-height: 1.35; overflow-wrap: anywhere; }}
     .admin-celula .icone-material {{ font-size: 1.2rem; margin-right: 6px; }}
+    /* Colaborador sem foto: o ícone fica centrado como as fotos (a margem acima o empurrava para a direita) */
+    .admin-celula .foto-colaborador {{ margin: 0 auto; }}
     .admin-situacao {{ border: 1px solid; border-radius: 4px; padding: 1px 6px; font-size: 0.8rem;
                        white-space: nowrap; }}
     /* Documentação técnica: texto numa coluna de leitura */
@@ -3756,7 +3758,9 @@ COLABORADORES = [
 def foto_colaborador(colaborador, tamanho):
     arquivo = os.path.join(PASTA_IMAGENS, colaborador["imagem"] or "")
     if not os.path.isfile(arquivo):
-        return f'<span class="icone-material foto-colaborador" style="font-size:{tamanho}px">account_circle</span>'
+        # Do tamanho da foto, para ficar no mesmo lugar dela (centrada na coluna, como as fotos)
+        return (f'<span class="icone-material foto-colaborador" style="font-size:{tamanho}px; width:{tamanho}px; '
+                f'height:{tamanho}px; line-height:{tamanho}px; text-align:center">account_circle</span>')
     with open(arquivo, "rb") as arq:
         dados = base64.b64encode(arq.read()).decode()
     tipo = "png" if arquivo.lower().endswith(".png") else "jpeg"
@@ -6614,7 +6618,9 @@ def linha_admin(valores, larguras, cabecalho=False):
     colunas = st.columns(larguras, vertical_alignment="center", gap="small")
     classe = "admin-cabecalho" if cabecalho else "admin-celula"
     for coluna, valor in zip(colunas, valores):
-        coluna.markdown(f'<div class="{classe}">{valor}</div>', unsafe_allow_html=True)
+        # Título vazio vira um espaço: a célula fica da altura das outras e a linha de baixo, na mesma altura
+        coluna.markdown(f'<div class="{classe}">{valor or "&nbsp;" if cabecalho else valor}</div>',
+                        unsafe_allow_html=True)
     return colunas[-1]
 
 
