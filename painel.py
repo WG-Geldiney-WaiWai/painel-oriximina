@@ -831,7 +831,8 @@ st.markdown(f"""
     .doc-frase {{ color: #b8b8b8; font-size: clamp(1.5rem, 2.9vw, 2.6rem); margin-top: 20px; }}
     .st-key-doc_botoes {{ flex-wrap: wrap; }}
     .st-key-doc_botoes button, .st-key-doc_botoes a {{ border-radius: 5px !important; min-height: 46px; padding: 0 14px !important; }}
-    .st-key-doc_sobre button {{ background-color: #6b6c6e !important; border: none !important; }}
+    .st-key-doc_botoes .st-key-doc_sobre [data-testid="stLinkButton"] a {{ background-color: #6b6c6e !important;
+        border: none !important; }}
     .st-key-doc_botoes [data-testid="stLinkButton"] a {{ background: transparent !important; border: 2px solid #ffffff !important; }}
     .st-key-doc_ir_painel button {{ background-color: #5a9cf8 !important; border: none !important; }}
     .st-key-doc_botoes button p, .st-key-doc_botoes a p, .st-key-doc_botoes span {{ color: #ffffff !important; font-size: 1.15rem; }}
@@ -3990,8 +3991,8 @@ def topo_documentacao():
                     '<div class="doc-frase">Faça do Painel de Oriximiná o seu painel</div></div>',
                     unsafe_allow_html=True)
         with st.container(horizontal=True, horizontal_alignment="center", gap="small", key="doc_botoes"):
-            if st.button("Sobre nós", icon=":material/play_circle:", key="doc_sobre"):
-                janela_colaboradores()
+            # "Sobre nós" abre o site da Prefeitura numa aba nova
+            st.link_button("Sobre nós", LINK_PAINEL, icon=":material/play_circle:", key="doc_sobre")
             st.link_button("Inspirado no Painel de Taipei (GitHub)", LINK_TAIPEI_GITHUB, icon=":material/code:")
             st.button("Vá até o painel", key="doc_ir_painel", on_click=mudar_pagina, args=("painel",))
     with col_cartao:
@@ -4037,6 +4038,8 @@ CSS_DOC_CLARO = """<style>
     .st-key-doc_botoes [data-testid="stLinkButton"] a { border-color: #1f2328 !important; }
     .st-key-doc_botoes [data-testid="stLinkButton"] a p,
     .st-key-doc_botoes [data-testid="stLinkButton"] a span { color: #1f2328 !important; }
+    .st-key-doc_botoes .st-key-doc_sobre [data-testid="stLinkButton"] a p,
+    .st-key-doc_botoes .st-key-doc_sobre [data-testid="stLinkButton"] a span { color: #ffffff !important; }
     [class*="st-key-doc_pasta_"] { background-color: #ffffff !important; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12); }
     .doc-pasta-titulo, .doc-pasta-texto { color: #1f2328 !important; }
 </style>"""
