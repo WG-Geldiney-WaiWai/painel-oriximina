@@ -4154,6 +4154,26 @@ def script_gravar_cookie_aviso():
     </script>""", height=1)
 
 
+def script_fechar_info_celular():
+    """No celular, o menu ⓘ ficava aberto por cima da janela "Colaboradores do projeto". Este script fecha o
+    menu (um "Esc") já no toque, antes de a janela abrir; no computador o menu continua como está."""
+    st.iframe("""<script>
+    const d = window.parent.document;
+    if (!d.getElementById("script-fechar-info-celular")) {
+        const s = d.createElement("script");
+        s.id = "script-fechar-info-celular";
+        s.textContent = `
+            document.addEventListener("click", (ev) => {
+                if (!(ev.target.closest && ev.target.closest(".st-key-abrir_colaboradores button"))) return;
+                setTimeout(() => document.dispatchEvent(new KeyboardEvent("keydown",
+                    {key: "Escape", code: "Escape", keyCode: 27, bubbles: true})), 0);
+            }, true);
+        `;
+        d.head.appendChild(s);
+    }
+    </script>""", height=1)
+
+
 def script_tela_cheia():
     """Liga/desliga a tela cheia ao clicar no ⛶ da barra de cima.
 
@@ -7513,6 +7533,8 @@ else:
     barra_topo()
     with st.container(key="scripts_pagina"):
         script_tela_cheia()
+        if CELULAR:
+            script_fechar_info_celular()
         if st.session_state.pop("gravar_cookie_aviso", False):
             script_gravar_cookie_aviso()
     # No catálogo e na página do componente não há menu lateral (como no Taipei); no celular ele vira o ☰
