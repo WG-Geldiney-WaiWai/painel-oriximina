@@ -338,6 +338,13 @@ st.markdown(f"""
     body.trocando-pagina [data-testid="stMain"] [data-stale="true"]:not(.st-key-barra_topo *),
     body.trocando-pagina:not(.mantem-menu) [data-testid="stSidebar"] [data-stale="true"] {{
         opacity: 0 !important; transition: none !important; }}
+    /* Na área principal, os pedaços antigos também não ocupam lugar: invisíveis mas no lugar, empurravam a
+       página nova para baixo (o título da administração aparecia no meio da tela e depois pulava para cima) */
+    body.trocando-pagina [data-testid="stMain"] [data-testid="stElementContainer"][data-stale="true"]:not(.st-key-barra_topo *) {{
+        display: none !important; }}
+    /* As caixas de layout (colunas, linhas) não são marcadas: as que só têm pedaços antigos somem também */
+    body.trocando-pagina [data-testid="stMain"] [data-testid="stLayoutWrapper"]:has([data-stale="true"]):not(:has([data-testid="stElementContainer"]:not([data-stale="true"]))):not(:has(.st-key-barra_topo)):not(.st-key-barra_topo *) {{
+        display: none !important; }}
     /* Indo para o catálogo ou a documentação (sem menu lateral): o menu some já no clique */
     body.sem-menu-lateral section[data-testid="stSidebar"] {{ display: none !important; }}
     /* A caixa cinza do cartão não é marcada (só o que tem dentro): com conteúdo antigo dentro, some também,
